@@ -1,0 +1,113 @@
+# Archivos de compilación
+*.apk
+*.ap_
+*.aab
+
+# Archivos de Android Studio
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/datasources.xml
+/.idea/dataSources.ids
+/.idea/sqlDataSources.xml
+/.idea/dynamic.xml
+/.idea/uiDesigner.xml
+/.idea/gradle.xml
+/.idea/compiler.xml
+/.idea/misc.xml
+/.idea/runConfigurations.xml
+/.idea/deploymentTargetDropDown.xml
+
+# Archivos generados por Gradle
+/.gradle
+/captures/
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Archivos específicos de Android
+*.keystore
+*.jks
+
+# Archivos de NDK
+*.o
+*.so
+*.dll
+
+# Archivos generados por el sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Firebase y Google Services
+google-services.json
+GoogleService-Info.plist
+
+# Archivos de configuración específicos del proyecto
+**/app/build/
+**/app/src/main/assets/
+
+# Archivos de Log
+*.log
+
+# Archivos temporales
+*.swp
+*.swo
+
+# Archivos de Lint
+lint/
+
+# Archivos de cobertura de código
+coverage/
+.nyc_output/
+
+# Archivos de Crashlytics
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Archivos de Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+
+# Archivos de Buck
+.buckd/
+**/.buckconfig
+**/.buckversion
+
+# Archivos de Kotlin
+*.kotlin_module
+
+# Archivos de KAPT
+**/build/generated/
+
+# Archivos de Room
+**/room/*.db
+
+# Archivos de Dagger
+**/dagger/*.java
+
+# Archivos de configuración de ProGuard
+proguard/
+proguard-project.txt
+
+# Archivos de configuración de Dex
+*.dex
+
+# Archivos de Assets
+**/src/main/assets/
+
+# Archivos de configuración de Variantes
+**/src/*/java/
+
+# Archivos de configuración de Test
+**/src/test/*
+**/src/androidTest/*
