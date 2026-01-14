@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_crema"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="@font/titan_one"
+        android:gravity="center"
+        android:text="Para empezar a conectar,\ndinos tu perfil:"
+        android:textColor="@color/texto_marron"
+        android:textSize="24sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOvulita"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/boton_redondeado_rosa"
+        android:text="Ovulita"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        android:drawableStart="@drawable/ovulito_hombre"
+        android:paddingStart="20dp"
+        android:drawablePadding="10dp" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOvulito"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/boton_redondeado_rosa"
+        android:text="Ovulito"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        android:drawableStart="@drawable/ovulito_hombre"
+        android:paddingStart="20dp"
+        android:drawablePadding="10dp" />
+
+</LinearLayout>
