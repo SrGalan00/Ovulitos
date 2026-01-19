@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo_crema"
     android:fillViewport="true">
 
     <LinearLayout
@@ -15,56 +14,69 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Crear cuenta"
-            android:fontFamily="@font/titan_one"
-            android:textColor="@color/texto_marron"
-            android:textSize="28sp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/titan_one"
+            android:text="Te damos la bienvenida:"
+            android:textColor="@color/texto_marron"
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/etRegNombre"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/fondo_input_login"
-            android:hint="Nombre de usuario"
-            android:layout_marginBottom="16dp"/>
+            android:fontFamily="@font/bricolage_grotesque"
+            android:hint="Nombre completo"
+            android:paddingStart="16dp"
+            android:textColorHint="#8D6E63" />
 
         <EditText
             android:id="@+id/etRegEmail"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/fondo_input_login"
-            android:inputType="textEmailAddress"
+            android:fontFamily="@font/bricolage_grotesque"
             android:hint="Correo electrónico"
-            android:layout_marginBottom="16dp"/>
+            android:inputType="textEmailAddress"
+            android:paddingStart="16dp"
+            android:textColorHint="#8D6E63" />
 
         <EditText
             android:id="@+id/etRegPass"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/fondo_input_login"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:hint="Crea tu contraseña"
             android:inputType="textPassword"
-            android:hint="Contraseña"
-            android:layout_marginBottom="24dp"/>
+            android:paddingStart="16dp"
+            android:textColorHint="#8D6E63" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRegistrar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/boton_redondeado_rosa"
-            android:text="Crear cuenta"
+            android:fontFamily="@font/titan_one"
+            android:text="Registrarse"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="18sp"
+            android:elevation="4dp" />
 
         <TextView
             android:id="@+id/txtVolverLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bricolage_grotesque"
             android:text="¿Ya tienes cuenta? Inicia sesión"
             android:textColor="@color/texto_marron"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>

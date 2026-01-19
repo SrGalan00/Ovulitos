@@ -2,49 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo_crema"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="32dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="@font/titan_one"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="60dp"
+        android:fontFamily="@font/bricolage_grotesque"
         android:gravity="center"
         android:text="Para empezar a conectar,\ndinos tu perfil:"
         android:textColor="@color/texto_marron"
-        android:textSize="24sp" />
+        android:textSize="20sp"
+        android:letterSpacing="-0.01"
+        android:lineSpacingExtra="4dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <RelativeLayout
         android:id="@+id/btnOvulita"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/boton_redondeado_rosa"
-        android:text="Ovulita"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_width="280dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="25dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        android:drawableStart="@drawable/ovulito_hombre"
-        android:paddingStart="20dp"
-        android:drawablePadding="10dp" />
-    <androidx.appcompat.widget.AppCompatButton
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/boton_redondeado_rosa" />
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerVertical="true"
+            android:elevation="8dp"
+            android:src="@drawable/logo_ovulitos" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/titan_one"
+            android:text="Ovulita"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/btnOvulito"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/boton_redondeado_rosa"
-        android:text="Ovulito"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_width="280dp"
+        android:layout_height="80dp"
+        android:clickable="true"
+        android:focusable="true">
 
-        android:drawableStart="@drawable/ovulito_hombre"
-        android:paddingStart="20dp"
-        android:drawablePadding="10dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/boton_redondeado_rosa" />
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerVertical="true"
+            android:elevation="8dp"
+            android:src="@drawable/ovulito_hombre" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/titan_one"
+            android:text="Ovulito"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </RelativeLayout>
 
 </LinearLayout>
