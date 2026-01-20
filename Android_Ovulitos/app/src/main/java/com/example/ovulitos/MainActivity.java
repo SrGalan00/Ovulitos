@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // "Matamos" la MainActivity para que si le dan 'Atrás' no vuelvan al logo
                 finish();
+
             }
         }, 2500);
     }

@@ -2,90 +2,177 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@android:color/transparent"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="32dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="32dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/titan_one"
+        android:text="Inicio de sesión"
+        android:textColor="@color/texto_marron"
+        android:textSize="26sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"
-            android:fontFamily="@font/titan_one"
-            android:text="Inicio de sesión"
-            android:textColor="@color/texto_marron"
-            android:textSize="24sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp">
 
         <EditText
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="match_parent"
             android:background="@drawable/fondo_input_login"
             android:fontFamily="@font/bricolage_grotesque"
             android:hint="Nombre de usuario"
-            android:paddingStart="16dp"
-            android:textColorHint="#8D6E63" />
+            android:paddingStart="25dp"
+            android:paddingEnd="50dp"
+            android:textColor="@color/texto_marron"
+            android:textColorHint="#8D6E63"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iconValUsuario"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_validacion_neutro" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp">
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="match_parent"
             android:background="@drawable/fondo_input_login"
             android:fontFamily="@font/bricolage_grotesque"
             android:hint="Contraseña"
             android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:textColorHint="#8D6E63" />
+            android:paddingStart="25dp"
+            android:paddingEnd="50dp"
+            android:textColor="@color/texto_marron"
+            android:textColorHint="#8D6E63"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iconValPass"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/ic_validacion_neutro" />
+    </RelativeLayout>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="30dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bricolage_grotesque"
+        android:text="¿Olvidaste tu contraseña? "
+        android:textColor="@color/texto_marron"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/btnOlvidastePass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:fontFamily="@font/bricolage_grotesque"
+        android:text="Haz click aquí"
+        android:textColor="@color/texto_marron"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="4dp"/>
+</LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogin"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/boton_redondeado_rosa"
+        android:elevation="4dp"
+        android:fontFamily="@font/titan_one"
+        android:text="Siguiente"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/btnGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/boton_redondeado_rosa"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="4dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_google_logo"
+            android:elevation="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginBottom="40dp"
-            android:fontFamily="@font/bricolage_grotesque"
-            android:text="¿Olvidaste tu contraseña? Haz click aquí"
-            android:textSize="12sp"
-            android:textColor="@color/texto_marron" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnLogin"
-            android:layout_width="220dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="40dp"
-            android:background="@drawable/boton_redondeado_rosa"
+            android:layout_centerInParent="true"
             android:fontFamily="@font/titan_one"
-            android:text="Siguiente"
-            android:textAllCaps="false"
+            android:text="Inicio de sesión con Google"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:elevation="4dp"/>
+            android:textSize="15sp"
+            android:elevation="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bricolage_grotesque"
-            android:text="¿No tienes cuenta?"
-            android:textColor="@color/texto_marron" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/bricolage_grotesque"
+        android:text="¿No tienes cuenta?"
+        android:textColor="@color/texto_marron"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnIrARegistro"
-            android:layout_width="160dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/boton_redondeado_rosa"
-            android:fontFamily="@font/titan_one"
-            android:text="Regístrate"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:elevation="2dp" />
-
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnIrARegistro"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:background="@drawable/boton_redondeado_rosa"
+        android:backgroundTint="#6D4C41"
+        android:fontFamily="@font/titan_one"
+        android:text="Regístrate"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:elevation="4dp" />
+</LinearLayout>
 </ScrollView>

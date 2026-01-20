@@ -13,11 +13,12 @@
         android:layout_marginBottom="60dp"
         android:fontFamily="@font/bricolage_grotesque"
         android:gravity="center"
+        android:letterSpacing="-0.01"
+        android:lineSpacingExtra="4dp"
         android:text="Para empezar a conectar,\ndinos tu perfil:"
         android:textColor="@color/texto_marron"
         android:textSize="20sp"
-        android:letterSpacing="-0.01"
-        android:lineSpacingExtra="4dp" />
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/btnOvulita"
