@@ -1,6 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.MiApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/md_theme_light_primary</item>
-        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="android:fontFamily">@font/bricolage_grotesque_extrabold</item>
+    </style>
+    <style name="ShapeAppearance.MediumComponent" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
     </style>
 </resources>
