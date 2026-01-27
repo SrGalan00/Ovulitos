@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { doSignInWithEmailAndPassword } from '../firebase/auth';
+import { useAuth } from '../context/authContext';
 
 export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberme, setRememberme] = useState(false);
+  const navigate = useNavigate(); 
+  const {currentUser} = useAuth(); 
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async  (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ username, password, rememberme });
+
+    try{
+        await doSignInWithEmailAndPassword(username, password); 
+        navigate("/"); 
+    }catch(error){
+        console.error('Error login: ', error); 
+    }
+
   };
+
+  useEffect(() => {
+    if (currentUser) { 
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
 
   return (
     <>
