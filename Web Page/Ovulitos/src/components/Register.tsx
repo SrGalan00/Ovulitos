@@ -1,160 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { doCreateUserWithEmailAndPassword } from '../firebase/auth';
+import { useAuth } from '../context/authContext';
 
 export const Register: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberme, setRememberme] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ username, password, rememberme });
+    setError('');
+
+    try {
+      await doCreateUserWithEmailAndPassword(email, password);
+      navigate("/");
+    } catch (error: any) {
+      console.error('Error register: ', error);
+      setError(error.message || 'Failed to register');
+    }
+
   };
 
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
+
   return (
-    <>
-      <style>{`
-        html,
-        body,
-        #root {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            background: #FFF8C9;
-        }
+    <div className="min-h-screen flex justify-center items-center bg-[#f7b6c8]">
+      <div className="relative w-[800px] h-[800px] flex justify-center items-center">
+        {/* Background Image Layer */}
+        <div
+          className="absolute inset-[40px] rounded-full bg-center bg-cover bg-no-repeat z-10 mix-blend-multiply"
+          style={{ backgroundImage: "url('/Ovulito.png')" }}
+        ></div>
 
+        {/* Gradient/Color Fallback Layer */}
+        <div className="absolute inset-[40px] rounded-full bg-gradient-to-b from-[#f7b6c8] to-[#f3a2b9] -z-10"></div>
 
-        .login-page {
-          min-height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: #FFF8C9;
-        }
+        {/* Form Layer */}
+        <form className="relative z-20 flex flex-col justify-center items-center gap-[22px]" onSubmit={handleSubmit}>
+          <h2 className="text-2xl font-bold text-[#333] mb-2">Register</h2>
+          {error && <div className="text-red-600 font-bold bg-white/80 p-2 rounded">{error}</div>}
 
-        .circle {
-          width: 800px;
-          height: 800px;
-          border-radius: 50%;
-          position: relative;
-          background: #FFF8C9; /* rosa suave */
-        }
-
-        /* Imagen de fondo (si no existe, queda el color) */
-        .circle::before {
-          content: '';
-          position: absolute;
-          inset: 40px;
-          border-radius: 50%;
-          background: 
-            url('/Ovulito.png') center/cover no-repeat,
-            linear-gradient(180deg, #f7b6c8, #f3a2b9);
-        }
-
-        .form-overlay {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          gap: 22px;
-          z-index: 2;
-        }
-
-        .label{
-          width: 320px;
-          padding: 3px 6px;
-          font-size: 16px;
-          outline: none;
-        }
-
-        .input {
-          width: 320px;
-          padding: 14px 16px;
-          border-radius: 12px;
-          border: 1px solid #ddd;
-          font-size: 16px;
-          outline: none;
-        }
-
-        .input:focus {
-          border-color: #c45a7a;
-        }
-
-        .remember {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          color: #333;
-          font-size: 14px;
-          font-weight: 500;
-        }
-
-        .remember input {
-          width: 16px;
-          height: 16px;
-        }
-
-        .button {
-          margin-top: 20px;
-          width: 200px;
-          padding: 14px;
-          border-radius: 14px;
-          border: none;
-          background: #ffffff;
-          font-weight: 700;
-          cursor: pointer;
-          border: 1px solid #ddd;
-        }
-
-        .button:hover {
-          background: #f1f1f1;
-        }
-      `}</style>
-
-      <div className="login-page">
-        <div className="circle">
-          <form className="form-overlay" onSubmit={handleSubmit}>
-          <label className='label'>Username</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-[#333] text-base px-1.5 font-medium">Email</label>
             <input
-              className="input"
+              className="w-[320px] p-[14px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
+              type="email"
               placeholder="Email"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
+          </div>
 
-            <label className='label'>Username</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-[#333] text-base px-1.5 font-medium">Password</label>
             <input
-              className="input"
-              placeholder="Username"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-            />
-
-            <label>Password</label>
-            <input
-              className="input"
+              className="w-[320px] p-[14px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="password"
               placeholder="Password"
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
+          </div>
 
-            <label className="remember">
-              <input
-                type="checkbox"
-                checked={rememberme}
-                onChange={e => setRememberme(e.target.checked)}
-              />
-              Remember me
-            </label>
+          <button
+            className="mt-5 w-[200px] p-3.5 rounded-[14px] border border-[#ddd] bg-white font-bold text-[#333] hover:bg-[#f1f1f1] transition-colors cursor-pointer shadow-sm hover:shadow-md active:scale-95 transform duration-100"
+            type="submit"
+          >
+            REGISTER
+          </button>
 
-            <button className="button" type="submit">
-              LOGIN
-            </button>
-          </form>
-        </div>
+          <div className="mt-4 text-sm font-medium">
+            Already have an account? <Link to="/login" className="text-[#c45a7a] hover:underline">Login here</Link>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };

@@ -1,21 +1,32 @@
-
 import './App.css'
 import { Login } from './components/Login'
-//import { Register} from "./components/Register"
->>>>>>> b0a2cfdd1c8915e7cb41c9c2bd72a737b658ea22
+import { Register } from './components/Register'
+import { Home } from './components/Home'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './context/authContext'
 
 function App() {
+  const { currentUser, loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>;
+
+  const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
 
   return (
-    <div >
-      <h1>Hola que tal</h1>
-    </div>
-    <div className='min-h-screen bg-slate-100'>
-      <main className='px-16 py-8'>
-        <Login/>
-      </main>
-    </div>
-    
+    <Routes>
+      <Route path="/login" element={!currentUser ? <Login /> : <Navigate to="/" />} />
+      <Route path="/register" element={!currentUser ? <Register /> : <Navigate to="/" />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   )
 }
 
