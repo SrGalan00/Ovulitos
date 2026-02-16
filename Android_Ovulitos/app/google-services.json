@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "814948339776",
+    "project_id": "pruebaandroid-a58d7",
+    "storage_bucket": "pruebaandroid-a58d7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814948339776:android:111e50be04e07b670f0fa5",
+        "android_client_info": {
+          "package_name": "com.example.ovulitos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoX0aaM9dUVuCC4PtW9oEkh06Cb8jGFMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

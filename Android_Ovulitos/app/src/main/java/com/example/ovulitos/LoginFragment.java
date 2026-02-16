@@ -15,11 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+// Import de Firebase 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginFragment extends Fragment {
+
+    private FirebaseAuth auth; 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        
+        // Declaración de la variable de firebase 
+        auth = FirebaseAuth.getInstance();
+        
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         // 1. Referencias a los campos de texto
@@ -87,6 +96,7 @@ public class LoginFragment extends Fragment {
             String usuario = etUsuario.getText().toString();
             // Aquí iría tu lógica real de login
             Toast.makeText(getContext(), "Intentando entrar como: " + usuario, Toast.LENGTH_SHORT).show();
+            login(); 
         });
 
         // Botón Google (Ahora sí funciona al ser View)
@@ -108,5 +118,29 @@ public class LoginFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    private void login(){
+        String email = etUsuario.getText().toString();
+        String password = etPassword.getText().toString();
+
+        if(email.isEmpty() || password.isEmpty()){
+            Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(getContext(), "Login exitoso", Toast.LENGTH_SHORT).show();
+                        getParentFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new HomeFragment())
+                                .addToBackStack(null)
+                                .commit();
+                    }else{
+                        Toast.makeText(getContext(), "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
