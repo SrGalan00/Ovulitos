@@ -1,38 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview_consejo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InicioFragment">
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="88dp"
-            android:src="@drawable/ovulito_sin_cara"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp">
 
         <TextView
             android:id="@+id/textView_fertilidad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/bricolage_grotesque_extrabold"
-            android:text="Baja probalididad de embarazo"
+            android:text="@string/probabilidad_embarazo"
             android:textColor="@color/textos"
-            android:textSize="16dp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/container_ovulito"
+            android:layout_width="411dp"
+            android:layout_height="391dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_fertilidad">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="ovulito sin cara"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ovulito_sin_cara" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bricolage_grotesque_bold"
+                    android:text="@string/fase"
+                    android:textColor="#5D4037"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bricolage_grotesque_extrabold"
+                    android:gravity="center"
+                    android:text="@string/dias_periodo"
+                    android:textColor="#5D4037"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/btn_consejito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bricolage_grotesque_bold"
+            android:paddingBottom="17dp"
+            android:text="@string/consejito_del_dia"
+            android:textColor="#805D4037"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_ovulito" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/caja_consejito"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:visibility="visible"
+            app:cardBackgroundColor="@color/rosa_oscuro"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_consejito">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bricolage_grotesque_bold"
+                android:padding="14dp"
+                android:text="@string/consejo"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

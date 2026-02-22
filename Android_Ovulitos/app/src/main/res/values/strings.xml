@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Ovulitos</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dias_periodo">19 días para tu\nperiodo</string>
+    <string name="consejo">Estás en tu peak de calma y enfoque. ¡Aprovecha! Pero con 19 días, el SPM viene en camino. Mímate mucho estos días.</string>
+    <string name="probabilidad_embarazo">Baja probabilidad de embarazo</string>
+    <string name="consejito_del_dia">Consejito del día</string>
+    <string name="fase">Fase lútea</string>
 </resources>

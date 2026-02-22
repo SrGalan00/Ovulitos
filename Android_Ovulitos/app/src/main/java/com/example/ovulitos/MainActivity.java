@@ -1,11 +1,9 @@
 package com.example.ovulitos;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.main_fragment_container, new InicioFragment())
+                    .replace(R.id.main_fragment_container, new InicioFragment())
                     .commit();
         }
     }

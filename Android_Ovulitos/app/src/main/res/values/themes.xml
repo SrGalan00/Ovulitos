@@ -7,4 +7,14 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">14dp</item>
     </style>
+    <style name="MenuButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:background">@color/rosa_oscuro</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MediumComponent</item>
+    </style>
 </resources>
