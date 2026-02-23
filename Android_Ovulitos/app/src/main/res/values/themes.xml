@@ -1,12 +1,45 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.MiApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/rosa_oscuro</item>
+        <item name="android:windowBackground">@color/fondo</item>
         <item name="fontFamily">@font/bricolage_grotesque_bold</item>
-        <item name="android:fontFamily">@font/bricolage_grotesque_extrabold</item>
+        <item name="android:fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="materialCalendarStyle">@style/TemaCalendarioOvulitos</item>
+    </style>
+
+    <style name="CalendarioCuerpoTexto" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="android:textColor">@color/textos</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CalendarioTituloTexto" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="android:textColor">@color/textos</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TemaCalendarioOvulitos" parent="ThemeOverlay.Material3.MaterialCalendar">
+        <item name="textAppearanceBodyMedium">@style/CalendarioCuerpoTexto</item>
+        <item name="textAppearanceLabelLarge">@style/CalendarioTituloTexto</item>
+
+        <item name="colorPrimary">@color/rosa_oscuro</item>
+        <item name="colorOnSurface">@color/textos</item>
+    </style>
+
+    <style name="ChipTextAppearance" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="fontFamily">@font/bricolage_grotesque_bold</item>
+        <item name="android:textColor">@color/textos</item>
+        <item name="android:textSize">14sp</item>
     </style>
     <style name="ShapeAppearance.MediumComponent" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">14dp</item>
     </style>
+
     <style name="MenuButtonStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">80dp</item>

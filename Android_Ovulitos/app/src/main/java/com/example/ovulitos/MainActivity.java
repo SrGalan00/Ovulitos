@@ -1,19 +1,52 @@
 package com.example.ovulitos;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Bundle;
+import android.view.View;
+
+import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //cargamos el fragment de inicio por defecto
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.main_fragment_container, new InicioFragment())
-                    .commit();
+            reemplazarFragmento(new InicioFragment());
         }
+
+        ShapeableImageView btnInicio = findViewById(R.id.btn_1);
+        ShapeableImageView btnCalendario = findViewById(R.id.btn_2);
+        ShapeableImageView btnRelajacion = findViewById(R.id.btn_3);
+        ShapeableImageView btnInformacion = findViewById(R.id.btn_4);
+
+        //eventos de clic
+        btnInicio.setOnClickListener(v -> reemplazarFragmento(new InicioFragment()));
+        btnCalendario.setOnClickListener(v -> reemplazarFragmento(new CalendarioFragment()));
+        btnRelajacion.setOnClickListener(v -> reemplazarFragmento(new RelajacionFragment()));
+        btnInformacion.setOnClickListener(v -> reemplazarFragmento(new FertilidadFragment()));
+    }
+
+    private void reemplazarFragmento(Fragment fragmento) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        //animamos con una transición suave
+        fragmentTransaction.setCustomAnimations(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+        );
+
+        fragmentTransaction.replace(R.id.main_fragment_container, fragmento);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.commit();
     }
 }
