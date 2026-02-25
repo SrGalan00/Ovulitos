@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvDiaCiclo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/dia_ciclo"
+            android:fontFamily="@font/bricolage_grotesque_bold"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp"
+            android:text="@string/titulo_dia_ciclo"
+            android:textColor="@color/textos"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/rosa_intermedio"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="0dp">
+
+            <CalendarView
+                android:id="@+id/calendarViewRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:theme="@style/TemaCalendarioOvulitos"
+                android:dateTextAppearance="@style/CalendarioCuerpoTexto"
+                android:weekDayTextAppearance="@style/CalendarioTituloTexto" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/bricolage_grotesque_bold"
+            android:text="@string/seccion_intensidad_sangrado"
+            android:textColor="@color/textos"
+            android:textStyle="bold" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFlujo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/flow_spotting"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flujo_manchado"
+                app:chipBackgroundColor="@color/rosa_claro"
+                android:textAppearance="@style/ChipTextAppearance"
+                android:checkable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/flow_light"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flujo_ligero"
+                app:chipBackgroundColor="@color/rosa_claro"
+                android:textAppearance="@style/ChipTextAppearance"
+                android:checkable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/flow_heavy"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flujo_abundante"
+                app:chipBackgroundColor="@color/rosa_claro"
+                android:textAppearance="@style/ChipTextAppearance"
+                android:checkable="true" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/bricolage_grotesque_bold"
+            android:text="@string/seccion_otros_sintomas"
+            android:textColor="@color/textos"
+            android:textStyle="bold" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSintomas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sintoma_colicos"
+                app:chipBackgroundColor="@color/rosa_claro"
+                android:textAppearance="@style/ChipTextAppearance"
+                android:checkable="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sintoma_dolor_cabeza"
+                app:chipBackgroundColor="@color/rosa_claro"
+                android:textAppearance="@style/ChipTextAppearance"
+                android:checkable="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sintoma_sensibilidad"
+                app:chipBackgroundColor="@color/rosa_claro"
+                android:textAppearance="@style/ChipTextAppearance"
+                android:checkable="true" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGuardarRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/rosa_oscuro"
+            android:text="@string/btn_guardar_registro"
+            android:textColor="@color/white"
+            app:cornerRadius="16dp"
+            android:textAppearance="@style/ChipTextAppearance" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
