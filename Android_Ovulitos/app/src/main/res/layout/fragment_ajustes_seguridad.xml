@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contraseña"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cambiar contraseña"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#6D4C41"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verificacion de seguridad"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alertas de seguridad"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#6D4C41"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dispositivos"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver mis dispositivos"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#6D4C41"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verificacion en dos pasos"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activado/Desacticado"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#6D4C41"
+            android:layout_marginBottom="16dp"/>
+
+    </LinearLayout>
+</ScrollView>
