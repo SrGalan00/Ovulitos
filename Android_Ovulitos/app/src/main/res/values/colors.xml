@@ -10,4 +10,9 @@
     <color name="fondo_crema">#FFF9C4</color>
     <color name="texto_marron">#4E342E</color>
     <color name="rosa_boton">#E59A9A</color>
+    <color name="fondo">#FFF8C9</color>
+    <color name="textos">#6A3839</color>
+    <color name="rosa_oscuro">#9B5354</color>
+    <color name="rosa_intermedio">#E38E91</color>
+    <color name="rosa_claro">#F4C7C4</color>
 </resources>

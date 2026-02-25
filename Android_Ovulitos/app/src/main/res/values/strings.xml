@@ -4,4 +4,38 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="texto_olvidaste_contrasena">¿Olvidaste tu contraseña? <b><u>Haz click aquí</u></b></string>
+    <string name="dias_periodo">19 días para tu\nperiodo</string>
+    <string name="consejo">Estás en tu peak de calma y enfoque. ¡Aprovecha! Pero con 19 días, el SPM viene en camino. Mímate mucho estos días.</string>
+    <string name="probabilidad_embarazo">Baja probabilidad de embarazo</string>
+    <string name="consejito_del_dia">Consejito del día</string>
+    <string name="fase">Fase lútea</string>
+    <string name="titulo_dia_ciclo">Día - del ciclo</string>
+    <string name="seccion_intensidad_sangrado">Intensidad del sangrado</string>
+    <string name="seccion_otros_sintomas">Otros síntomas</string>
+
+    <string name="flujo_manchado">Manchado</string>
+    <string name="flujo_ligero">Ligero</string>
+    <string name="flujo_abundante">Abundante</string>
+
+    <string name="sintoma_colicos">Cólicos</string>
+    <string name="sintoma_dolor_cabeza">Dolor de cabeza</string>
+    <string name="sintoma_sensibilidad">Sensibilidad</string>
+
+    <string name="btn_guardar_registro">Guardar día</string>
+
+    <string name="titulo_calma">3 minutos de calma profunda</string>
+    <string name="desc_calma">Recupera tu equilibrio en la fase lútea. Enfócate en tu respiración suave y suelta las tensiones del día.</string>
+    <string name="btn_paz">Necesito paz</string>
+
+    <string name="titulo_probabilidad">Baja probabilidad de embarazo</string>
+    <string name="articulo_hinchazon">4 modos de aliviar la hinchazón</string>
+    <string name="articulo_paranoia">Afrontar la paranoia del embarazo</string>
+
+    <string name="pregunta_emociones">¿Cómo te sientes hoy?</string>
+
+    <string name="titulo_noticias">¿Qué ha pasado hoy?</string>
+    <string name="articulo_paracetamol">Qué es la matrescencia: así es como la maternidad ha creado consciencia de grupo</string>
+    <string name="articulo_alimentacion">La importancia de adaptar la alimentación al ciclo menstrual</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

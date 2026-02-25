@@ -1,26 +1,43 @@
 {
   "project_info": {
-    "project_number": "814948339776",
-    "project_id": "pruebaandroid-a58d7",
-    "storage_bucket": "pruebaandroid-a58d7.firebasestorage.app"
+
+    "project_number": "178201442511",
+    "project_id": "ovulitos-ffc21",
+    "storage_bucket": "ovulitos-ffc21.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:814948339776:android:111e50be04e07b670f0fa5",
+
+        "mobilesdk_app_id": "1:178201442511:android:311eb626f9a490aab25fba",
+
         "android_client_info": {
           "package_name": "com.example.ovulitos"
         }
       },
-      "oauth_client": [],
+
+      "oauth_client": [
+        {
+          "client_id": "178201442511-6f74151224u35c27v424nsm75ftborau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAoX0aaM9dUVuCC4PtW9oEkh06Cb8jGFMk"
+          "current_key": "AIzaSyBcIqk_7oLtc7PPOL6WfrfJcl2vS-ukmdY"
+
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178201442511-6f74151224u35c27v424nsm75ftborau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+
         }
       }
     }
