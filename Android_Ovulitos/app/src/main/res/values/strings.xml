@@ -27,4 +27,11 @@
     <string name="articulo_hinchazon">4 modos de aliviar la hinchazón</string>
     <string name="articulo_paranoia">Afrontar la paranoia del embarazo</string>
 
+    <string name="pregunta_emociones">¿Cómo te sientes hoy?</string>
+
+    <string name="titulo_noticias">¿Qué ha pasado hoy?</string>
+    <string name="articulo_paracetamol">Qué es la matrescencia: así es como la maternidad ha creado consciencia de grupo</string>
+    <string name="articulo_alimentacion">La importancia de adaptar la alimentación al ciclo menstrual</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

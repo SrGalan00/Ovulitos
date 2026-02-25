@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -26,12 +25,16 @@ public class MainActivity extends AppCompatActivity {
         ShapeableImageView btnCalendario = findViewById(R.id.btn_2);
         ShapeableImageView btnRelajacion = findViewById(R.id.btn_3);
         ShapeableImageView btnInformacion = findViewById(R.id.btn_4);
+        ShapeableImageView btnEmociones = findViewById(R.id.btn_5);
+        ShapeableImageView btnNoticias = findViewById(R.id.btn_6);
 
         //eventos de clic
         btnInicio.setOnClickListener(v -> reemplazarFragmento(new InicioFragment()));
         btnCalendario.setOnClickListener(v -> reemplazarFragmento(new CalendarioFragment()));
         btnRelajacion.setOnClickListener(v -> reemplazarFragmento(new RelajacionFragment()));
         btnInformacion.setOnClickListener(v -> reemplazarFragmento(new FertilidadFragment()));
+        btnEmociones.setOnClickListener(v -> reemplazarFragmento(new EmocionesFragment()));
+        btnNoticias.setOnClickListener(v -> reemplazarFragmento(new NoticiasFragment()));
     }
 
     private void reemplazarFragmento(Fragment fragmento) {
