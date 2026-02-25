@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:background="@color/fondo_crema">
+
+    <TextView
+        android:id="@+id/txtBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/titan_one"
+        android:text="¡Bienvenido a casa!"
+        android:textColor="@color/texto_marron"
+        android:textSize="28sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Cerrar Sesión"
+        android:backgroundTint="#D32F2F"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>

@@ -5,48 +5,56 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText; // IMPORTANTE
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-// Import de Firebase 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterFragment extends Fragment {
 
     private FirebaseAuth auth;
 
+    // 1. DECLARARLAS AQUÍ (Nivel de clase) para que todo el archivo las vea
+    private EditText etNombre, etEmail, etPassword;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        
-        auth = FirebaseAuth.getInstance(); 
-        
+
+        auth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+
+        // 2. INICIALIZARLAS (Vincular con los IDs de tu XML fragment_register.xml)
+        etNombre = view.findViewById(R.id.etRegNombre);
+        etEmail = view.findViewById(R.id.etRegEmail);
+        etPassword = view.findViewById(R.id.etRegPass); // Ojo: en tu XML se llamaba etRegPass
 
         Button btnRegistrar = view.findViewById(R.id.btnRegistrar);
         TextView txtVolver = view.findViewById(R.id.txtVolverLogin);
 
-        // Volver al Login si ya tiene cuenta
         txtVolver.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
         });
 
-        // Lógica de registro
         btnRegistrar.setOnClickListener(v -> {
-            // Aquí iría tu lógica para guardar el usuario nuevo
-            // Y asignar los skill points iniciales
+            register(); // Llamamos al método corregido
         });
 
         return view;
     }
 
-    prvate void register(){
-        String email = etUsuario.getText().toString();
-        String password = etPassword.getText().toString();
+    private void register(){
+        // 3. USARLAS (Ahora sí funcionan porque son variables de clase)
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String nombre = etNombre.getText().toString().trim();
 
-        if(email.isEmpty() || password.isEmpty()){
+        if(email.isEmpty() || password.isEmpty() || nombre.isEmpty()){
             Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -60,7 +68,7 @@ public class RegisterFragment extends Fragment {
                                 .addToBackStack(null)
                                 .commit();
                     }else{
-                        Toast.makeText(getContext(), "Error al registrar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aviso de menstruación"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activar/Desactivar"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#6D4C41"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Consejos del día"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activar/Desactivar"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#6D4C41"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</ScrollView>
