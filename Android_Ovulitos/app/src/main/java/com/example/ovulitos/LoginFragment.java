@@ -1,5 +1,6 @@
 package com.example.ovulitos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-// Import de Firebase 
+
+import com.example.ovulitos.control.LoginControl;
+import com.example.ovulitos.iterface.LoginCallback;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
@@ -31,9 +34,15 @@ public class LoginFragment extends Fragment {
         
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        // Instanciamos la clase que se va a encargar de validar los datos del login
+        LoginControl login = new LoginControl();
+
+
         // 1. Referencias a los campos de texto
         EditText etUsuario = view.findViewById(R.id.etUsuario);
         EditText etPassword = view.findViewById(R.id.etPassword);
+
+
 
         // 2. Referencias a los iconos de validación (Círculos a la derecha)
         ImageView iconValUsuario = view.findViewById(R.id.iconValUsuario);
@@ -68,7 +77,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {}
         });
-
+/*
         // Validación Contraseña: < 6 letras -> X Roja | >= 6 letras -> Tick Verde
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -87,7 +96,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {}
         });
-
+*/
 
         // --- LISTENERS DE LOS BOTONES ---
 
@@ -95,8 +104,23 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(v -> {
             String usuario = etUsuario.getText().toString();
             // Aquí iría tu lógica real de login
-            Toast.makeText(getContext(), "Intentando entrar como: " + usuario, Toast.LENGTH_SHORT).show();
-            login(); 
+
+            login.login(etUsuario, etPassword, new LoginCallback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getContext(), "Inicio de sesión correcto!" , Toast.LENGTH_SHORT).show();
+
+                    // abrir otra Activity
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    requireActivity().finish();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Toast.makeText(getContext(), error , Toast.LENGTH_SHORT).show();
+                }
+            });
+
         });
 
         // Botón Google (Ahora sí funciona al ser View)
@@ -120,27 +144,4 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-
-    private void login(){
-        String email = etUsuario.getText().toString();
-        String password = etPassword.getText().toString();
-
-        if(email.isEmpty() || password.isEmpty()){
-            Toast.makeText(getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(getContext(), "Login exitoso", Toast.LENGTH_SHORT).show();
-                        getParentFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, new HomeFragment())
-                                .addToBackStack(null)
-                                .commit();
-                    }else{
-                        Toast.makeText(getContext(), "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 }
