@@ -1,33 +1,36 @@
-import './App.css'
-import { Login } from './components/Login'
-import { Register } from './components/Register'
-import { Home } from './components/Home'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './context/authContext'
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import LoginCircle from './components/LoginCircle';
+import Dashboard from './components/Dashboard';
+
+
+// Crear tema con la paleta de colores
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#9B5354',
+    },
+    secondary: {
+      main: '#69393A',
+    },
+    background: {
+      default: '#FFF8C9',
+    },
+  },
+  typography: {
+    fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
 
 function App() {
-  const { currentUser, loading } = useAuth();
-
-  if (loading) return <div>Loading...</div>;
-
-  const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-    return currentUser ? children : <Navigate to="/login" />;
-  };
-
   return (
-    <Routes>
-      <Route path="/login" element={!currentUser ? <Login /> : <Navigate to="/" />} />
-      <Route path="/register" element={!currentUser ? <Register /> : <Navigate to="/" />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Dashboard />
+    </ThemeProvider>
+  );
+
 }
 
-export default App
+export default App;
