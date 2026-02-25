@@ -78,7 +78,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           </Typography>
           
           <Typography variant="body1" sx={{ color: colors.secondary, mb: 3 }}>
-            Has accedido correctamente. Este panel ahora ocupa todo el ancho disponible.
+            Esta es la pantalla principal del proyecto Ovulitos. Aqui puedes registrarte y obtener informacion sobre nuestra aplicacion.
           </Typography>
 
           <Box sx={{ 
@@ -89,7 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             textAlign: 'center' 
           }}>
             <Typography variant="subtitle1" sx={{ color: colors.accent }}>
-              Área de trabajo lista para nuevos módulos
+              
             </Typography>
           </Box>
         </Box>
