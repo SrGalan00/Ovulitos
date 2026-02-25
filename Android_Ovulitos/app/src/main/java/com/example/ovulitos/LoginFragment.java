@@ -20,7 +20,6 @@ public class LoginFragment extends Fragment {
 
     private FirebaseAuth auth;
 
-    // 1. DECLARARLAS AQUÍ (Variables Globales de la Clase)
     private EditText etUsuario;
     private EditText etPassword;
 

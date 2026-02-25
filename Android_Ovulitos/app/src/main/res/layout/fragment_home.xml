@@ -1,29 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="32dp"
-    android:background="@color/fondo_crema">
+    android:background="@color/fondo_crema"
+    android:padding="24dp">
 
-    <TextView
-        android:id="@+id/txtBienvenida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/titan_one"
-        android:text="¡Bienvenido a casa!"
-        android:textColor="@color/texto_marron"
-        android:textSize="28sp"
-        android:textAlignment="center"
-        android:layout_marginBottom="40dp"/>
-
-    <Button
-        android:id="@+id/btnCerrarSesion"
+    <ImageView
+        android:id="@+id/btnIrAjustes"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@android:drawable/ic_menu_preferences"
+        app:tint="#6D4C41"
+        android:contentDescription="Ir a Ajustes"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Cerrar Sesión"
-        android:backgroundTint="#D32F2F"
-        android:textColor="@android:color/white"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/titan_one"
+            android:text="¡Hola!"
+            android:textColor="@color/texto_marron"
+            android:textSize="28sp"
+            android:textAlignment="center"
+            android:layout_marginBottom="40dp"/>
+
+        <TextView
+            android:id="@+id/txtPuntosInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:text="Tus personajes están listos"
+            android:textColor="#6D4C41"
+            android:textSize="16sp"
+            android:layout_marginBottom="40dp"/>
+
+        <Button
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Cerrar Sesión"
+            android:fontFamily="@font/titan_one"
+            android:backgroundTint="#D32F2F"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+</RelativeLayout>

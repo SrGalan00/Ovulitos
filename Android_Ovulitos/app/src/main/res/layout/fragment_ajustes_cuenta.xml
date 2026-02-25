@@ -26,10 +26,12 @@
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="@color/black"/>
+
         <TextView
+            android:id="@+id/txtNombreUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Raquel Ramirez"
+            android:text="Cargando..."
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
             android:layout_marginBottom="16dp"/>
@@ -41,10 +43,12 @@
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="@color/black"/>
+
         <TextView
+            android:id="@+id/txtEmailUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RaquelRamirez@gmail.com"
+            android:text="Cargando..."
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
             android:layout_marginBottom="24dp"/>
