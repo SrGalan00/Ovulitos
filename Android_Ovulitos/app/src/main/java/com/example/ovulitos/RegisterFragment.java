@@ -1,7 +1,7 @@
 package com.example.ovulitos;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,85 +14,106 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterFragment extends Fragment {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth;
-    private DatabaseReference mDatabase;
-
     private EditText etNombre, etEmail, etPass;
-
+    private Button btnRegistrar;
+    private TextView txtVolver;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
         auth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        // Vinculamos los IDs del XML
+        // Vincular vistas
         etNombre = view.findViewById(R.id.etRegNombre);
         etEmail = view.findViewById(R.id.etRegEmail);
         etPass = view.findViewById(R.id.etRegPass);
+        btnRegistrar = view.findViewById(R.id.btnRegistrar);
+        txtVolver = view.findViewById(R.id.txtVolverLogin);
 
+        // Listener para volver al login
+        txtVolver.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
 
-        Button btnRegistrar = view.findViewById(R.id.btnRegistrar);
-        TextView txtVolver = view.findViewById(R.id.txtVolverLogin);
-
-        txtVolver.setOnClickListener(v -> getParentFragmentManager().popBackStack());
-
-
+        // Listener para registrar usuario
         btnRegistrar.setOnClickListener(v -> registerUser());
-
 
         return view;
     }
 
-
-    private void registerUser(){
+    private void registerUser() {
         String nombre = etNombre.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPass.getText().toString().trim();
 
-        if(nombre.isEmpty() || email.isEmpty() || password.isEmpty()){
+        // Validar campos vacíos
+        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Deshabilitar botón mientras se procesa
+        btnRegistrar.setEnabled(false);
+        btnRegistrar.setText("Registrando...");
+
+        // Crear usuario en Firebase Auth
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
-                        // AQUÍ ESTÁ LA CLAVE: Guardamos el nombre en la Database
-                        guardarDatosUsuario(user.getUid(), nombre, email);
+
+                        // Preparar datos del usuario
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("nombre", nombre);
+                        userMap.put("email", email);
+                        if (user != null) {
+                            userMap.put("uid", user.getUid());
+                        }
+                        userMap.put("fecha_registro", new java.util.Date().toString());
+                        userMap.put("provider", "email");
+
+                        // Guardar en Firestore
+                        db.collection("usuarios").document(email).set(userMap)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("FIRESTORE", "Datos guardados correctamente");
+                                    Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
+
+                                    // 👇🏻👇🏻👇🏻 PARTE CRÍTICA CORREGIDA 👇🏻👇🏻👇🏻
+                                    // Navegar a HomeFragment usando requireActivity()
+                                    if (getActivity() != null) {
+                                        requireActivity().getSupportFragmentManager()
+                                                .beginTransaction()
+                                                .replace(R.id.fragment_container, new HomeFragment())
+                                                .commitAllowingStateLoss();
+                                    } else {
+                                        Log.e("NAVIGATION", "getActivity() es null");
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("FIRESTORE", "Error guardando datos: " + e.getMessage());
+                                    Toast.makeText(getContext(), "Error al guardar datos", Toast.LENGTH_SHORT).show();
+                                    btnRegistrar.setEnabled(true);
+                                    btnRegistrar.setText("Registrarse");
+                                });
                     } else {
-                        Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        // Error en autenticación
+                        String errorMsg = task.getException() != null ?
+                                task.getException().getMessage() : "Error desconocido";
+                        Toast.makeText(getContext(), "Error: " + errorMsg, Toast.LENGTH_SHORT).show();
+                        btnRegistrar.setEnabled(true);
+                        btnRegistrar.setText("Registrarse");
                     }
                 });
     }
-
-    private void guardarDatosUsuario(String userId, String nombre, String email) {
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("nombre", nombre);
-        userMap.put("email", email);
-
-        mDatabase.child("Users").child(userId).setValue(userMap)
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(getContext(), "Registro completo", Toast.LENGTH_SHORT).show();
-                        getParentFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, new HomeFragment())
-                                .commit();
-                    }
-                });
-    }
-
 }

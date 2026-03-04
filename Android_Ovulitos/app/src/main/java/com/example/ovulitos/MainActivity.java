@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         //cargamos el fragment de inicio por defecto
         if (savedInstanceState == null) {
-            reemplazarFragmento(new InicioFragment());
+            reemplazarFragmento(new RegisterFragment());
         }
 
         ShapeableImageView btnInicio = findViewById(R.id.btn_1);

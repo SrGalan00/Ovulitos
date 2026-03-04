@@ -26,6 +26,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -33,16 +34,27 @@ android {
 }
 
 dependencies {
+    // DataStore (para solucionar el error de Firebase)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    // Firebase BOM (gestiona versiones)
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+
+    // Firebase - SIN VERSIONES (las gestiona el BOM)
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
+
+    // AndroidX
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("com.google.firebase:firebase-auth:24.0.1")
+
+    // Lottie
+    implementation("com.airbnb.android:lottie:6.4.0")
+
+    // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    implementation ("com.airbnb.android:lottie:6.4.0")
 }
