@@ -89,15 +89,12 @@ public class RegisterFragment extends Fragment {
                                     Log.d("FIRESTORE", "Datos guardados correctamente");
                                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
-                                    // 👇🏻👇🏻👇🏻 PARTE CRÍTICA CORREGIDA 👇🏻👇🏻👇🏻
-                                    // Navegar a HomeFragment usando requireActivity()
+                                    // 👇🏻 CORREGIDO: main_fragment_container (NO fragment_container)
                                     if (getActivity() != null) {
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
-                                                .replace(R.id.fragment_container, new HomeFragment())
-                                                .commitAllowingStateLoss();
-                                    } else {
-                                        Log.e("NAVIGATION", "getActivity() es null");
+                                                .replace(R.id.main_fragment_container, new HomeFragment())
+                                                .commit();
                                     }
                                 })
                                 .addOnFailureListener(e -> {
