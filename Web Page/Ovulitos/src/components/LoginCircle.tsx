@@ -1,107 +1,45 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
-  TextField, 
-  Button, 
-  Typography, 
-  IconButton,
-  InputAdornment
-} from '@mui/material';
+import { Box, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
 import { Google, Visibility, VisibilityOff } from '@mui/icons-material';
+import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../firebase/auth.js';
 
-interface LoginProps {
-  onLogin: () => void;
-}
+const LoginCircle = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const colors = {
-    primary: '#FFF8C9',
-    secondary: '#69393A',
-    accent: '#9B5354',
-    lightAccent: '#E38E91',
-    softPink: '#F4C7C4',
-  };
-
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin();
+    if (!isLoggingIn) {
+      setIsLoggingIn(true);
+      try {
+        await doSignInWithEmailAndPassword(email, password);
+      } catch (err: any) {
+        alert("Error: " + err.message);
+        setIsLoggingIn(false);
+      }
+    }
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center', // Centrado horizontal
-        alignItems: 'center',     // Centrado vertical
-        width: '100vw',           // Ancho total de ventana
-        height: '100vh',          // Alto total de ventana
-        background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.softPink} 100%)`,
-        overflow: 'hidden',       // Evita scrolls accidentales
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      <Box
-        sx={{
-          width: { xs: 350, sm: 450 }, // Responsivo: más pequeño en móviles
-          height: { xs: 350, sm: 450 },
-          borderRadius: '50%',
-          backgroundColor: 'white',
-          boxShadow: '0px 15px 40px rgba(105, 57, 58, 0.2)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 4,
-          position: 'relative',
-          zIndex: 2,
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{
-            color: colors.secondary,
-            fontWeight: 'bold',
-            mb: 2,
-            fontFamily: "'Poppins', sans-serif",
-          }}
-        >
-          Ovulitos
-        </Typography>
-
-        <Box
-          component="form"
-          onSubmit={handleEmailLogin}
-          sx={{
-            width: '100%',
-            maxWidth: 260,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          <TextField
-            label="Email"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            sx={{ '& .MuiInputLabel-root': { fontSize: '0.8rem' } }}
-          />
-
-          <TextField
-            label="Contraseña"
-            type={showPassword ? 'text' : 'password'}
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+    <Box sx={{ 
+      display: 'flex', justifyContent: 'center', alignItems: 'center', 
+      minHeight: '100vh', width: '100vw',
+      background: 'linear-gradient(135deg, #FFF8C9 0%, #F4C7C4 100%)' 
+    }}>
+      <Box sx={{ 
+        width: 450, height: 450, borderRadius: '50%', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', 
+        alignItems: 'center', p: 4, boxShadow: '0px 10px 30px rgba(105, 57, 58, 0.2)' 
+      }}>
+        <Typography variant="h4" sx={{ color: '#69393A', fontWeight: 'bold', mb: 3 }}>Ovulitos</Typography>
+        
+        <Box component="form" onSubmit={handleLogin} sx={{ width: '100%', maxWidth: 260, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField label="Email" size="small" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <TextField 
+            label="Contraseña" type={showPassword ? 'text' : 'password'} size="small" fullWidth 
+            value={password} onChange={(e) => setPassword(e.target.value)} required
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -111,47 +49,24 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
                 </InputAdornment>
               ),
             }}
-            sx={{ '& .MuiInputLabel-root': { fontSize: '0.8rem' } }}
           />
-
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: colors.accent,
-              textTransform: 'none',
-              fontWeight: 'bold',
-              '&:hover': { backgroundColor: colors.secondary },
-            }}
-          >
-            Iniciar Sesión
+          <Button type="submit" variant="contained" disabled={isLoggingIn} sx={{ backgroundColor: '#9B5354', mt: 1 }}>
+            {isLoggingIn ? 'Entrando...' : 'Iniciar Sesión'}
           </Button>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', my: 2, width: '70%' }}>
-          <Box sx={{ flex: 1, height: '1px', backgroundColor: colors.softPink }} />
-          <Typography variant="caption" sx={{ mx: 1, color: colors.secondary }}>o</Typography>
-          <Box sx={{ flex: 1, height: '1px', backgroundColor: colors.softPink }} />
+          <Box sx={{ flex: 1, height: '1px', backgroundColor: '#F4C7C4' }} />
+          <Typography variant="caption" sx={{ mx: 1, color: '#69393A' }}>o</Typography>
+          <Box sx={{ flex: 1, height: '1px', backgroundColor: '#F4C7C4' }} />
         </Box>
 
-        <Button
-          variant="outlined"
-          startIcon={<Google />}
-          onClick={onLogin}
-          sx={{
-            color: colors.secondary,
-            borderColor: colors.softPink,
-            textTransform: 'none',
-            fontSize: '0.8rem',
-            '&:hover': { borderColor: colors.accent }
-          }}
+        <Button 
+          variant="outlined" startIcon={<Google />} onClick={doSignInWithGoogle} 
+          sx={{ color: '#69393A', borderColor: '#9B5354', textTransform: 'none' }}
         >
           Continuar con Google
         </Button>
-
-        <Typography variant="caption" sx={{ mt: 2, color: colors.secondary, opacity: 0.6 }}>
-          Por favor, inicia sesión para continuar
-        </Typography>
       </Box>
     </Box>
   );

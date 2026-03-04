@@ -1,36 +1,62 @@
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { AnimatePresence, motion } from "framer-motion";
+// Usamos la ruta exacta de tu estructura de carpetas
+import { AuthProvider, useAuth } from "./context/authContext/index.jsx";
+import LoginCircle from "./components/LoginCircle";
+import Dashboard from "./components/Dashboard";
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import LoginCircle from './components/LoginCircle';
-import Dashboard from './components/Dashboard';
-
-
-// Crear tema con la paleta de colores
 const theme = createTheme({
   palette: {
-    primary: {
-      main: '#9B5354',
-    },
-    secondary: {
-      main: '#69393A',
-    },
-    background: {
-      default: '#FFF8C9',
-    },
+    primary: { main: "#9B5354" },
+    secondary: { main: "#69393A" },
+    background: { default: "#FFF8C9" },
   },
   typography: {
-    fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
   },
 });
 
-function App() {
+function AppContent() {
+  const { currentUser, loading } = useAuth();
+
+  // No mostramos nada mientras Firebase determina si hay un usuario
+  if (loading) return null;
+
+  return (
+    <AnimatePresence mode="wait">
+      {currentUser ? (
+        <motion.div
+          key="dashboard"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Dashboard />
+        </motion.div>
+      ) : (
+        <motion.div
+          key="login"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <LoginCircle />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Dashboard />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </ThemeProvider>
   );
-
 }
-
-export default App;
