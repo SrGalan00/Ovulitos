@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         ShapeableImageView btnInformacion = findViewById(R.id.btn_4);
         ShapeableImageView btnEmociones = findViewById(R.id.btn_5);
         ShapeableImageView btnNoticias = findViewById(R.id.btn_6);
+        ShapeableImageView btnChat = findViewById(R.id.btn_7);
 
         //eventos de clic
         btnInicio.setOnClickListener(v -> reemplazarFragmento(new InicioFragment()));
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         btnInformacion.setOnClickListener(v -> reemplazarFragmento(new FertilidadFragment()));
         btnEmociones.setOnClickListener(v -> reemplazarFragmento(new EmocionesFragment()));
         btnNoticias.setOnClickListener(v -> reemplazarFragmento(new NoticiasFragment()));
+        btnChat.setOnClickListener(v -> reemplazarFragmento(new ChatListFragment()));
     }
 
     public void reemplazarFragmento(Fragment fragmento) {

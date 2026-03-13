@@ -124,7 +124,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btn_7"
                     style="@style/MenuButtonStyle"
-                    app:srcCompat="@drawable/noticias" />
+                    app:srcCompat="@drawable/ic_chat" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btn_8"
