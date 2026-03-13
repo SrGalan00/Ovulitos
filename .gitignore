@@ -92,9 +92,6 @@ fastlane/readme.md
 # Archivos de Room
 **/room/*.db
 
-# Archivos de Dagger
-**/dagger/*.java
-
 # Archivos de configuración de ProGuard
 proguard/
 proguard-project.txt
@@ -104,9 +101,6 @@ proguard-project.txt
 
 # Archivos de Assets
 **/src/main/assets/
-
-# Archivos de configuración de Variantes
-**/src/*/java/
 
 # Archivos de configuración de Test
 **/src/test/*
