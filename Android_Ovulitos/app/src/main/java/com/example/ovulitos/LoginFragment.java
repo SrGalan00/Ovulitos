@@ -17,10 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.ovulitos.currentUser.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,7 +126,7 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful()) {
                         // Guardar datos en Firestore (en segundo plano)
                         saveUserDataToFirestore(email);
-
+                        UserData.setUsuario(email);
                         // Navegar al HomeFragment
                         navigateToHome();
 
