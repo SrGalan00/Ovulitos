@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         btnNoticias.setOnClickListener(v -> reemplazarFragmento(new NoticiasFragment()));
     }
 
-    private void reemplazarFragmento(Fragment fragmento) {
+    public void reemplazarFragmento(Fragment fragmento) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -53,5 +53,32 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commit();
+        
+        // Controlar visibilidad de las barras de navegación basadas en el fragmento destino
+        android.view.View topBar = findViewById(R.id.topBar);
+        android.view.View bottomBar = findViewById(R.id.bottomBar);
+        android.view.View mainContainer = findViewById(R.id.main_fragment_container);
+        
+        if (topBar != null && bottomBar != null && mainContainer != null) {
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams params = 
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams) mainContainer.getLayoutParams();
+                    
+            if (fragmento instanceof LoginFragment || fragmento instanceof RegisterFragment) {
+                topBar.setVisibility(android.view.View.GONE);
+                bottomBar.setVisibility(android.view.View.GONE);
+                
+                // Quitamos el margen inferior para que ocupe todo el espacio
+                params.bottomMargin = 0;
+            } else {
+                topBar.setVisibility(android.view.View.VISIBLE);
+                bottomBar.setVisibility(android.view.View.VISIBLE);
+                
+                // Restauramos los 100dp de margen inferior
+                float scale = getResources().getDisplayMetrics().density;
+                params.bottomMargin = (int) (100 * scale + 0.5f);
+            }
+            
+            mainContainer.setLayoutParams(params);
+        }
     }
 }
