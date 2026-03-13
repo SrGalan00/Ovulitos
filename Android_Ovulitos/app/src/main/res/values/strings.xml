@@ -35,6 +35,6 @@
     <string name="titulo_noticias">¿Qué ha pasado hoy?</string>
     <string name="articulo_paracetamol">Qué es la matrescencia: así es como la maternidad ha creado consciencia de grupo</string>
     <string name="articulo_alimentacion">La importancia de adaptar la alimentación al ciclo menstrual</string>
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="pregunta_periodo">¿Cuándo tuviste tu último periodo?</string>
 </resources>

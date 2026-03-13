@@ -160,7 +160,6 @@ public class LoginFragment extends Fragment {
     private void navigateToHome() {
         try {
             // Usar getChildFragmentManager o getParentFragmentManager según tu estructura
-            // Asegúrate que el ID del contenedor es el correcto (R.id.main_fragment_container)
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_fragment_container, new HomeFragment())

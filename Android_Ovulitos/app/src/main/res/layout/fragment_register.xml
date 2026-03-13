@@ -58,16 +58,16 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRegistrar"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="55dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/boton_redondeado_rosa"
+            android:elevation="4dp"
             android:fontFamily="@font/titan_one"
             android:text="Registrarse"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:elevation="4dp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/txtVolverLogin"
