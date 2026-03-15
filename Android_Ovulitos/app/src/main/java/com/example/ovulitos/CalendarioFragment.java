@@ -90,42 +90,7 @@ public class CalendarioFragment extends Fragment {
         });
 
 
-        /* Toda esta es la lógica que debe de estar en el calendario del registro
 
-        MaterialDatePicker<Pair<Long, Long>> dateRangePicker =
-                MaterialDatePicker.Builder.dateRangePicker()
-                        .setTitleText("Selecciona las fechas")
-                        .build();
-                dateRangePicker.addOnPositiveButtonClickListener(selection -> {
-
-                    String start = "";
-                    String end = "";
-
-
-                    DateTimeFormatter dateParser = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        dateParser = DateTimeFormatter.ofPattern("dd/MMMM/yyyy");
-                    }
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        start = Instant.ofEpochMilli(selection.first).atZone(ZoneId.of("UTC"))
-                                .format(dateParser);
-                    }
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        end = Instant.ofEpochMilli(selection.second).atZone(ZoneId.of("UTC"))
-                                .format(dateParser);
-                    }
-
-                    //La única manera de de poder hacer que los datos pasen a la base de datos es mediante enviándolos
-                    // según el usuario los marca
-                    userDataStore(start, end);
-
-        });
-
-        dateRangePicker.show(getParentFragmentManager(), "DATE_PICKER");
-
-        */
 
 
     }
@@ -144,20 +109,4 @@ public class CalendarioFragment extends Fragment {
                 );
     }
 
-
-    /*
-    private void userDataStore(String  start, String end){
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("startPeriod", start);
-        userData.put("endPeriod", end);
-
-        db.collection("usuarios").document("andreaorpez@gmail.com").collection("Datos")
-                .document("fechas").set(userData)
-                .addOnSuccessListener(aVoid ->
-                        Log.d("FIRESTORE", "Datos de usuario guardados correctamente")
-                )
-                .addOnFailureListener(e ->
-                        Log.e("FIRESTORE", "Error guardando datos: " + e.getMessage())
-                );
-    }*/
 }
