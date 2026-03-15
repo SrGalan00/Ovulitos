@@ -89,11 +89,10 @@ public class RegisterFragment extends Fragment {
                                     Log.d("FIRESTORE", "Datos guardados correctamente");
                                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
-                                    // 👇🏻 CORREGIDO: main_fragment_container (NO fragment_container)
                                     if (getActivity() != null) {
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
-                                                .replace(R.id.main_fragment_container, new HomeFragment())
+                                                .replace(R.id.main_fragment_container, new ConfiguracionCalendarioFragment())
                                                 .commit();
                                     }
                                 })
@@ -113,4 +112,5 @@ public class RegisterFragment extends Fragment {
                     }
                 });
     }
+
 }

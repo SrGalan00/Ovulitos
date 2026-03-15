@@ -126,6 +126,7 @@ public class LoginFragment extends Fragment {
                         // Guardar datos en Firestore (en segundo plano)
                         saveUserDataToFirestore(email);
                         UserData.setUsuario(email);
+
                         // Navegar al HomeFragment
                         navigateToHome();
 
@@ -177,6 +178,4 @@ public class LoginFragment extends Fragment {
 
 
 
-
-    /*===================== Código para la pantalla del calendario ======================*/
 }
