@@ -43,7 +43,7 @@ public class ConfiguracionCalendarioFragment extends Fragment {
 
 
     }
-
+    /*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +53,19 @@ public class ConfiguracionCalendarioFragment extends Fragment {
             System.out.println("Esto se ejecuta");
             this.email = getArguments().getString("email");
         }
-    }
+    }*/
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Datos pasados de una pantalla a otra
+        if(getArguments() != null) {
+            System.out.println("Esto se ejecuta");
+            this.email = getArguments().getString("email");
+        }
 
-
+        System.out.println("Hola");
         CalendarView calendarView = view.findViewById(R.id.calendarConfig);
         TextView tvFechaMostrar = view.findViewById(R.id.tvFechaSeleccionada);
         Button btnOk = view.findViewById(R.id.btnOk);
@@ -85,7 +90,7 @@ public class ConfiguracionCalendarioFragment extends Fragment {
                         .addToBackStack(null)
                         .commit();
 
-                Toast.makeText(getContext(), this.email, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), this.email, Toast.LENGTH_SHORT).show();
             }
         });
 

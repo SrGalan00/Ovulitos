@@ -93,9 +93,11 @@ public class RegisterFragment extends Fragment {
                                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
                                     if (getActivity() != null) {
+                                        ConfiguracionCalendarioFragment calendarioFragment = new ConfiguracionCalendarioFragment();
 
-                                        // Enviar los datos al siguiente fragment
-                                        enviarData(email);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("email", email);
+                                        calendarioFragment.setArguments(bundle);
 
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
@@ -121,13 +123,6 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
-    private void enviarData(String email){
-        // Pasar los datos de el Registro al resto de las pantallas
-        ConfiguracionCalendarioFragment calendario = new ConfiguracionCalendarioFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        calendario.setArguments(bundle);
-    }
 
 }
