@@ -1,5 +1,6 @@
 package com.example.ovulitos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +74,8 @@ public class RegisterFragment extends Fragment {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
 
+
+
                         // Preparar datos del usuario
                         Map<String, Object> userMap = new HashMap<>();
                         userMap.put("nombre", nombre);
@@ -90,10 +93,15 @@ public class RegisterFragment extends Fragment {
                                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
                                     if (getActivity() != null) {
+
+                                        // Enviar los datos al siguiente fragment
+                                        enviarData(email);
+
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
                                                 .replace(R.id.main_fragment_container, new ConfiguracionCalendarioFragment())
                                                 .commit();
+
                                     }
                                 })
                                 .addOnFailureListener(e -> {
@@ -111,6 +119,15 @@ public class RegisterFragment extends Fragment {
                         btnRegistrar.setText("Registrarse");
                     }
                 });
+    }
+
+    private void enviarData(String email){
+        // Pasar los datos de el Registro al resto de las pantallas
+        ConfiguracionCalendarioFragment calendario = new ConfiguracionCalendarioFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        calendario.setArguments(bundle);
     }
 
 }

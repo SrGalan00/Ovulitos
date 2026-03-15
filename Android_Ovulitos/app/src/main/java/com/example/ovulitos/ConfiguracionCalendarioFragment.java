@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,15 +20,32 @@ public class ConfiguracionCalendarioFragment extends Fragment {
     // Variable para guardar la fecha y usarla luego en otros fragmentos
     private String fechaSeleccionadaGlobal = "";
 
+    // Dato que hemos pasado de una pantalla a otra
+    private String email;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_configuracion_calendario, container, false);
+
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Datos pasados de una pantalla a otra
+        if(getArguments() != null) {
+            this.email = getArguments().getString("email");
+        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         CalendarView calendarView = view.findViewById(R.id.calendarConfig);
         TextView tvFechaMostrar = view.findViewById(R.id.tvFechaSeleccionada);
@@ -45,12 +63,15 @@ public class ConfiguracionCalendarioFragment extends Fragment {
 
         // acción al pulsar OK
         btnOk.setOnClickListener(v -> {
+
             if (!fechaSeleccionadaGlobal.isEmpty()) {
                 // aquí navegarías al InicioFragment
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.main_fragment_container, new InicioFragment())
                         .addToBackStack(null)
                         .commit();
+
+                Toast.makeText(getContext(), this.email, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -64,4 +85,6 @@ public class ConfiguracionCalendarioFragment extends Fragment {
         fechaSeleccionadaGlobal = mesFormateado + "/" + diaFormateado + "/" + anio;
         tv.setText(fechaSeleccionadaGlobal); // esto actualiza la fecha superior
     }
+
+
 }
