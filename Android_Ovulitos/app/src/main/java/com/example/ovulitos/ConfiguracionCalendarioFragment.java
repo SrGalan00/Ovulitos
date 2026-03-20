@@ -82,7 +82,6 @@ public class ConfiguracionCalendarioFragment extends Fragment {
 
         // acción al pulsar OK
         btnOk.setOnClickListener(v -> {
-
             if (!fechaSeleccionadaGlobal.isEmpty()) {
                 // aquí navegarías al InicioFragment
                 getParentFragmentManager().beginTransaction()

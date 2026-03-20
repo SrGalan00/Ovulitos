@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#F8BBD0" /> <corners android:radius="30dp" /> <padding android:left="20dp" android:right="50dp"/> </shape>
+    <solid android:color="@color/rosa_claro" /> <corners android:radius="30dp" /> <padding android:left="20dp" android:right="50dp"/> </shape>
