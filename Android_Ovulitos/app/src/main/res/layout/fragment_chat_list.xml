@@ -49,4 +49,17 @@
         app:layout_constraintTop_toBottomOf="@id/chat_list_title"
         tools:listitem="@layout/item_chat_list" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="116dp"
+        android:src="@drawable/ic_chat"
+        app:backgroundTint="@color/rosa_oscuro"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Nuevo chat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

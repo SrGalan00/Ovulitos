@@ -12,9 +12,15 @@ import java.util.List;
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatViewHolder> {
 
     private List<ChatListItem> chatList;
+    private OnChatClickListener listener;
 
-    public ChatListAdapter(List<ChatListItem> chatList) {
+    public interface OnChatClickListener {
+        void onChatClick(ChatListItem chat);
+    }
+
+    public ChatListAdapter(List<ChatListItem> chatList, OnChatClickListener listener) {
         this.chatList = chatList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,7 +39,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
         
         // TODO: Cargar imagen desde URL con Glide o Picasso (item.getAvatarUrl())
         // Por ahora dejamos el placeholder
-        holder.chatAvatar.setImageResource(R.drawable.imagen_usuario); // Usa tu propia imagen por defecto
+        holder.chatAvatar.setImageResource(R.drawable.imagen_usuario);
+        
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onChatClick(item);
+            }
+        });
     }
 
     @Override
