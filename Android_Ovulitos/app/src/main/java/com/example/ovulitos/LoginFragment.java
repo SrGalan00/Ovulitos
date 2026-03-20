@@ -160,10 +160,16 @@ public class LoginFragment extends Fragment {
 
     private void navigateToHome() {
         try {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, new HomeFragment())
-                    .commit();
+
+            // Usando el método de la actividad padre para que se ejecute la lógica de las barras
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).reemplazarFragmento(new HomeFragment());
+            } else {
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment_container, new HomeFragment())
+                        .commit();
+            }
 
         } catch (Exception e) {
             Log.e("NAVIGATION", "Error navegando a Home: " + e.getMessage());
