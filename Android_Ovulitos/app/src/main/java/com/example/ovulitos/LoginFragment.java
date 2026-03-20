@@ -117,7 +117,6 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        // Mostrar indicador de carga (opcional)
         btnLogin.setEnabled(false);
         btnLogin.setText("Iniciando sesión...");
 
@@ -127,6 +126,7 @@ public class LoginFragment extends Fragment {
                         // Guardar datos en Firestore (en segundo plano)
                         saveUserDataToFirestore(email);
                         UserData.setUsuario(email);
+
                         // Navegar al HomeFragment
                         navigateToHome();
 
@@ -148,6 +148,7 @@ public class LoginFragment extends Fragment {
         userData.put("last_access", new java.util.Date().toString()); // Fecha actual
         userData.put("provider", "email");
 
+
         db.collection("usuarios").document(email).set(userData)
                 .addOnSuccessListener(aVoid ->
                         Log.d("FIRESTORE", "Datos de usuario guardados correctamente")
@@ -159,8 +160,6 @@ public class LoginFragment extends Fragment {
 
     private void navigateToHome() {
         try {
-            // Usar getChildFragmentManager o getParentFragmentManager según tu estructura
-            // Asegúrate que el ID del contenedor es el correcto (R.id.main_fragment_container)
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_fragment_container, new HomeFragment())
@@ -175,6 +174,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Limpiar referencias si es necesario
     }
+
+
+
 }

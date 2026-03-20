@@ -1,5 +1,6 @@
 package com.example.ovulitos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +74,8 @@ public class RegisterFragment extends Fragment {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
 
+
+
                         // Preparar datos del usuario
                         Map<String, Object> userMap = new HashMap<>();
                         userMap.put("nombre", nombre);
@@ -89,12 +92,18 @@ public class RegisterFragment extends Fragment {
                                     Log.d("FIRESTORE", "Datos guardados correctamente");
                                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
-                                    // 👇🏻 CORREGIDO: main_fragment_container (NO fragment_container)
                                     if (getActivity() != null) {
+                                        ConfiguracionCalendarioFragment calendarioFragment = new ConfiguracionCalendarioFragment();
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("email", email);
+                                        calendarioFragment.setArguments(bundle);
+
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
-                                                .replace(R.id.main_fragment_container, new HomeFragment())
+                                                .replace(R.id.main_fragment_container, new ConfiguracionCalendarioFragment())
                                                 .commit();
+
                                     }
                                 })
                                 .addOnFailureListener(e -> {
@@ -113,4 +122,7 @@ public class RegisterFragment extends Fragment {
                     }
                 });
     }
+
+
+
 }

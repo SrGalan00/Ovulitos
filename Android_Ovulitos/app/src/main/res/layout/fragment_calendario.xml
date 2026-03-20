@@ -106,31 +106,34 @@
             android:layout_marginTop="8dp">
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/colicos"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/sintoma_colicos"
-                app:chipBackgroundColor="@color/rosa_claro"
                 android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
+                app:chipBackgroundColor="@color/rosa_claro" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/headhache"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/sintoma_dolor_cabeza"
-                app:chipBackgroundColor="@color/rosa_claro"
                 android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
+                app:chipBackgroundColor="@color/rosa_claro" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/sensitive"
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/sintoma_sensibilidad"
-                app:chipBackgroundColor="@color/rosa_claro"
                 android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
+                app:chipBackgroundColor="@color/rosa_claro" />
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.button.MaterialButton
