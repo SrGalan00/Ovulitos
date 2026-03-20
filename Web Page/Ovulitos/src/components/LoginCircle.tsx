@@ -1,158 +1,111 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
-  TextField, 
-  Button, 
-  Typography, 
-  IconButton,
-  InputAdornment
-} from '@mui/material';
+import { Box, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
 import { Google, Visibility, VisibilityOff } from '@mui/icons-material';
+import { motion, AnimatePresence } from 'framer-motion';
+// Importamos las funciones de tu compañero
+import { 
+  doSignInWithEmailAndPassword, 
+  doCreateUserWithEmailAndPassword, 
+  doSignInWithGoogle 
+} from '../firebase/auth.js'; 
 
-interface LoginProps {
-  onLogin: () => void;
-}
+const LoginCircle = () => {
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const colors = {
-    primary: '#FFF8C9',
-    secondary: '#69393A',
-    accent: '#9B5354',
-    lightAccent: '#E38E91',
-    softPink: '#F4C7C4',
-  };
-
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin();
+    setLoading(true);
+    try {
+      if (isRegistering) {
+        // Registro nuevo usuario
+        await doCreateUserWithEmailAndPassword(email, password);
+      } else {
+        // Inicio de sesión normal
+        await doSignInWithEmailAndPassword(email, password);
+      }
+    } catch (err: any) {
+      alert("Error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center', // Centrado horizontal
-        alignItems: 'center',     // Centrado vertical
-        width: '100vw',           // Ancho total de ventana
-        height: '100vh',          // Alto total de ventana
-        background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.softPink} 100%)`,
-        overflow: 'hidden',       // Evita scrolls accidentales
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      <Box
-        sx={{
-          width: { xs: 350, sm: 450 }, // Responsivo: más pequeño en móviles
-          height: { xs: 350, sm: 450 },
-          borderRadius: '50%',
-          backgroundColor: 'white',
-          boxShadow: '0px 15px 40px rgba(105, 57, 58, 0.2)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 4,
-          position: 'relative',
-          zIndex: 2,
-        }}
+    <Box sx={{ 
+      display: 'flex', justifyContent: 'center', alignItems: 'center', 
+      width: '100vw', height: '100vh', 
+      background: 'linear-gradient(135deg, #FFF8C9 0%, #F4C7C4 100%)' 
+    }}>
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
       >
-        <Typography
-          variant="h4"
-          sx={{
-            color: colors.secondary,
-            fontWeight: 'bold',
-            mb: 2,
-            fontFamily: "'Poppins', sans-serif",
-          }}
-        >
-          Ovulitos
-        </Typography>
+        <Box sx={{ 
+          width: 450, height: 450, borderRadius: '50%', backgroundColor: 'white',
+          boxShadow: '0px 15px 40px rgba(105, 57, 58, 0.2)', display: 'flex',
+          flexDirection: 'column', justifyContent: 'center', alignItems: 'center', p: 4
+        }}>
+          
+          <Typography variant="h4" sx={{ color: '#69393A', fontWeight: 'bold', mb: 2 }}>
+            {isRegistering ? 'Crear Cuenta' : 'Ovulitos'}
+          </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleEmailLogin}
-          sx={{
-            width: '100%',
-            maxWidth: 260,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          <TextField
-            label="Email"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            sx={{ '& .MuiInputLabel-root': { fontSize: '0.8rem' } }}
-          />
+          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 260, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField 
+              label="Email" size="small" fullWidth required
+              value={email} onChange={(e) => setEmail(e.target.value)} 
+            />
+            <TextField 
+              label="Contraseña" type={showPassword ? 'text' : 'password'} size="small" fullWidth required
+              value={password} onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            
+            <Button 
+              type="submit" variant="contained" disabled={loading}
+              sx={{ backgroundColor: '#9B5354', textTransform: 'none', fontWeight: 'bold' }}
+            >
+              {loading ? 'Procesando...' : (isRegistering ? 'Registrarse' : 'Iniciar Sesión')}
+            </Button>
 
-          <TextField
-            label="Contraseña"
-            type={showPassword ? 'text' : 'password'}
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            sx={{ '& .MuiInputLabel-root': { fontSize: '0.8rem' } }}
-          />
+            {/* BOTÓN PARA CAMBIAR ENTRE LOGIN Y REGISTRO */}
+            <Button 
+              variant="text" 
+              onClick={() => setIsRegistering(!isRegistering)}
+              sx={{ color: '#69393A', textTransform: 'none', fontSize: '0.8rem', mt: -1 }}
+            >
+              {isRegistering ? '¿Ya tienes cuenta? Entra aquí' : '¿No tienes cuenta? Regístrate aquí'}
+            </Button>
+          </Box>
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: colors.accent,
-              textTransform: 'none',
-              fontWeight: 'bold',
-              '&:hover': { backgroundColor: colors.secondary },
-            }}
+          <Box sx={{ display: 'flex', alignItems: 'center', my: 2, width: '70%' }}>
+            <Box sx={{ flex: 1, height: '1px', backgroundColor: '#F4C7C4' }} />
+            <Typography variant="caption" sx={{ mx: 1, color: '#69393A' }}>o</Typography>
+            <Box sx={{ flex: 1, height: '1px', backgroundColor: '#F4C7C4' }} />
+          </Box>
+
+          <Button 
+            variant="outlined" startIcon={<Google />} onClick={doSignInWithGoogle}
+            sx={{ color: '#69393A', borderColor: '#F4C7C4', textTransform: 'none' }}
           >
-            Iniciar Sesión
+            Continuar con Google
           </Button>
+
         </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', my: 2, width: '70%' }}>
-          <Box sx={{ flex: 1, height: '1px', backgroundColor: colors.softPink }} />
-          <Typography variant="caption" sx={{ mx: 1, color: colors.secondary }}>o</Typography>
-          <Box sx={{ flex: 1, height: '1px', backgroundColor: colors.softPink }} />
-        </Box>
-
-        <Button
-          variant="outlined"
-          startIcon={<Google />}
-          onClick={onLogin}
-          sx={{
-            color: colors.secondary,
-            borderColor: colors.softPink,
-            textTransform: 'none',
-            fontSize: '0.8rem',
-            '&:hover': { borderColor: colors.accent }
-          }}
-        >
-          Continuar con Google
-        </Button>
-
-        <Typography variant="caption" sx={{ mt: 2, color: colors.secondary, opacity: 0.6 }}>
-          Por favor, inicia sesión para continuar
-        </Typography>
-      </Box>
+      </motion.div>
     </Box>
   );
 };
