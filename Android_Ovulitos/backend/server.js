@@ -67,7 +67,7 @@ app.post('/api/chat', async (req, res) => {
         }
 
         // Seleccionar el modelo
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash', safetySettings });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', safetySettings });
 
         // Añadir el system prompt al mensaje del usuario para garantizar el contexto
         const fullPrompt = `${SYSTEM_PROMPT}\n\nPregunta de la usuaria: ${message}\nRespuesta Asistente:`;
