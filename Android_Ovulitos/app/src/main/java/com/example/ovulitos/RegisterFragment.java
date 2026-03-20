@@ -92,12 +92,11 @@ public class RegisterFragment extends Fragment {
                                     Log.d("FIRESTORE", "Datos guardados correctamente");
                                     Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
 
-                                    if (getActivity() != null) {
-                                        ConfiguracionCalendarioFragment calendarioFragment = new ConfiguracionCalendarioFragment();
 
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("email", email);
-                                        calendarioFragment.setArguments(bundle);
+                                    // 👇🏻 CORREGIDO: Usando el método padre para restaurar las barras
+                                    if (getActivity() instanceof MainActivity) {
+                                        ((MainActivity) getActivity()).reemplazarFragmento(new HomeFragment());
+                                    } else if (getActivity() != null) {
 
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()

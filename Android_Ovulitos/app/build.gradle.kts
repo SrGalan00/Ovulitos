@@ -57,6 +57,10 @@ dependencies {
     // Lottie
     implementation("com.airbnb.android:lottie:6.4.0")
 
+    // Retrofit & Gson para el Asistente IA
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
