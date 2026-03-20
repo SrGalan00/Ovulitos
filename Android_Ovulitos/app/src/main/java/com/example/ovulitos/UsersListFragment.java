@@ -77,6 +77,7 @@ public class UsersListFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
         db.collection("usuarios").get().addOnCompleteListener(task -> {
+            if (!isAdded() || getView() == null) return;
             progressBar.setVisibility(View.GONE);
             if (task.isSuccessful() && task.getResult() != null) {
                 userList.clear();

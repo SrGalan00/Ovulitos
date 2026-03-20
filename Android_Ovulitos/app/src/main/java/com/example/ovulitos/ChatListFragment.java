@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class ChatListFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private String currentUserId;
+    private ListenerRegistration chatListListener;
 
     @Nullable
     @Override
@@ -89,7 +92,8 @@ public class ChatListFragment extends Fragment {
     }
 
     private void loadRecentChats() {
-        db.collection("chats")
+        if (currentUserId == null) return;
+        chatListListener = db.collection("chats")
             .whereArrayContains("participants", currentUserId)
             .addSnapshotListener((value, error) -> {
                 if (error != null) {
@@ -141,6 +145,14 @@ public class ChatListFragment extends Fragment {
         } else {
             recyclerChatList.setVisibility(View.VISIBLE);
             txtEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (chatListListener != null) {
+            chatListListener.remove();
         }
     }
 }

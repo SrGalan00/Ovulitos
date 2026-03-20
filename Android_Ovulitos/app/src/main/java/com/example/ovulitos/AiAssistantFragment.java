@@ -112,6 +112,7 @@ public class AiAssistantFragment extends Fragment {
         apiService.askAssistant(request).enqueue(new Callback<AiResponse>() {
             @Override
             public void onResponse(Call<AiResponse> call, Response<AiResponse> response) {
+                if (!isAdded() || getView() == null) return;
                 loadingIndicator.setVisibility(View.GONE);
                 btnSend.setEnabled(true);
                 
@@ -125,6 +126,7 @@ public class AiAssistantFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AiResponse> call, Throwable t) {
+                if (!isAdded() || getView() == null) return;
                 loadingIndicator.setVisibility(View.GONE);
                 btnSend.setEnabled(true);
                 addAiMessage("Hubo un error de conexión con el servidor. Revisa tu internet o intenta más tarde.");

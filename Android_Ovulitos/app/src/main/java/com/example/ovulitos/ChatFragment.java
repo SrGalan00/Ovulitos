@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +51,7 @@ public class ChatFragment extends Fragment {
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
+    private ListenerRegistration messagesListener;
 
     @Nullable
     @Override
@@ -139,7 +142,8 @@ public class ChatFragment extends Fragment {
     }
 
     private void loadMessages() {
-        db.collection("chats").document(chatId).collection("messages")
+        if (chatId == null) return;
+        messagesListener = db.collection("chats").document(chatId).collection("messages")
             .orderBy("timestamp", Query.Direction.ASCENDING)
             .addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
@@ -162,5 +166,13 @@ public class ChatFragment extends Fragment {
                     }
                 }
             });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (messagesListener != null) {
+            messagesListener.remove();
+        }
     }
 }
