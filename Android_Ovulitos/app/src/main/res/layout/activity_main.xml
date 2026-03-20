@@ -129,7 +129,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btn_8"
                     style="@style/MenuButtonStyle"
-                    app:srcCompat="@drawable/noticias" />
+                    app:srcCompat="@drawable/ic_ai" />
 
             </GridLayout>
         </LinearLayout>
