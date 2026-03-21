@@ -43,6 +43,7 @@ public class CalendarioFragment extends Fragment {
     private String selectedOptions2;
     private boolean isKikiActive = false;
     private List<EventDay> eventos = new ArrayList<>();
+    private List<String> kikiDates = new ArrayList<>();
 
     @Nullable
     @Override
@@ -106,6 +107,14 @@ public class CalendarioFragment extends Fragment {
             if (isKikiActive) {
                 eventos.add(new EventDay((Calendar) clickedDayCalendar.clone(), R.drawable.fondo_amarillo, Color.BLACK));
                 calendarView.setEvents(eventos);
+                
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    int year = clickedDayCalendar.get(Calendar.YEAR);
+                    int month = clickedDayCalendar.get(Calendar.MONTH) + 1;
+                    int dayOfMonth = clickedDayCalendar.get(Calendar.DAY_OF_MONTH);
+                    LocalDate localDate = LocalDate.of(year, month, dayOfMonth);
+                    kikiDates.add(localDate.format(dateParser));
+                }
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -128,7 +137,7 @@ public class CalendarioFragment extends Fragment {
                 Chip chip = flujo.findViewById(checked);
 
 
-                userKiki(this.eventos); 
+                userKiki(this.kikiDates); 
                 userData(fechaSeleccionada, chip.getText().toString(), "Colicos" );
             } else {
                 Toast.makeText(getContext(), "Por favor selecciona una fecha", Toast.LENGTH_SHORT).show();
@@ -155,9 +164,9 @@ public class CalendarioFragment extends Fragment {
                 );
     }
 
-    private void userKiki(List<EventDay> evento){
+    private void userKiki(List<String> fechasKiki){
         Map<String, Object> user = new HashMap<>();
-        user.put("diasKikiSeleccionados", evento);
+        user.put("diasKikiSeleccionados", fechasKiki);
 
         db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
                 .document("kikiData").set(user)
