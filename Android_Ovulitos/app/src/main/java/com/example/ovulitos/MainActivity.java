@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -17,6 +18,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentViewCreated(@androidx.annotation.NonNull FragmentManager fm, @androidx.annotation.NonNull Fragment f, @androidx.annotation.NonNull View v, @androidx.annotation.Nullable android.os.Bundle savedInstanceState) {
+                super.onFragmentViewCreated(fm, f, v, savedInstanceState);
+                boolean isFullScreen = f instanceof LoginFragment || 
+                                       f instanceof RegisterFragment || 
+                                       f.getClass().getSimpleName().equals("ConfiguracionCalendarioFragment");
+                
+                View topBar = findViewById(R.id.topBar);
+                View bottomBar = findViewById(R.id.bottomBar);
+                
+                if (topBar != null) topBar.setVisibility(isFullScreen ? View.GONE : View.VISIBLE);
+                if (bottomBar != null) bottomBar.setVisibility(isFullScreen ? View.GONE : View.VISIBLE);
+            }
+        }, true);
 
         //cargamos el fragment de inicio por defecto
         if (savedInstanceState == null) {
