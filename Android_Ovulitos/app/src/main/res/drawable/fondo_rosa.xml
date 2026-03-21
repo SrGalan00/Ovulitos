@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#F4C7C4" /> <!-- No es un color rojo del todo es más bien rosa por lo que
+    este color va a ser para poder marcar los días cercanos antes y después de bajar la regla-->
+</shape>

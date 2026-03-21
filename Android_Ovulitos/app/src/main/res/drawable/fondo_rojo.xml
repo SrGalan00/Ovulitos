@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#EA372B" />
+    <!--Color que va a indicar según la fórmula cuando debería de bajar la regla-->
+</shape>

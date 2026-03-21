@@ -37,7 +37,7 @@ android {
 dependencies {
 
     // Calendario mejorado
-    implementation ("com.kizitonwose.calendar:view:2.5.0")
+    implementation ("com.applandeo:material-calendar-view:1.9.0")
 
     // DataStore (para solucionar el error de Firebase)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
