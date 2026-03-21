@@ -101,7 +101,7 @@ public class RegisterFragment extends Fragment {
 
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
-                                                .replace(R.id.main_fragment_container, new ConfiguracionCalendarioFragment())
+                                                .replace(R.id.main_fragment_container, calendarioFragment)
                                                 .commit();
 
                                     }

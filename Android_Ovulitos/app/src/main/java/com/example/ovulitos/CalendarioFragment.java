@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.ovulitos.global.GlobalVariables;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -101,7 +102,7 @@ public class CalendarioFragment extends Fragment {
         user.put("intensidad del sangrado", option1);
         user.put("Síntomas", option2);
 
-        db.collection("usuarios").document("andreaorpez@gmail.com").collection("Datos")
+        db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
                 .document("datosCalendario").set(user)
 
                 .addOnFailureListener(e ->

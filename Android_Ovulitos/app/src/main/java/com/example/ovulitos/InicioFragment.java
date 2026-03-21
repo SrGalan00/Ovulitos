@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 
 public class InicioFragment extends Fragment {
 
+
+    private String email;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -21,6 +24,12 @@ public class InicioFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Datos pasados de una pantalla a otra
+        if(getArguments() != null) {
+            System.out.println("Esto se ejecuta");
+            this.email = getArguments().getString("email");
+        }
 
         //referencias a los textos que cambian
         TextView tvDias = view.findViewById(R.id.tvDiasParaPeriodo);

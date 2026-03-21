@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
+import com.example.ovulitos.global.GlobalVariables;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -63,6 +64,7 @@ public class ConfiguracionCalendarioFragment extends Fragment {
         if(getArguments() != null) {
             System.out.println("Esto se ejecuta");
             this.email = getArguments().getString("email");
+            GlobalVariables.email = this.email;
         }
 
         System.out.println("Hola");
@@ -84,20 +86,26 @@ public class ConfiguracionCalendarioFragment extends Fragment {
         btnOk.setOnClickListener(v -> {
 
             if (!fechaSeleccionadaGlobal.isEmpty()) {
-                // aquí navegarías al InicioFragment
+
+                // ============= Pasar los datos a la siguiente pantalla (Pantalla de inicio) =================
+
+                InicioFragment inicioFragment = new InicioFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("email", email);
+                inicioFragment.setArguments(bundle);
+
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment_container, new InicioFragment())
+                        .replace(R.id.main_fragment_container, inicioFragment)
                         .addToBackStack(null)
                         .commit();
 
-                //Toast.makeText(getContext(), this.email, Toast.LENGTH_SHORT).show();
+                // =============================================================================================
             }
         });
 
 
 
-        // Registrar los últimos periodos
-        // Toda esta es la lógica que debe de estar en el calendario del registro
 
         MaterialDatePicker<Pair<Long, Long>> dateRangePicker =
                 MaterialDatePicker.Builder.dateRangePicker()
@@ -147,11 +155,16 @@ public class ConfiguracionCalendarioFragment extends Fragment {
 
 
     private void userDataStore(String  start, String end){
+        if (email == null || email.isEmpty()) {
+            Toast.makeText(getContext(), "Error: No se encontró el email del usuario", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Map<String, Object> userData = new HashMap<>();
         userData.put("startPeriod", start);
         userData.put("endPeriod", end);
 
-        db.collection("usuarios").document("andreaorpez@gmail.com").collection("Datos")
+        db.collection("usuarios").document(email).collection("Datos")
                 .document("fechas").set(userData)
                 .addOnSuccessListener(aVoid ->
                         Log.d("FIRESTORE", "Datos de usuario guardados correctamente")

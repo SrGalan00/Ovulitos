@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ovulitos.currentUser.UserData;
+import com.example.ovulitos.global.GlobalVariables;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -126,6 +127,8 @@ public class LoginFragment extends Fragment {
                         // Guardar datos en Firestore (en segundo plano)
                         saveUserDataToFirestore(email);
                         UserData.setUsuario(email);
+
+                        GlobalVariables.email = email;
 
                         // Navegar al HomeFragment
                         navigateToHome();
