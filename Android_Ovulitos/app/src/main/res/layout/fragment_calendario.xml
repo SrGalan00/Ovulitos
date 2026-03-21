@@ -34,14 +34,30 @@
             app:cardCornerRadius="28dp"
             app:cardElevation="0dp">
 
-            <CalendarView
+            <com.applandeo.materialcalendarview.CalendarView
                 android:id="@+id/calendarViewRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                android:theme="@style/TemaCalendarioOvulitos"
-                android:dateTextAppearance="@style/CalendarioCuerpoTexto"
-                android:weekDayTextAppearance="@style/CalendarioTituloTexto" />
+                app:headerColor="@color/rosa_oscuro"
+                app:headerLabelColor="@color/fondo"
+                app:pagesColor="@color/rosa_intermedio"
+                app:abbreviationsBarColor="@color/rosa_intermedio"
+                app:abbreviationsLabelsColor="@color/textos"
+                app:daysLabelsColor="@color/textos"
+                app:selectionColor="@color/rosa_oscuro"
+                app:todayLabelColor="@color/white" />
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnKiki"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#FFEB3B"
+            android:text="KIKI"
+            android:textColor="@color/black"
+            app:cornerRadius="16dp"
+            android:textAppearance="@style/ChipTextAppearance" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.graphics.Color;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +23,13 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
 
 public class CalendarioFragment extends Fragment {
 
@@ -35,6 +41,8 @@ public class CalendarioFragment extends Fragment {
     private ChipGroup sintomas;
     private String selectedOptions1;
     private String selectedOptions2;
+    private boolean isKikiActive = false;
+    private List<EventDay> eventos = new ArrayList<>();
 
     @Nullable
     @Override
@@ -46,28 +54,72 @@ public class CalendarioFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // ================ Variables (NO TOCAR) =============================
 
         CalendarView calendarView = view.findViewById(R.id.calendarViewRegistro);
         Button btnGuardar = view.findViewById(R.id.btnGuardarRegistro);
+        Button btnKiki = view.findViewById(R.id.btnKiki);
         ChipGroup flujo = view.findViewById(R.id.chipGroupFlujo);
         ChipGroup sintomas = view.findViewById(R.id.chipGroupSintomas);
+
+        // ====================================================================
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.dateParser = DateTimeFormatter.ofPattern("dd/MMMM/yyyy");
-            this.fechaSeleccionada = Instant.ofEpochMilli(calendarView.getDate())
+            this.fechaSeleccionada = Instant.ofEpochMilli(System.currentTimeMillis())
                     .atZone(ZoneId.systemDefault())
                     .format(dateParser);
         }
 
-        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+       // eventos.clear();
+        
+        Calendar dayRegla = Calendar.getInstance();
+        dayRegla.add(Calendar.DAY_OF_YEAR, GlobalVariables.diasProximaRegla);
+
+        eventos.add(new EventDay((Calendar) dayRegla.clone(), R.drawable.fondo_rojo, Color.WHITE));
+
+        Calendar rosaAntes2 = (Calendar) dayRegla.clone(); rosaAntes2.add(Calendar.DAY_OF_YEAR, -2);
+        Calendar rosaAntes1 = (Calendar) dayRegla.clone(); rosaAntes1.add(Calendar.DAY_OF_YEAR, -1);
+        Calendar rosaDespues1 = (Calendar) dayRegla.clone(); rosaDespues1.add(Calendar.DAY_OF_YEAR, 1);
+        Calendar rosaDespues2 = (Calendar) dayRegla.clone(); rosaDespues2.add(Calendar.DAY_OF_YEAR, 2);
+
+        eventos.add(new EventDay(rosaAntes2, R.drawable.fondo_rosa, Color.WHITE));
+        eventos.add(new EventDay(rosaAntes1, R.drawable.fondo_rosa, Color.WHITE));
+        eventos.add(new EventDay(rosaDespues1, R.drawable.fondo_rosa, Color.WHITE));
+        eventos.add(new EventDay(rosaDespues2, R.drawable.fondo_rosa, Color.WHITE));
+
+        calendarView.setEvents(eventos);
+
+        btnKiki.setOnClickListener(v -> {
+            isKikiActive = !isKikiActive;
+            if (isKikiActive) {
+                Toast.makeText(getContext(), "Modo Kiki activado. Selecciona un día.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Modo Kiki desactivado.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        calendarView.setOnDayClickListener(eventDay -> {
+            Calendar clickedDayCalendar = eventDay.getCalendar();
+
+            if (isKikiActive) {
+                eventos.add(new EventDay((Calendar) clickedDayCalendar.clone(), R.drawable.fondo_amarillo, Color.BLACK));
+                calendarView.setEvents(eventos);
+            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                LocalDate localDate = LocalDate.of(year, month + 1, dayOfMonth);
-                DateTimeFormatter dateParser = DateTimeFormatter.ofPattern("dd/MMMM/yyyy");
+                int year = clickedDayCalendar.get(Calendar.YEAR);
+                int month = clickedDayCalendar.get(Calendar.MONTH) + 1;
+                int dayOfMonth = clickedDayCalendar.get(Calendar.DAY_OF_MONTH);
+                LocalDate localDate = LocalDate.of(year, month, dayOfMonth);
                 this.fechaSeleccionada = localDate.format(dateParser);
             }
         });
 
+
+
+        
         btnGuardar.setOnClickListener(v -> {
 
 
@@ -76,7 +128,7 @@ public class CalendarioFragment extends Fragment {
                 Chip chip = flujo.findViewById(checked);
 
 
-
+                userKiki(this.eventos); 
                 userData(fechaSeleccionada, chip.getText().toString(), "Colicos" );
             } else {
                 Toast.makeText(getContext(), "Por favor selecciona una fecha", Toast.LENGTH_SHORT).show();
@@ -97,6 +149,18 @@ public class CalendarioFragment extends Fragment {
 
         db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
                 .document("datosCalendario").set(user)
+
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "Problema cargando los datos del usuario!", Toast.LENGTH_SHORT).show()
+                );
+    }
+
+    private void userKiki(List<EventDay> evento){
+        Map<String, Object> user = new HashMap<>();
+        user.put("diasKikiSeleccionados", evento);
+
+        db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
+                .document("kikiData").set(user)
 
                 .addOnFailureListener(e ->
                         Toast.makeText(getContext(), "Problema cargando los datos del usuario!", Toast.LENGTH_SHORT).show()
