@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.ovulitos.global.GlobalVariables;
+
 public class InicioFragment extends Fragment {
 
 
@@ -38,7 +40,8 @@ public class InicioFragment extends Fragment {
         //por ahora lo dejamos estático, pero aquí es donde iría la lógica
         // para calcular los días restantes basándose en la fecha
         if (tvDias != null) {
-            tvDias.setText("19 días para tu periodo");
+            String text = GlobalVariables.diasProximaRegla + "días para tu periodo";
+            tvDias.setText(text);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ovulitos;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
@@ -20,8 +22,11 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,20 +123,23 @@ public class ConfiguracionCalendarioFragment extends Fragment {
 
 
                     DateTimeFormatter dateParser = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         dateParser = DateTimeFormatter.ofPattern("dd/MMMM/yyyy");
                     }
 
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         start = Instant.ofEpochMilli(selection.first).atZone(ZoneId.of("UTC"))
                                 .format(dateParser);
                     }
 
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         end = Instant.ofEpochMilli(selection.second).atZone(ZoneId.of("UTC"))
                                 .format(dateParser);
                     }
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        calcularProximaRegla(start,end);
+                    }
                     //La única manera de de poder hacer que los datos pasen a la base de datos es mediante enviándolos
                     // según el usuario los marca
                     userDataStore(start, end);
@@ -173,6 +181,37 @@ public class ConfiguracionCalendarioFragment extends Fragment {
                         Log.e("FIRESTORE", "Error guardando datos: " + e.getMessage())
                 );
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void calcularProximaRegla(String fechaInicioStr, String fechaFinStr) {
+
+        DateTimeFormatter formato = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        }
+
+        try {
+            LocalDate fechaInicio = null;
+            LocalDate fechaFin = null;
+            LocalDate proximaRegla = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                fechaInicio = LocalDate.parse(fechaInicioStr, formato);
+
+                fechaFin = LocalDate.parse(fechaFinStr, formato);
+
+                int duracionCiclo = 28;
+
+                proximaRegla = fechaInicio.plusDays(duracionCiclo);
+
+                long diasDeSangrado = ChronoUnit.DAYS.between(fechaInicio, fechaFin) + 1;
+
+                LocalDate hoy = LocalDate.now();
+                GlobalVariables.diasProximaRegla = (int) ChronoUnit.DAYS.between(hoy, proximaRegla);
+            }
+        } catch (DateTimeParseException e) {
+        }
+    }
+
 
 
 }

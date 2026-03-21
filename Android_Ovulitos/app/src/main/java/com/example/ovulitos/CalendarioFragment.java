@@ -65,10 +65,6 @@ public class CalendarioFragment extends Fragment {
                 LocalDate localDate = LocalDate.of(year, month + 1, dayOfMonth);
                 DateTimeFormatter dateParser = DateTimeFormatter.ofPattern("dd/MMMM/yyyy");
                 this.fechaSeleccionada = localDate.format(dateParser);
-
-                // Con esto pretendo cambiar la fecha seleccionada dentro del calendario, pero se rompe todo el rato
-                //calendarView.setDate(Long.parseLong(this.fechaSeleccionada));
-                //calendarView.setDate(Long.parseLong(this.fechaSeleccionada), true, true);
             }
         });
 
@@ -79,12 +75,9 @@ public class CalendarioFragment extends Fragment {
                 int checked = flujo.getCheckedChipId();
                 Chip chip = flujo.findViewById(checked);
 
-                /* Esta parte da error
-                int checked2 = sintomas.getCheckedChipId();
-                Chip chip2 = sintomas.findViewById(checked2);
-                */
+
+
                 userData(fechaSeleccionada, chip.getText().toString(), "Colicos" );
-                Toast.makeText(getContext(), "Guardando: " + fechaSeleccionada, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Por favor selecciona una fecha", Toast.LENGTH_SHORT).show();
             }
