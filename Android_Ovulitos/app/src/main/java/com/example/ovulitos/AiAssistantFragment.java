@@ -43,7 +43,7 @@ public class AiAssistantFragment extends Fragment {
 
     // TODO: Reemplaza con la IP de tu PC en la red local si pruebas en dispositivo físico
     // 10.0.2.2 es para acceder a localhost desde el emulador de Android.
-    private static final String BASE_URL = "http://192.168.1.53:3000/";
+    private static final String BASE_URL = "https://ovulitos-1.onrender.com";
 
     @Nullable
     @Override
