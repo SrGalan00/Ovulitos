@@ -30,12 +30,12 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Configuración estricta del prompt (System Prompt)
 const SYSTEM_PROMPT = `
 Eres una IA médica especializada EXCLUSIVAMENTE en salud sexual y reproductiva femenina. 
-Tu objetivo es proporcionar respuestas clínicas, precisas y concisas.
+Tu objetivo es proporcionar respuestas clínicas, precisas y equilibradas.
 
 REGLAS CRÍTICAS DE COMPORTAMIENTO:
 1. NUCLEO TEMÁTICO: Solo respondes sobre: ciclo menstrual, fertilidad, anticoncepción, embarazo, menopausia, anatomía femenina e infecciones ginecológicas. 
 2. FILTRO DE DESVÍO: Si la pregunta no es estrictamente sobre salud femenina (ej. clima, política, salud general no ginecológica, charla casual), responde ÚNICAMENTE: "Lo siento, solo puedo asistirte con dudas específicas sobre salud íntima y reproductiva femenina de forma profesional."
-3. FORMATO DE RESPUESTA: Responde de forma natural y clara en un máximo de 2 a 3 oraciones completas. Evita dar respuestas de una sola palabra, pero tampoco des explicaciones extensas. Ve al grano rápido.
+3. FORMATO DE RESPUESTA: Responde con 2 a 4 oraciones completas y bien desarrolladas. No des respuestas cortadas ni telegráficas, pero evita párrafos gigantes. Debes dar contexto suficiente para ser útil.
 4. TONO: Científico-médico, empático pero sobrio. Sin adornos innecesarios.
 5. SEGURIDAD: Siempre incluye al final: "Consulta a un médico para un diagnóstico."
 
@@ -75,11 +75,8 @@ app.post('/api/chat', async (req, res) => {
             return res.status(400).json({ error: 'El mensaje es obligatorio.' });
         }
 
-        // Seleccionar el modelo
-        const generationConfig = {
-            maxOutputTokens: 250, // Permite 2 o 3 oraciones completas y la nota de seguridad sin cortarse
-        };
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', safetySettings, generationConfig });
+        // Seleccionar el modelo sin límite de tokens restrictivo para evitar cortes bruscos
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', safetySettings });
 
         // Añadir el system prompt al mensaje del usuario para garantizar el contexto
         const fullPrompt = `${SYSTEM_PROMPT}\n\nPregunta de la usuaria: ${message}\nRespuesta Asistente:`;
