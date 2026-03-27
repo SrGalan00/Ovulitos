@@ -32,6 +32,23 @@ public class AjustesFragment extends Fragment {
 
     // Control para saber si estamos dentro de una sub-sección
     private boolean enSubSeccion = false;
+    private String seccionFoco = "menu";
+
+    public static AjustesFragment newInstance(String seccion) {
+        AjustesFragment fragment = new AjustesFragment();
+        Bundle args = new Bundle();
+        args.putString("seccion", seccion);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            seccionFoco = getArguments().getString("seccion", "menu");
+        }
+    }
 
     @Nullable
     @Override
@@ -47,16 +64,22 @@ public class AjustesFragment extends Fragment {
         btnAtras = view.findViewById(R.id.btnAtrasInterno);
         contenedor = view.findViewById(R.id.contenedor_interno_ajustes);
 
-        // Cargar menú al inicio
-        mostrarMenu();
+        // Cargar vista directa en base al argumento
+        if(seccionFoco.equals("cuenta")) {
+            mostrarCuenta();
+        } else if(seccionFoco.equals("seguridad")) {
+            mostrarSubSeccion("Seguridad y permisos", R.layout.fragment_ajustes_seguridad);
+        } else if(seccionFoco.equals("privacidad")) {
+            mostrarSubSeccion("Privacidad", R.layout.fragment_ajustes_privacidad);
+        } else if(seccionFoco.equals("notificaciones")) {
+            mostrarSubSeccion("Notificaciones", R.layout.fragment_ajustes_notificaciones);
+        } else {
+            mostrarMenu();
+        }
 
-        // Botón atrás de la barra superior
+        // Botón atrás de la barra superior (como ahora venimos directo del Drawer, volver es ir al Home)
         btnAtras.setOnClickListener(v -> {
-            if (enSubSeccion) {
-                mostrarMenu();
-            } else {
-                getParentFragmentManager().popBackStack();
-            }
+            getParentFragmentManager().popBackStack();
         });
 
         return view;
@@ -141,25 +164,11 @@ public class AjustesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Cuando se carga esta pantalla, buscamos la cabecera de la actividad y la ocultamos
-        if (getActivity() != null) {
-            View header = getActivity().findViewById(R.id.header_container);
-            if (header != null) {
-                header.setVisibility(View.GONE);
-            }
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Cuando salimos de esta pantalla (volvemos al Home), la mostramos de nuevo
-        if (getActivity() != null) {
-            View header = getActivity().findViewById(R.id.header_container);
-            if (header != null) {
-                header.setVisibility(View.VISIBLE);
-            }
-        }
     }
 
 }

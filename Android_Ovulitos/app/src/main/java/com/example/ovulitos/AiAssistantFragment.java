@@ -55,11 +55,7 @@ public class AiAssistantFragment extends Fragment {
             currentUserId = currentUser.getUid();
         }
 
-        view.findViewById(R.id.btn_back_ai).setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
+
 
         recyclerMessages = view.findViewById(R.id.recycler_ai_messages);
         etMessage = view.findViewById(R.id.et_ai_message);

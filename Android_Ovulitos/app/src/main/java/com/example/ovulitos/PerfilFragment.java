@@ -35,7 +35,7 @@ public class PerfilFragment extends Fragment {
 
     private void irAlLogin(String perfilSeleccionado) {
         getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
+                .replace(R.id.main_fragment_container, new LoginFragment())
                 .addToBackStack(null)
                 .commit();
     }

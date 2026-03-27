@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
         // 2. Acción: Ir a Ajustes
         btnAjustes.setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new AjustesFragment()) //
+                    .replace(R.id.main_fragment_container, new AjustesFragment()) // CORREGIDO PARA EVITAR CRASHO
                     .addToBackStack(null) // Importante para poder volver al Home
                     .commit();
         });
