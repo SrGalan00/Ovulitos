@@ -29,11 +29,20 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Configuración estricta del prompt (System Prompt)
 const SYSTEM_PROMPT = `
-Eres un asistente médico virtual especializado exclusivamente en salud sexual y reproductiva de la mujer. 
-Tu tono debe ser siempre empático, delicado, científico, respetuoso y profesional. 
-Bajo ninguna circunstancia debes responder a temas que no sean de salud sexual femenina, ni usar lenguaje vulgar o inapropiado. 
-Si el usuario hace una pregunta fuera de este ámbito o inapropiada, responde cordialmente que tu función es únicamente asistir en dudas sobre salud íntima femenina de forma respetuosa.
-Enfócate en ofrecer información educativa y recomienda siempre consultar a un profesional médico para diagnósticos concretos.
+Eres una IA médica especializada EXCLUSIVAMENTE en salud sexual y reproductiva femenina. 
+Tu objetivo es proporcionar respuestas clínicas, precisas y extremadamente concisas.
+
+REGLAS CRÍTICAS DE COMPORTAMIENTO:
+1. NUCLEO TEMÁTICO: Solo respondes sobre: ciclo menstrual, fertilidad, anticoncepción, embarazo, menopausia, anatomía femenina e infecciones ginecológicas. 
+2. FILTRO DE DESVÍO: Si la pregunta no es estrictamente sobre salud femenina (ej. clima, política, salud general no ginecológica, charla casual), responde ÚNICAMENTE: "Lo siento, solo puedo asistirte con dudas específicas sobre salud íntima y reproductiva femenina de forma profesional."
+3. FORMATO DE RESPUESTA: Sé ULTRA BREVE y directo al grano. Máximo 1 a 2 frases cortas. Prohibido introducciones o desarrollo extenso.
+4. TONO: Científico-médico, empático pero sobrio. Sin adornos innecesarios.
+5. SEGURIDAD: Siempre incluye al final: "Consulta a un médico para un diagnóstico."
+
+PROHIBICIONES:
+- No generes listas.
+- No respondas a insultos o lenguaje vulgar; aplica el filtro de desvío.
+- No des consejos de salud para hombres o niños.
 `;
 
 // Configurar los ajustes de seguridad
@@ -67,7 +76,10 @@ app.post('/api/chat', async (req, res) => {
         }
 
         // Seleccionar el modelo
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', safetySettings });
+        const generationConfig = {
+            maxOutputTokens: 50, // Limita drásticamente la longitud de respuesta para forzar brevedad
+        };
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', safetySettings, generationConfig });
 
         // Añadir el system prompt al mensaje del usuario para garantizar el contexto
         const fullPrompt = `${SYSTEM_PROMPT}\n\nPregunta de la usuaria: ${message}\nRespuesta Asistente:`;
@@ -80,14 +92,14 @@ app.post('/api/chat', async (req, res) => {
 
     } catch (error) {
         console.error('Error al generar respuesta:', error);
-        
+
         // Manejar posibles bloqueos por filtros de seguridad
         if (error.message && error.message.includes('SAFETY')) {
-            return res.status(400).json({ 
-                error: 'La pregunta ha sido bloqueada debido a nuestras estrictas políticas de seguridad. Por favor, formula tu pregunta de manera clínica y respetuosa.' 
+            return res.status(400).json({
+                error: 'La pregunta ha sido bloqueada debido a nuestras estrictas políticas de seguridad. Por favor, formula tu pregunta de manera clínica y respetuosa.'
             });
         }
-        
+
         return res.status(500).json({ error: 'Hubo un error al procesar tu petición.' });
     }
 });
