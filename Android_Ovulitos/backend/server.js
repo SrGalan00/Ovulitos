@@ -87,9 +87,8 @@ app.post('/api/chat', async (req, res) => {
             return res.status(400).json({ error: 'El mensaje es obligatorio.' });
         }
 
-        // Configuración de generación: limita la longitud y controla la creatividad
+        // Configuración de generación: controla la creatividad
         const generationConfig = {
-            maxOutputTokens: 300,
             temperature: 0.7,
         };
 
@@ -117,6 +116,14 @@ app.post('/api/chat', async (req, res) => {
             console.warn('Bloqueo de seguridad detectado:', error.message);
             return res.status(400).json({
                 error: 'La pregunta ha sido bloqueada debido a nuestras estrictas políticas de seguridad. Por favor, formula tu pregunta de manera clínica y respetuosa.'
+            });
+        }
+
+        // Manejar sobrecarga temporal de los servidores de Gemini (Error 503)
+        if (error.message && error.message.includes('503 Service Unavailable')) {
+            console.warn('Servicio de IA saturado (503):', error.message);
+            return res.status(503).json({
+                error: 'El servicio de Inteligencia Artificial está experimentando mucha demanda temporalmente. Por favor, inténtalo de nuevo en unos minutos.'
             });
         }
 

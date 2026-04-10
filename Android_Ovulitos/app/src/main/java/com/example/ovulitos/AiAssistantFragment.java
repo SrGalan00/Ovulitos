@@ -22,7 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,9 +76,16 @@ public class AiAssistantFragment extends Fragment {
         // Mensaje de bienvenida de la IA
         addAiMessage("Hola. Soy tu Asistente Virtual de Salud Íntima. ¿En qué te puedo ayudar hoy? Recuerda que este es un espacio seguro.");
 
-        // Inicializar Retrofit
+        // Inicializar Retrofit con timeout elevado para dar tiempo a la IA
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(AiApiService.class);

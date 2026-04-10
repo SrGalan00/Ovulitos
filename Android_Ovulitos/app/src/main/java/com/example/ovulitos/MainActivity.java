@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         android.view.View btnSeguridad = findViewById(R.id.drawer_btn_seguridad);
         android.view.View btnPrivacidad = findViewById(R.id.drawer_btn_privacidad);
         android.view.View btnNotificaciones = findViewById(R.id.drawer_btn_notificaciones);
+        android.view.View btnCerrarSesion = findViewById(R.id.drawer_btn_cerrar_sesion);
 
         if (btnCuenta != null) {
             btnCuenta.setOnClickListener(v -> {
@@ -156,6 +157,13 @@ public class MainActivity extends AppCompatActivity {
             btnNotificaciones.setOnClickListener(v -> {
                 drawer.closeDrawer(GravityCompat.END);
                 reemplazarFragmento(AjustesFragment.newInstance("notificaciones"));
+            });
+        }
+        if (btnCerrarSesion != null) {
+            btnCerrarSesion.setOnClickListener(v -> {
+                drawer.closeDrawer(GravityCompat.END);
+                FirebaseAuth.getInstance().signOut();
+                reemplazarFragmento(new LoginFragment());
             });
         }
     }

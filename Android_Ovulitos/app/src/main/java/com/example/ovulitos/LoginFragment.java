@@ -21,8 +21,9 @@ import com.example.ovulitos.currentUser.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -123,8 +124,8 @@ public class LoginFragment extends Fragment {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Guardar datos en Firestore (en segundo plano)
-                        saveUserDataToFirestore(email);
+                        // Guardar datos en Firestore (en segundo plano) sin borrar los datos previos
+                        saveUserDataToFirestore(email, auth.getCurrentUser());
                         UserData.setUsuario(email);
 
                         // Navegar al HomeFragment
@@ -142,14 +143,17 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void saveUserDataToFirestore(String email) {
+    private void saveUserDataToFirestore(String email, FirebaseUser user) {
         Map<String, Object> userData = new HashMap<>();
         userData.put("user", email);
+        if (user != null) {
+            userData.put("uid", user.getUid());
+        }
         userData.put("last_access", new java.util.Date().toString()); // Fecha actual
         userData.put("provider", "email");
 
-
-        db.collection("usuarios").document(email).set(userData)
+        // Usar SetOptions.merge() para NO borrar campos clave como 'nombre' o 'avatar'
+        db.collection("usuarios").document(email).set(userData, SetOptions.merge())
                 .addOnSuccessListener(aVoid ->
                         Log.d("FIRESTORE", "Datos de usuario guardados correctamente")
                 )
