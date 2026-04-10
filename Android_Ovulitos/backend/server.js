@@ -92,10 +92,18 @@ app.post('/api/chat', async (req, res) => {
 
         // Manejar posibles bloqueos por filtros de seguridad
         if (error.message && error.message.includes('SAFETY')) {
+            console.warn('Bloqueo de seguridad detectado:', error.message);
             return res.status(400).json({
                 error: 'La pregunta ha sido bloqueada debido a nuestras estrictas políticas de seguridad. Por favor, formula tu pregunta de manera clínica y respetuosa.'
             });
         }
+
+        // Log detallado para otros errores (Error 500)
+        console.error('ERROR DETALLADO:', {
+            message: error.message,
+            stack: error.stack,
+            type: error.name
+        });
 
         return res.status(500).json({ error: 'Hubo un error al procesar tu petición.' });
     }
@@ -103,7 +111,8 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`Servidor Asistente IA escuchando en http://0.0.0.0:${port}`);
+    console.log('Estado de la API Key:', process.env.GEMINI_API_KEY ? 'Presente (longitud: ' + process.env.GEMINI_API_KEY.length + ')' : 'FALTANTE');
     if (!process.env.GEMINI_API_KEY) {
-        console.warn('¡ADVERTENCIA: GEMINI_API_KEY no está definido en .env o es el valor por defecto!');
+        console.warn('¡ADVERTENCIA: GEMINI_API_KEY no está definido en el entorno!');
     }
 });

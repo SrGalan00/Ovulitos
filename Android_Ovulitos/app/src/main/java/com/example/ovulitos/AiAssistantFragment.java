@@ -115,7 +115,22 @@ public class AiAssistantFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     addAiMessage(response.body().getReply());
                 } else {
-                    addAiMessage("Lo siento, tuve un problema analizando tu consulta. Las políticas de seguridad son estrictas para proteger tu bienestar.");
+                    String errorMessage = "Lo siento, tuve un problema analizando tu consulta.";
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorJson = response.errorBody().string();
+                            // Intentar extraer el campo "error" del JSON
+                            if (errorJson.contains("\"error\":")) {
+                                // Una forma simple de extraer el mensaje sin añadir dependencias pesadas de parsing
+                                errorMessage = errorJson.split("\"error\":")[1]
+                                        .split("\"")[1];
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e("AiAssistant", "Error parsing error body", e);
+                    }
+                    
+                    addAiMessage(errorMessage + " (Error " + response.code() + ")");
                     Log.e("AiAssistant", "Error response: " + response.code());
                 }
             }
