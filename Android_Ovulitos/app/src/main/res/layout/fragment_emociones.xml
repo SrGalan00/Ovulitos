@@ -18,7 +18,7 @@
             android:id="@+id/tvPregunta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/dia_ciclo"
             android:fontFamily="@font/bricolage_grotesque_bold"
             android:gravity="center"
@@ -34,34 +34,50 @@
 
         <ImageView
             android:id="@+id/ivTarro"
-            android:layout_width="601dp"
-            android:layout_height="508dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/tarro_emociones"
+            app:layout_constraintBottom_toTopOf="@id/containerEmociones"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.402"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPregunta" />
 
+        <FrameLayout
+            android:id="@+id/flTarroContenido"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="80dp" 
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivTarro"
+            app:layout_constraintEnd_toEndOf="@id/ivTarro"
+            app:layout_constraintStart_toStartOf="@id/ivTarro"
+            app:layout_constraintTop_toTopOf="@id/ivTarro" />
+
         <LinearLayout
             android:id="@+id/containerEmociones"
-            android:layout_width="383dp"
+            android:layout_width="wrap_content"
             android:layout_height="88dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/dia_ciclo"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivTarro">
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageButton
                 android:id="@+id/btnEmojiFeliz"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
@@ -69,8 +85,8 @@
 
             <ImageButton
                 android:id="@+id/btnEmojiTriste"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
@@ -78,8 +94,8 @@
 
             <ImageButton
                 android:id="@+id/btnEmojiEnojo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
@@ -87,8 +103,8 @@
 
             <ImageButton
                 android:id="@+id/btnEmojiSorpresa"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
@@ -96,8 +112,8 @@
 
             <ImageButton
                 android:id="@+id/btnEmojiCalma"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
