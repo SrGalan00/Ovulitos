@@ -92,7 +92,7 @@ app.post('/api/chat', async (req, res) => {
             temperature: 0.7,
         };
 
-        // Seleccionar el modelo con los ajustes de seguridad y generación
+        // Seleccionar el modelo principal
         const model = genAI.getGenerativeModel({ 
             model: 'gemini-2.5-flash', 
             safetySettings,
@@ -102,7 +102,25 @@ app.post('/api/chat', async (req, res) => {
         // Añadir el system prompt al mensaje del usuario para garantizar el contexto
         const fullPrompt = `${SYSTEM_PROMPT}\n\nPregunta de la usuaria: ${message}\nRespuesta Asistente:`;
 
-        const result = await model.generateContent(fullPrompt);
+        let result;
+        try {
+            // Intento 1: Modelo principal
+            result = await model.generateContent(fullPrompt);
+        } catch (e) {
+            // Intento 2: Si el modelo 2.5 está saturado, probar con un modelo más ligero (Lite)
+            if (e.message && e.message.includes('503')) {
+                console.warn('Reintentando con gemini-2.5-flash-lite debido a alta demanda (503)...');
+                const backupModel = genAI.getGenerativeModel({ 
+                    model: 'gemini-2.5-flash-lite', 
+                    safetySettings,
+                    generationConfig 
+                });
+                result = await backupModel.generateContent(fullPrompt);
+            } else {
+                throw e; // Si no es error 503, lanzarlo al catch principal
+            }
+        }
+
         const response = await result.response;
         const text = response.text();
 
