@@ -7,6 +7,9 @@ const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@googl
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Requerido para que el Rate Limit funcione correctamente en Render (proxy)
+app.set('trust proxy', 1);
+
 // Configuración de middlewares
 app.use(cors());
 app.use(express.json());
