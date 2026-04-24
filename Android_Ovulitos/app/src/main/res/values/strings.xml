@@ -12,19 +12,40 @@
     <string name="seccion_intensidad_sangrado">Intensidad del sangrado</string>
     <string name="seccion_otros_sintomas">Otros síntomas</string>
 
-    <string name="flujo_manchado">Manchado</string>
-    <string name="flujo_ligero">Ligero</string>
-    <string name="flujo_abundante">Abundante</string>
+    <string name="flujo_manchado">🩸 Manchado</string>
+    <string name="flujo_ligero">💧 Ligero</string>
+    <string name="flujo_abundante">🌊 Abundante</string>
 
-    <string name="sintoma_colicos">Cólicos</string>
-    <string name="sintoma_dolor_cabeza">Dolor de cabeza</string>
-    <string name="sintoma_sensibilidad">Sensibilidad</string>
+    <string name="sintoma_colicos">⚡ Cólicos</string>
+    <string name="sintoma_dolor_cabeza">🤕 Dolor de cabeza</string>
+    <string name="sintoma_sensibilidad">🥺 Sensibilidad</string>
+
+    <string name="seccion_dolores">Dolores físicos</string>
+    <string name="seccion_estado_animo">Sentimientos</string>
+    <string name="seccion_sexualidad">Actividad sexual</string>
+
+    <string name="dolor_espalda">🦴 Dolor de espalda</string>
+    <string name="dolor_ovarios">🔪 Puntadas en ovarios</string>
+
+    <string name="animo_feliz">🥰 Feliz</string>
+    <string name="animo_triste">😭 Triste / Llorona</string>
+    <string name="animo_ansiosa">😰 Ansiosa</string>
+    <string name="animo_irritable">😠 Irritable</string>
+    <string name="animo_cansada">🥱 Agotada</string>
+
+    <string name="sexo_protegido">🛡️ Con protección</string>
+    <string name="sexo_sin_proteccion">🚫 Sin protección</string>
+    <string name="sexo_masturbacion">🖐️ Masturbación</string>
+    <string name="sexo_deseo_alto">🔥 Deseo elevado</string>
 
     <string name="btn_guardar_registro">Guardar día</string>
 
     <string name="titulo_calma">3 minutos de calma profunda</string>
     <string name="desc_calma">Recupera tu equilibrio en la fase lútea. Enfócate en tu respiración suave y suelta las tensiones del día.</string>
     <string name="btn_paz">Necesito paz</string>
+
+    <string name="titulo_reproductor">Relájate y explora a tu ritmo.</string>
+    <string name="tiempo_reproductor">2:35 / 4:10</string>
 
     <string name="titulo_probabilidad">Baja probabilidad de embarazo</string>
     <string name="articulo_hinchazon">4 modos de aliviar la hinchazón</string>

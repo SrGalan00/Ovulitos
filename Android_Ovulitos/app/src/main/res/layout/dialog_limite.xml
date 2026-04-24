@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="28dp"
+    android:background="@drawable/bg_dialog_redondeado"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡El bote está lleno!"
+        android:textColor="@color/textos"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/bricolage_grotesque_bold"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Te has quedado sin espacio físico. ¡Ya has experimentado un montón de emociones y no cabe ni una más!"
+        android:textColor="@color/textos"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="28dp" />
+
+    <Button
+        android:id="@+id/btnEntendido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/rosa_oscuro"
+        android:textColor="@color/white"
+        android:text="Vale"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="40dp"/>
+
+</LinearLayout>

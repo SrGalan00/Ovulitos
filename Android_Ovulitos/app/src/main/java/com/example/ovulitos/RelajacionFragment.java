@@ -26,10 +26,10 @@ public class RelajacionFragment extends Fragment {
         Button btnPaz = view.findViewById(R.id.btnNecesitoPaz);
 
         btnPaz.setOnClickListener(v -> {
-            //si la flor no se está moviendo, la activamos
-            if (!animationView.isAnimating()) {
-                animationView.playAnimation();
-            }
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment_container, new ReproductorMeditacionFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <TextView
+        android:id="@+id/tvTituloReproductor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/bricolage_grotesque_bold"
+        android:gravity="center"
+        android:text="@string/titulo_reproductor"
+        android:textColor="@color/textos"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/ivFlor"
+        android:layout_width="280dp"
+        android:layout_height="220dp"
+        app:layout_constraintBottom_toTopOf="@+id/playerContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloReproductor"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/flor" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/playerContainer"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:cardBackgroundColor="@color/rosa_oscuro"
+        app:cardCornerRadius="35dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:id="@+id/btnPlay"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circulo_blanco"
+                android:backgroundTint="@color/white"
+                android:padding="8dp"
+                android:src="@drawable/ic_play_arrow"
+                app:tint="@color/rosa_oscuro" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_music_note" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical">
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:progress="30"
+                    android:progressTint="@color/white"
+                    android:thumbTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingEnd="12dp"
+                    android:text="@string/tiempo_reproductor"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_volume_up" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_more_vert" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
