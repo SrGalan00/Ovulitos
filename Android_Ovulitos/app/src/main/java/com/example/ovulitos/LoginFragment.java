@@ -167,11 +167,11 @@ public class LoginFragment extends Fragment {
 
             // Usando el método de la actividad padre para que se ejecute la lógica de las barras
             if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).reemplazarFragmento(new HomeFragment());
+                ((MainActivity) getActivity()).reemplazarFragmento(new InicioFragment());
             } else {
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.main_fragment_container, new HomeFragment())
+                        .replace(R.id.main_fragment_container, new InicioFragment())
                         .commit();
             }
 

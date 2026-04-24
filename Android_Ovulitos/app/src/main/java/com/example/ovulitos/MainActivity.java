@@ -33,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
             reemplazarFragmento(new PerfilFragment());
         }
 
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
+            if (currentFragment != null) {
+                updateNavigationBarsVisibility(currentFragment);
+            }
+        });
+
         ShapeableImageView btnInicio = findViewById(R.id.btn_1);
         ShapeableImageView btnCalendario = findViewById(R.id.btn_2);
         ShapeableImageView btnRelajacion = findViewById(R.id.btn_3);
@@ -79,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commit();
         
+        updateNavigationBarsVisibility(fragmento);
+    }
+
+    private void updateNavigationBarsVisibility(Fragment fragmento) {
         // Controlar visibilidad de las barras de navegación basadas en el fragmento destino
         android.view.View topBar = findViewById(R.id.topBar);
         android.view.View bottomBar = findViewById(R.id.bottomBar);
@@ -88,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
             androidx.constraintlayout.widget.ConstraintLayout.LayoutParams params = 
                     (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams) mainContainer.getLayoutParams();
                     
-            if (fragmento instanceof LoginFragment || fragmento instanceof RegisterFragment || fragmento instanceof PerfilFragment) {
+            if (fragmento instanceof LoginFragment || fragmento instanceof RegisterFragment || fragmento instanceof PerfilFragment 
+                || fragmento instanceof AjustesFragment || fragmento instanceof ChatListFragment || fragmento instanceof UsersListFragment || fragmento instanceof ChatFragment) {
                 topBar.setVisibility(android.view.View.GONE);
                 bottomBar.setVisibility(android.view.View.GONE);
                 

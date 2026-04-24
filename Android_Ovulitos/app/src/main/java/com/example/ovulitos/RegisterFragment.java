@@ -95,7 +95,7 @@ public class RegisterFragment extends Fragment {
 
                                     // 👇🏻 CORREGIDO: Usando el método padre para restaurar las barras
                                     if (getActivity() instanceof MainActivity) {
-                                        ((MainActivity) getActivity()).reemplazarFragmento(new HomeFragment());
+                                        ((MainActivity) getActivity()).reemplazarFragmento(new InicioFragment());
                                     } else if (getActivity() != null) {
 
                                         requireActivity().getSupportFragmentManager()

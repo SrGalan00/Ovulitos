@@ -59,6 +59,15 @@ public class ChatListFragment extends Fragment {
         txtEmpty = view.findViewById(R.id.chat_list_empty);
         fabNewChat = view.findViewById(R.id.fab_new_chat);
 
+        android.view.View btnBack = view.findViewById(R.id.btn_back_chat_list);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
+        }
+
         recyclerChatList.setLayoutManager(new LinearLayoutManager(getContext()));
         chatList = new ArrayList<>();
         
