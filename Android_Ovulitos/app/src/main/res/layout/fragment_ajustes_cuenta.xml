@@ -29,12 +29,14 @@
 
         <TextView
             android:id="@+id/txtNombreUsuario"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cargando..."
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
-            android:layout_marginBottom="16dp"/>
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,12 +48,14 @@
 
         <TextView
             android:id="@+id/txtEmailUsuario"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cargando..."
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
-            android:layout_marginBottom="24dp"/>
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginBottom="16dp"/>
 
         <View
             android:layout_width="match_parent"
@@ -67,11 +71,14 @@
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="@color/black"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtEstadoSocial"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Casada/Soltera"
             android:fontFamily="@font/bricolage_grotesque"
-            android:textColor="#6D4C41"/>
+            android:textColor="#6D4C41"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 </ScrollView>

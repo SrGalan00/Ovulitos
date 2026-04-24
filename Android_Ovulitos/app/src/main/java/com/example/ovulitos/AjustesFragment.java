@@ -107,48 +107,143 @@ public class AjustesFragment extends Fragment {
         btnNotificaciones.setOnClickListener(v -> mostrarSubSeccion("Notificaciones", R.layout.fragment_ajustes_notificaciones));
     }
 
-    // --- PANTALLA DE CUENTA (CON LÓGICA DE DATOS) ---
+    // --- PANTALLA DE CUENTA (CON LÓGICA DE DATOS Y EDICIÓN) ---
     private void mostrarCuenta() {
         enSubSeccion = true;
         txtTitulo.setText("Cuenta");
         btnAtras.setVisibility(View.VISIBLE);
 
         contenedor.removeAllViews();
-        //
         View vistaCuenta = getLayoutInflater().inflate(R.layout.fragment_ajustes_cuenta, contenedor, false);
         contenedor.addView(vistaCuenta);
 
-        // 1. Vincular los TextViews que acabamos de crear
         TextView txtEmail = vistaCuenta.findViewById(R.id.txtEmailUsuario);
         TextView txtNombre = vistaCuenta.findViewById(R.id.txtNombreUsuario);
+        TextView txtEstadoSocial = vistaCuenta.findViewById(R.id.txtEstadoSocial);
 
-        // 2. Obtener usuario actual
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null) {
-            // A. Poner el EMAIL (Esto es inmediato)
-            txtEmail.setText(user.getEmail());
+            String userEmail = user.getEmail();
+            txtEmail.setText(userEmail != null ? userEmail : "Sin correo");
 
-            // B. Poner el NOMBRE (Hay que pedirlo a la base de datos)
-            // Asumiendo que guardaste el nombre en: Users -> [ID] -> nombre
-            mDatabase.child("Users").child(user.getUid()).child("nombre")
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                String nombreGuardado = snapshot.getValue(String.class);
-                                txtNombre.setText(nombreGuardado);
+            com.google.firebase.firestore.FirebaseFirestore firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance();
+            if (userEmail != null) {
+                firestore.collection("usuarios").document(userEmail)
+                        .addSnapshotListener((documentSnapshot, error) -> {
+                            if (error != null || documentSnapshot == null) return;
+                            if (documentSnapshot.exists()) {
+                                String nombreGuardado = documentSnapshot.getString("nombre");
+                                txtNombre.setText(nombreGuardado != null ? nombreGuardado : "Sin nombre");
+
+                                String estadoSocial = documentSnapshot.getString("estado_social");
+                                txtEstadoSocial.setText(estadoSocial != null ? estadoSocial : "(Toca para añadir)");
                             } else {
-                                txtNombre.setText("Usuario sin nombre");
+                                txtNombre.setText("Usuario sin perfil");
+                                txtEstadoSocial.setText("(Toca para añadir)");
                             }
-                        }
+                        });
+            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            // Si falla, no hacemos nada o mostramos error
+            // Click Listeners for Editing
+            txtNombre.setOnClickListener(v -> mostrarDialogoEdicion("Editar Nombre", "nombre", txtNombre.getText().toString(), auth.getCurrentUser().getEmail(), firestore));
+            txtEstadoSocial.setOnClickListener(v -> mostrarDialogoEstadoSocial(txtEstadoSocial.getText().toString(), auth.getCurrentUser().getEmail(), firestore));
+            txtEmail.setOnClickListener(v -> mostrarDialogoEdicionEmail("Editar Correo", txtEmail.getText().toString(), auth.getCurrentUser().getEmail(), firestore));
+        }
+    }
+
+    private void mostrarDialogoEdicion(String titulo, String campo, String valorActual, String docId, com.google.firebase.firestore.FirebaseFirestore firestore) {
+        if (docId == null) return;
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        builder.setTitle(titulo);
+
+        final android.widget.EditText input = new android.widget.EditText(getContext());
+        input.setText(!valorActual.contains("Sin nombre") && !valorActual.contains("Toca para añadir") ? valorActual : "");
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("Guardar", (dialog, which) -> {
+            String nuevoValor = input.getText().toString().trim();
+            if (!nuevoValor.isEmpty()) {
+                java.util.Map<String, Object> update = new java.util.HashMap<>();
+                update.put(campo, nuevoValor);
+                firestore.collection("usuarios").document(docId).set(update, com.google.firebase.firestore.SetOptions.merge());
+            }
+        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void mostrarDialogoEstadoSocial(String valorActual, String docId, com.google.firebase.firestore.FirebaseFirestore firestore) {
+        if (docId == null) return;
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        builder.setTitle("Estado Social");
+
+        String[] opciones = {"Soltera", "Casada", "En una relación", "Prefiero no decirlo"};
+        int selectedIndex = -1;
+        for (int i = 0; i < opciones.length; i++) {
+            if (opciones[i].equals(valorActual)) selectedIndex = i;
+        }
+
+        builder.setSingleChoiceItems(opciones, selectedIndex, (dialog, which) -> {
+            String seleccionado = opciones[which];
+            java.util.Map<String, Object> update = new java.util.HashMap<>();
+            update.put("estado_social", seleccionado);
+            firestore.collection("usuarios").document(docId).set(update, com.google.firebase.firestore.SetOptions.merge());
+            dialog.dismiss();
+        });
+        
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void mostrarDialogoEdicionEmail(String titulo, String valorActual, String oldEmail, com.google.firebase.firestore.FirebaseFirestore firestore) {
+        if (oldEmail == null) return;
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        builder.setTitle(titulo);
+
+        final android.widget.EditText input = new android.widget.EditText(getContext());
+        input.setText(valorActual);
+        input.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        builder.setView(input);
+
+        builder.setPositiveButton("Guardar", (dialog, which) -> {
+            String nuevoEmail = input.getText().toString().trim();
+            if (!nuevoEmail.isEmpty() && !nuevoEmail.equals(oldEmail) && android.util.Patterns.EMAIL_ADDRESS.matcher(nuevoEmail).matches()) {
+                FirebaseUser user = auth.getCurrentUser();
+                if (user != null) {
+                    user.updateEmail(nuevoEmail).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Migrate Document in Firestore to new email key
+                            firestore.collection("usuarios").document(oldEmail).get().addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    java.util.Map<String, Object> data = documentSnapshot.getData();
+                                    if (data != null) {
+                                        data.put("email", nuevoEmail);
+                                        data.put("user", nuevoEmail);
+                                        firestore.collection("usuarios").document(nuevoEmail).set(data).addOnSuccessListener(aVoid -> {
+                                            firestore.collection("usuarios").document(oldEmail).delete();
+                                            com.example.ovulitos.currentUser.UserData.setUsuario(nuevoEmail);
+                                            android.widget.Toast.makeText(getContext(), "Correo actualizado. Vuelve a iniciar sesión si algo falla.", android.widget.Toast.LENGTH_SHORT).show();
+                                            mostrarCuenta(); // Refrescar vista
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            // Re-authentication needed or other error
+                            java.lang.Exception e = task.getException();
+                            String msg = e != null ? e.getMessage() : "Error";
+                            android.widget.Toast.makeText(getContext(), "Error actualizando: " + msg, android.widget.Toast.LENGTH_LONG).show();
                         }
                     });
-        }
+                }
+            } else {
+                android.widget.Toast.makeText(getContext(), "Correo inválido o igual", android.widget.Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     // Método genérico para las otras pantallas que no tienen lógica todavía
