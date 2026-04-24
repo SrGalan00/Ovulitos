@@ -55,7 +55,6 @@ public class EmocionesFragment extends Fragment implements Choreographer.FrameCa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-<<<<<<< HEAD
         contenedorBote = view.findViewById(R.id.flTarroContenido);
 
         view.findViewById(R.id.btnEmojiFeliz).setOnClickListener(v -> agregarEmocionBola(R.drawable.alegria));

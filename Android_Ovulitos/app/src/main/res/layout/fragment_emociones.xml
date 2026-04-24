@@ -126,6 +126,6 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
                 android:src="@drawable/serenidad" />
-
+        </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
