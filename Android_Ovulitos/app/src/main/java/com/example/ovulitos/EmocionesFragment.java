@@ -42,6 +42,9 @@ public class EmocionesFragment extends Fragment implements Choreographer.FrameCa
         }
     }
 
+    private FrameLayout containerTarro;
+    private Random random = new Random();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class EmocionesFragment extends Fragment implements Choreographer.FrameCa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+<<<<<<< HEAD
         contenedorBote = view.findViewById(R.id.flTarroContenido);
 
         view.findViewById(R.id.btnEmojiFeliz).setOnClickListener(v -> agregarEmocionBola(R.drawable.alegria));
