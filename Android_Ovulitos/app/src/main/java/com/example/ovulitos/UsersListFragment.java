@@ -28,7 +28,9 @@ public class UsersListFragment extends Fragment {
     private RecyclerView recyclerUsers;
     private ProgressBar progressBar;
     private UserAdapter userAdapter;
-    private List<User> userList;
+    private List<User> fullUserList;
+    private List<User> filteredUserList;
+    private android.widget.EditText etSearchUser;
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -40,6 +42,20 @@ public class UsersListFragment extends Fragment {
 
         recyclerUsers = view.findViewById(R.id.recycler_users_list);
         progressBar = view.findViewById(R.id.progress_users);
+        etSearchUser = view.findViewById(R.id.et_search_user);
+
+        etSearchUser.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterUsers(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
 
         view.findViewById(R.id.btn_back_users).setOnClickListener(v -> {
             if (getActivity() != null) {
@@ -48,8 +64,9 @@ public class UsersListFragment extends Fragment {
         });
 
         recyclerUsers.setLayoutManager(new LinearLayoutManager(getContext()));
-        userList = new ArrayList<>();
-        userAdapter = new UserAdapter(userList, user -> {
+        fullUserList = new ArrayList<>();
+        filteredUserList = new ArrayList<>();
+        userAdapter = new UserAdapter(filteredUserList, user -> {
             // Abrir el fragmento de chat con el usuario seleccionado
             ChatFragment chatFragment = new ChatFragment();
             Bundle args = new Bundle();
@@ -80,7 +97,8 @@ public class UsersListFragment extends Fragment {
             if (!isAdded() || getView() == null) return;
             progressBar.setVisibility(View.GONE);
             if (task.isSuccessful() && task.getResult() != null) {
-                userList.clear();
+                fullUserList.clear();
+                filteredUserList.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     String uid = document.getString("uid");
                     if (uid != null && !uid.equals(currentUser.getUid())) {
@@ -90,7 +108,8 @@ public class UsersListFragment extends Fragment {
                                 document.getString("nombre"),
                                 document.getString("avatar")
                         );
-                        userList.add(user);
+                        fullUserList.add(user);
+                        filteredUserList.add(user);
                     }
                 }
                 userAdapter.notifyDataSetChanged();
@@ -101,5 +120,20 @@ public class UsersListFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void filterUsers(String text) {
+        filteredUserList.clear();
+        if (text.isEmpty()) {
+            filteredUserList.addAll(fullUserList);
+        } else {
+            String filterPattern = text.toLowerCase().trim();
+            for (User user : fullUserList) {
+                if (user.getNombre() != null && user.getNombre().toLowerCase().contains(filterPattern)) {
+                    filteredUserList.add(user);
+                }
+            }
+        }
+        userAdapter.notifyDataSetChanged();
     }
 }
