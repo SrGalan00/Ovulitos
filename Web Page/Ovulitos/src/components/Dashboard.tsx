@@ -1,99 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Typography, 
   Button, 
-  AppBar, 
-  Toolbar, 
-  Container 
+  Paper,
+  Grid
 } from '@mui/material';
-import { ExitToApp } from '@mui/icons-material';
-
-interface DashboardProps {
-  onLogout: () => void;
-}
+import { Schedule, Refresh, ArrowForward } from '@mui/icons-material';
+import { useAuth } from '../context/authContext/index.jsx';
+import CalendarComponent from './CalendarComponent';
+import Sidebar from './Sidebar';
+import DailyTip from './DailyTip';
 
 const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
+  const { currentUser } = useAuth();
+  const [activeView, setActiveView] = useState('dashboard');
+  
   const colors = {
     primary: '#FFF8C9',
     secondary: '#69393A',
     accent: '#9B5354',
-    lightAccent: '#E38E91',
-    softPink: '#F4C7C4',
+    background: '#FDF8F0',
+    cardBg: '#FFFFFF',
+    textMuted: 'rgba(105, 57, 58, 0.6)'
   };
 
   return (
     <Box sx={{ 
+      display: 'flex', 
       minHeight: '100vh', 
-      width: '100vw', 
-      backgroundColor: colors.primary,
-      display: 'flex',
-      flexDirection: 'column',
-      m: 0,
-      p: 0
+      backgroundColor: colors.background,
+      backgroundImage: `radial-gradient(at 0% 0%, ${colors.primary} 0%, transparent 50%), 
+                        radial-gradient(at 100% 0%, ${colors.primary} 0%, transparent 50%)`,
+      position: 'relative',
+      overflow: 'hidden'
     }}>
-      <AppBar 
-        position="static" 
-        sx={{ 
-          backgroundColor: colors.secondary,
-          boxShadow: '0px 4px 20px rgba(105, 57, 58, 0.2)',
-        }}
-      >
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            Ovulitos
-          </Typography>
-          <Button
-            color="inherit"
-            onClick={onLogout}
-            startIcon={<ExitToApp />}
-            sx={{ '&:hover': { backgroundColor: colors.accent } }}
-          >
-            Cerrar Sesión
-          </Button>
-        </Toolbar>
-      </AppBar>
+      {/* Background Wavy Lines Effect */}
+      <Box sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        opacity: 0.1,
+        pointerEvents: 'none',
+        backgroundImage: 'repeating-linear-gradient(45deg, #69393A 0, #69393A 1px, transparent 0, transparent 50%)',
+        backgroundSize: '100px 100px',
+        maskImage: 'radial-gradient(circle, black 0%, transparent 80%)'
+      }} />
 
-      <Container 
-        maxWidth={false} 
-        disableGutters 
-        sx={{ 
-          flexGrow: 1, 
-          display: 'flex', 
-          flexDirection: 'column',
-          p: { xs: 2, md: 4 } // Margen responsivo para el cuadro blanco
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: 'white',
-            borderRadius: 4,
-            p: 4,
-            boxShadow: '0px 10px 30px rgba(105, 57, 58, 0.1)',
-            flexGrow: 1,
-          }}
-        >
-          <Typography variant="h4" gutterBottom sx={{ color: colors.secondary, fontWeight: 'bold' }}>
-            ¡Bienvenido al Proyecto Ovulitos!
-          </Typography>
-          
-          <Typography variant="body1" sx={{ color: colors.secondary, mb: 3 }}>
-            Esta es la pantalla principal del proyecto Ovulitos. Aqui puedes registrarte y obtener informacion sobre nuestra aplicacion.
-          </Typography>
+      <Sidebar onLogout={onLogout} activeView={activeView} setActiveView={setActiveView} />
 
-          <Box sx={{ 
-            mt: 4, 
-            p: 5, 
-            border: `2px dashed ${colors.softPink}`, 
-            borderRadius: 2, 
-            textAlign: 'center' 
+      <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, zIndex: 1, overflowY: 'auto' }}>
+        <Box sx={{ textAlign: 'center', mb: 3, mt: 2 }}>
+          <Typography variant="overline" sx={{ color: colors.textMuted, letterSpacing: 3, fontWeight: 'bold' }}>
+            PERSONAL SPACE
+          </Typography>
+          <Typography variant="h3" sx={{ 
+            color: colors.secondary, 
+            fontWeight: 800, 
+            fontFamily: "'Poppins', sans-serif",
+            mt: 0.5
           }}>
-            <Typography variant="subtitle1" sx={{ color: colors.accent }}>
-              
-            </Typography>
-          </Box>
+            Your Dashboard<Box component="span" sx={{ color: colors.accent }}>.</Box>
+          </Typography>
         </Box>
-      </Container>
+
+        <Grid container spacing={4} justifyContent="center">
+          {/* Calendar Section */}
+          <Grid item xs={12} md={12} lg={10}>
+            <DailyTip currentUser={currentUser} />
+            <CalendarComponent />
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };

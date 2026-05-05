@@ -1,8 +1,11 @@
-
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import LoginCircle from './components/LoginCircle';
 import Dashboard from './components/Dashboard';
+import { useAuth } from './context/authContext/index.jsx';
+import { doSignOut } from './firebase/auth';
+import { initializeConsejos } from './utils/firebaseUtils';
+import { useEffect } from 'react';
 
 
 // Crear tema con la paleta de colores
@@ -24,10 +27,34 @@ const theme = createTheme({
 });
 
 function App() {
+  const { currentUser } = useAuth();
+  const isGuest = localStorage.getItem('isGuest') === 'true';
+
+  useEffect(() => {
+    initializeConsejos();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      if (isGuest) {
+        localStorage.removeItem('isGuest');
+        window.location.reload();
+      } else {
+        await doSignOut();
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Dashboard />
+      {(!currentUser && !isGuest) ? (
+        <LoginCircle onLogin={() => {}} />
+      ) : (
+        <Dashboard onLogout={handleLogout} />
+      )}
     </ThemeProvider>
   );
 
