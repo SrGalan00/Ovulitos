@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Box, 
   Typography, 
@@ -19,6 +19,8 @@ import {
   Logout 
 } from '@mui/icons-material';
 import { useAuth } from '../context/authContext/index.jsx';
+import { db } from '../firebase/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 interface SidebarProps {
   onLogout: () => void;
@@ -28,6 +30,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }) => {
   const { currentUser } = useAuth();
+  const [userData, setUserData] = useState<{ nombre?: string } | null>(null);
   
   const colors = {
     bg: '#69393A',
@@ -35,6 +38,20 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
     accent: '#9B5354',
     hover: 'rgba(255, 248, 201, 0.1)'
   };
+
+  // Suscribirse a los datos del perfil del usuario para mostrar el nombre real
+  useEffect(() => {
+    if (!currentUser?.email || localStorage.getItem('isGuest') === 'true') return;
+
+    const userRef = doc(db, 'usuarios', currentUser.email);
+    const unsubscribe = onSnapshot(userRef, (doc) => {
+      if (doc.exists()) {
+        setUserData(doc.data());
+      }
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
 
   const menuItems = [
     { id: 'home', text: 'HOME', icon: <Home /> },
@@ -47,13 +64,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
     <Box sx={{ 
       width: 280, 
       backgroundColor: colors.bg, 
-      height: '100vh', 
+      height: '100%', 
       display: 'flex', 
       flexDirection: 'column',
       borderRight: '1px solid rgba(255, 248, 201, 0.1)',
       color: colors.text,
-      position: 'sticky',
-      top: 0,
+      borderRadius: 8, 
+      boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+      overflow: 'hidden', 
       zIndex: 10
     }}>
       {/* Logo Section */}
@@ -153,11 +171,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
           border: localStorage.getItem('isGuest') === 'true' ? `1px dashed ${colors.text}` : 'none'
         }}>
           <Avatar sx={{ bgcolor: colors.accent, width: 40, height: 40 }}>
-            {localStorage.getItem('isGuest') === 'true' ? 'G' : (currentUser?.email?.charAt(0).toUpperCase() || 'U')}
+            {localStorage.getItem('isGuest') === 'true' ? 'G' : (userData?.nombre?.charAt(0).toUpperCase() || currentUser?.email?.charAt(0).toUpperCase() || 'U')}
           </Avatar>
-          <Box>
+          <Box sx={{ overflow: 'hidden' }}>
             <Typography variant="body2" sx={{ fontWeight: 800, color: colors.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 150 }}>
-              {localStorage.getItem('isGuest') === 'true' ? 'GUEST USER' : (currentUser?.displayName || currentUser?.email?.split('@')[0] || 'usuario')}
+              {localStorage.getItem('isGuest') === 'true' ? 'GUEST USER' : (userData?.nombre || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'usuario')}
             </Typography>
             <Typography variant="caption" sx={{ color: 'rgba(255, 248, 201, 0.6)', cursor: 'pointer', '&:hover': { color: colors.text } }}>
               {localStorage.getItem('isGuest') === 'true' ? 'MODO INVITADO' : 'VIEW PROFILE'}

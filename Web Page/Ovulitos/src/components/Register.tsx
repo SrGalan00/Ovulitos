@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword } from '../firebase/auth';
 import { useAuth } from '../context/authContext';
+import { db } from '../firebase/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 export const Register: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -16,7 +19,23 @@ export const Register: React.FC = () => {
     setError('');
 
     try {
-      await doCreateUserWithEmailAndPassword(email, password);
+      // 1. Crear usuario en Firebase Auth
+      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      // 2. Crear el documento del usuario en Firestore (usuarios/{email})
+      // Esto soluciona que el documento aparezca como "no existente" aunque tenga subcolecciones
+      if (user && user.email) {
+        await setDoc(doc(db, 'usuarios', user.email), {
+          uid: user.uid,
+          email: user.email,
+          nombre: username || user.email.split('@')[0],
+          fechaRegistro: new Date().toISOString(),
+          rol: 'usuario',
+          cicloMedio: 28 // Valor por defecto inicial
+        });
+      }
+
       navigate("/");
     } catch (error: any) {
       console.error('Error register: ', error);
@@ -44,40 +63,54 @@ export const Register: React.FC = () => {
         <div className="absolute inset-[40px] rounded-full bg-gradient-to-b from-[#f7b6c8] to-[#f3a2b9] -z-10"></div>
 
         {/* Form Layer */}
-        <form className="relative z-20 flex flex-col justify-center items-center gap-[22px]" onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-[#333] mb-2">Register</h2>
-          {error && <div className="text-red-600 font-bold bg-white/80 p-2 rounded">{error}</div>}
+        <form className="relative z-20 flex flex-col justify-center items-center gap-[18px]" onSubmit={handleSubmit}>
+          <h2 className="text-2xl font-bold text-[#333] mb-1">Create Account</h2>
+          {error && <div className="text-red-600 font-bold bg-white/80 p-2 rounded max-w-[300px] text-center text-sm">{error}</div>}
 
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-base px-1.5 font-medium">Email</label>
+            <label className="text-[#333] text-sm px-1.5 font-medium">Username</label>
             <input
-              className="w-[320px] p-[14px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
+              className="w-[320px] p-[12px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
+              type="text"
+              placeholder="Your name"
+              value={username}
+              required
+              onChange={e => setUsername(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-[#333] text-sm px-1.5 font-medium">Email</label>
+            <input
+              className="w-[320px] p-[12px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="email"
               placeholder="Email"
               value={email}
+              required
               onChange={e => setEmail(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-base px-1.5 font-medium">Password</label>
+            <label className="text-[#333] text-sm px-1.5 font-medium">Password</label>
             <input
-              className="w-[320px] p-[14px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
+              className="w-[320px] p-[12px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="password"
               placeholder="Password"
               value={password}
+              required
               onChange={e => setPassword(e.target.value)}
             />
           </div>
 
           <button
-            className="mt-5 w-[200px] p-3.5 rounded-[14px] border border-[#ddd] bg-white font-bold text-[#333] hover:bg-[#f1f1f1] transition-colors cursor-pointer shadow-sm hover:shadow-md active:scale-95 transform duration-100"
+            className="mt-4 w-[200px] p-3.5 rounded-[14px] border border-[#ddd] bg-white font-bold text-[#333] hover:bg-[#f1f1f1] transition-colors cursor-pointer shadow-sm hover:shadow-md active:scale-95 transform duration-100"
             type="submit"
           >
             REGISTER
           </button>
 
-          <div className="mt-4 text-sm font-medium">
+          <div className="mt-2 text-sm font-medium">
             Already have an account? <Link to="/login" className="text-[#c45a7a] hover:underline">Login here</Link>
           </div>
         </form>
