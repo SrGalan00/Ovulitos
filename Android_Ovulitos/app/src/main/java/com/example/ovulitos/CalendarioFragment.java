@@ -56,124 +56,134 @@ public class CalendarioFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // ================ Variables (NO TOCAR) =============================
-
         CalendarView calendarView = view.findViewById(R.id.calendarViewRegistro);
         Button btnGuardar = view.findViewById(R.id.btnGuardarRegistro);
         Button btnKiki = view.findViewById(R.id.btnKiki);
         ChipGroup flujo = view.findViewById(R.id.chipGroupFlujo);
         ChipGroup sintomas = view.findViewById(R.id.chipGroupSintomas);
-
         // ====================================================================
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.dateParser = DateTimeFormatter.ofPattern("dd/MMMM/yyyy");
-            this.fechaSeleccionada = Instant.ofEpochMilli(System.currentTimeMillis())
-                    .atZone(ZoneId.systemDefault())
-                    .format(dateParser);
+            this.dateParser = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Usamos ISO para las keys
+            this.fechaSeleccionada = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
 
-       // eventos.clear();
-        
-        Calendar dayRegla = Calendar.getInstance();
-        dayRegla.add(Calendar.DAY_OF_YEAR, GlobalVariables.diasProximaRegla);
-
-        eventos.add(new EventDay((Calendar) dayRegla.clone(), R.drawable.fondo_rojo, Color.WHITE));
-
-        Calendar rosaAntes2 = (Calendar) dayRegla.clone(); rosaAntes2.add(Calendar.DAY_OF_YEAR, -2);
-        Calendar rosaAntes1 = (Calendar) dayRegla.clone(); rosaAntes1.add(Calendar.DAY_OF_YEAR, -1);
-        Calendar rosaDespues1 = (Calendar) dayRegla.clone(); rosaDespues1.add(Calendar.DAY_OF_YEAR, 1);
-        Calendar rosaDespues2 = (Calendar) dayRegla.clone(); rosaDespues2.add(Calendar.DAY_OF_YEAR, 2);
-
-        eventos.add(new EventDay(rosaAntes2, R.drawable.fondo_rosa, Color.WHITE));
-        eventos.add(new EventDay(rosaAntes1, R.drawable.fondo_rosa, Color.WHITE));
-        eventos.add(new EventDay(rosaDespues1, R.drawable.fondo_rosa, Color.WHITE));
-        eventos.add(new EventDay(rosaDespues2, R.drawable.fondo_rosa, Color.WHITE));
-
-        calendarView.setEvents(eventos);
+        loadFirebaseData(calendarView);
 
         btnKiki.setOnClickListener(v -> {
             isKikiActive = !isKikiActive;
-            if (isKikiActive) {
-                Toast.makeText(getContext(), "Modo Kiki activado. Selecciona un día.", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Modo Kiki desactivado.", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getContext(), isKikiActive ? "Modo Kiki activado" : "Modo Kiki desactivado", Toast.LENGTH_SHORT).show();
         });
 
         calendarView.setOnDayClickListener(eventDay -> {
             Calendar clickedDayCalendar = eventDay.getCalendar();
-
-            if (isKikiActive) {
-                eventos.add(new EventDay((Calendar) clickedDayCalendar.clone(), R.drawable.fondo_amarillo, Color.BLACK));
-                calendarView.setEvents(eventos);
-                
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    int year = clickedDayCalendar.get(Calendar.YEAR);
-                    int month = clickedDayCalendar.get(Calendar.MONTH) + 1;
-                    int dayOfMonth = clickedDayCalendar.get(Calendar.DAY_OF_MONTH);
-                    LocalDate localDate = LocalDate.of(year, month, dayOfMonth);
-                    kikiDates.add(localDate.format(dateParser));
-                }
-            }
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 int year = clickedDayCalendar.get(Calendar.YEAR);
                 int month = clickedDayCalendar.get(Calendar.MONTH) + 1;
                 int dayOfMonth = clickedDayCalendar.get(Calendar.DAY_OF_MONTH);
                 LocalDate localDate = LocalDate.of(year, month, dayOfMonth);
-                this.fechaSeleccionada = localDate.format(dateParser);
+                this.fechaSeleccionada = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                
+                if (isKikiActive) {
+                    saveKiki(localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                }
             }
         });
 
-
-
-        
         btnGuardar.setOnClickListener(v -> {
-
-
             if (!fechaSeleccionada.isEmpty()) {
                 int checked = flujo.getCheckedChipId();
                 Chip chip = flujo.findViewById(checked);
-
-
-                userKiki(this.kikiDates); 
-                userData(fechaSeleccionada, chip.getText().toString(), "Colicos" );
+                String intesidad = chip != null ? chip.getText().toString() : "Leve";
+                
+                // Guardar en el nuevo formato
+                saveDetailedData(fechaSeleccionada, intesidad, "Cólicos");
             } else {
-                Toast.makeText(getContext(), "Por favor selecciona una fecha", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Selecciona una fecha", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadFirebaseData(CalendarView calendarView) {
+        if (GlobalVariables.email == null) return;
+
+        // Limpiar eventos previos
+        eventos.clear();
+
+        // 1. Cargar Predicción desde el documento del usuario
+        db.collection("usuarios").document(GlobalVariables.email).get().addOnSuccessListener(doc -> {
+            if (doc.exists() && doc.contains("proximaReglaPrevista")) {
+                String proxima = doc.getString("proximaReglaPrevista");
+                if (proxima != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDate date = LocalDate.parse(proxima);
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+                    eventos.add(new EventDay(cal, R.drawable.fondo_rojo, Color.WHITE));
+                    calendarView.setEvents(eventos);
+                }
             }
         });
 
+        // 2. Cargar Datos de la colección Datos (Regla, etc)
+        db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
+            .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (com.google.firebase.firestore.QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    String id = doc.getId();
+                    if (id.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                        LocalDate date = LocalDate.parse(id);
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+                        
+                        List<String> tipos = (List<String>) doc.get("tipos");
+                        if (tipos != null && tipos.contains("period_start")) {
+                            eventos.add(new EventDay(cal, R.drawable.fondo_rojo, Color.WHITE));
+                        }
+                    }
+                }
+                calendarView.setEvents(eventos);
+            });
 
-
-
-
+        // 3. Cargar KikiData de la nueva colección
+        db.collection("usuarios").document(GlobalVariables.email).collection("kikiData")
+            .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (com.google.firebase.firestore.QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    String dateStr = doc.getId();
+                    if (dateStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                        LocalDate date = LocalDate.parse(dateStr);
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+                        eventos.add(new EventDay(cal, R.drawable.fondo_amarillo, Color.BLACK));
+                    }
+                }
+                calendarView.setEvents(eventos);
+            });
     }
 
-    private void userData(String fechaSelected, String option1, String option2){
-        Map<String, Object> user = new HashMap<>();
-        user.put("fechaSelected", fechaSelected);
-        user.put("intensidad del sangrado", option1);
-        user.put("Síntomas", option2);
+    private void saveDetailedData(String fechaSelected, String intensidad, String sintomas) {
+        // Guardar para compatibilidad app (datosCalendario)
+        Map<String, Object> legacy = new HashMap<>();
+        legacy.put("fechaSelected", fechaSelected);
+        legacy.put("intensidad del sangrado", intensidad);
+        legacy.put("Síntomas", sintomas);
+        db.collection("usuarios").document(GlobalVariables.email).collection("Datos").document("datosCalendario").set(legacy);
 
-        db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
-                .document("datosCalendario").set(user)
-
-                .addOnFailureListener(e ->
-                        Toast.makeText(getContext(), "Problema cargando los datos del usuario!", Toast.LENGTH_SHORT).show()
-                );
+        // Guardar en formato web (una entrada por día)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String dateKey = LocalDate.parse(fechaSelected, DateTimeFormatter.ofPattern("dd/MM/yyyy")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            Map<String, Object> dayData = new HashMap<>();
+            List<String> tipos = new ArrayList<>();
+            tipos.add("period_start");
+            dayData.put("tipos", tipos);
+            dayData.put("fecha", dateKey);
+            db.collection("usuarios").document(GlobalVariables.email).collection("Datos").document(dateKey).set(dayData);
+        }
     }
 
-    private void userKiki(List<String> fechasKiki){
-        Map<String, Object> user = new HashMap<>();
-        user.put("diasKikiSeleccionados", fechasKiki);
-
-        db.collection("usuarios").document(GlobalVariables.email).collection("Datos")
-                .document("kikiData").set(user)
-
-                .addOnFailureListener(e ->
-                        Toast.makeText(getContext(), "Problema cargando los datos del usuario!", Toast.LENGTH_SHORT).show()
-                );
+    private void saveKiki(String dateKey) {
+        Map<String, Object> kiki = new HashMap<>();
+        kiki.put("fecha", dateKey);
+        kiki.put("registradoEn", System.currentTimeMillis());
+        db.collection("usuarios").document(GlobalVariables.email).collection("kikiData").document(dateKey).set(kiki);
     }
 
 }

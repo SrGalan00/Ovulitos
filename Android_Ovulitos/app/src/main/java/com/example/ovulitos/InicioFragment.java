@@ -37,11 +37,27 @@ public class InicioFragment extends Fragment {
         TextView tvDias = view.findViewById(R.id.tvDiasParaPeriodo);
         TextView tvFase = view.findViewById(R.id.tvFaseCiclo);
 
-        //por ahora lo dejamos estático, pero aquí es donde iría la lógica
-        // para calcular los días restantes basándose en la fecha
-        if (tvDias != null) {
-            String text = GlobalVariables.diasProximaRegla + "días para tu periodo";
-            tvDias.setText(text);
+        // Cargar datos desde Firebase para sincronización web
+        if (GlobalVariables.email != null) {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("usuarios").document(GlobalVariables.email)
+                .get().addOnSuccessListener(doc -> {
+                    if (doc.exists() && doc.contains("proximaReglaPrevista")) {
+                        String proxima = doc.getString("proximaReglaPrevista");
+                        if (proxima != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            java.time.LocalDate date = java.time.LocalDate.parse(proxima);
+                            java.time.LocalDate hoy = java.time.LocalDate.now();
+                            long dias = java.time.temporal.ChronoUnit.DAYS.between(hoy, date);
+                            
+                            GlobalVariables.diasProximaRegla = (int) Math.max(0, dias);
+                            
+                            if (tvDias != null) {
+                                String text = GlobalVariables.diasProximaRegla + " días para tu periodo";
+                                tvDias.setText(text);
+                            }
+                        }
+                    }
+                });
         }
     }
 }

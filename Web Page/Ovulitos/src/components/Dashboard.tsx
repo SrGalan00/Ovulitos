@@ -86,20 +86,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
       <Box component="main" sx={{ 
         flexGrow: 1, 
-        p: { xs: 2, md: 4 }, 
+        p: { xs: 1.5, md: 3 }, // Aumentado de 1/2 a 1.5/3
         zIndex: 1, 
         overflowY: 'auto',
-        backgroundColor: 'rgba(255, 255, 255, 0.4)', // Fondo semitransparente para el contenido
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
         backdropFilter: 'blur(10px)',
-        borderRadius: 8, // Bordes redondeados para el panel de contenido
+        borderRadius: 8, // Restaurado
         border: '1px solid rgba(105, 57, 58, 0.1)',
-        boxShadow: '0 10px 40px rgba(105, 57, 58, 0.05)'
+        boxShadow: '0 10px 40px rgba(105, 57, 58, 0.05)',
+        display: 'flex',
+        flexDirection: 'column'
       }}>
-        <Box sx={{ textAlign: 'center', mb: 3, mt: 2 }}>
-          <Typography variant="overline" sx={{ color: colors.textMuted, letterSpacing: 3, fontWeight: 'bold' }}>
+        <Box sx={{ textAlign: 'center', mb: 2, mt: 1.5 }}> {/* Aumentado de 1 a 2/1.5 */}
+          <Typography variant="overline" sx={{ color: colors.textMuted, letterSpacing: 2, fontWeight: 'bold', fontSize: '0.8rem' }}>
             PERSONAL SPACE
           </Typography>
-          <Typography variant="h3" sx={{ 
+          <Typography variant="h3" sx={{  // Restaurado de h4 a h3
             color: colors.secondary, 
             fontWeight: 800, 
             fontFamily: "'Poppins', sans-serif",
@@ -109,10 +111,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4} justifyContent="center">
+        <Grid container spacing={2} justifyContent="center" sx={{ flexGrow: 1, overflow: 'auto' }}>
+          {/* Daily Tip - Side by side on md+ */}
+          <Grid item xs={12} md={4} lg={3}>
+             <DailyTip currentUser={currentUser} key={refreshKey} />
+          </Grid>
           {/* Calendar Section */}
-          <Grid item xs={12} md={12} lg={11}>
-            <DailyTip currentUser={currentUser} key={refreshKey} />
+          <Grid item xs={12} md={8} lg={8} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <CalendarComponent />
           </Grid>
         </Grid>
