@@ -4,9 +4,13 @@ import {
   Typography, 
   Button, 
   Paper,
-  Grid
+  Grid,
+  IconButton,
+  Drawer,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
-import { Schedule, Refresh, ArrowForward } from '@mui/icons-material';
+import { Schedule, Refresh, ArrowForward, Menu as MenuIcon } from '@mui/icons-material';
 import { useAuth } from '../context/authContext/index.jsx';
 import CalendarComponent from './CalendarComponent';
 import Sidebar from './Sidebar';
@@ -18,9 +22,16 @@ import { useEffect } from 'react';
 
 const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [activeView, setActiveView] = useState('dashboard');
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   useEffect(() => {
     const checkData = async () => {
@@ -72,7 +83,37 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
         maskImage: 'radial-gradient(circle, black 0%, transparent 80%)'
       }} />
 
-      <Sidebar onLogout={onLogout} activeView={activeView} setActiveView={setActiveView} />
+      {/* Sidebar for Desktop */}
+      {!isMobile && (
+        <Sidebar onLogout={onLogout} activeView={activeView} setActiveView={setActiveView} />
+      )}
+
+      {/* Sidebar for Mobile (Drawer) */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { 
+            boxSizing: 'border-box', 
+            width: 280, 
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            border: 'none'
+          },
+        }}
+      >
+        <Sidebar 
+          onLogout={onLogout} 
+          activeView={activeView} 
+          setActiveView={(view) => {
+            setActiveView(view);
+            setMobileOpen(false);
+          }} 
+        />
+      </Drawer>
 
       {needsOnboarding && (
         <OnboardingPeriod 
@@ -97,15 +138,38 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
         display: 'flex',
         flexDirection: 'column'
       }}>
-        <Box sx={{ textAlign: 'center', mb: 2, mt: 1.5 }}> {/* Aumentado de 1 a 2/1.5 */}
+        <Box sx={{ 
+          textAlign: 'center', 
+          mb: 2, 
+          mt: 1.5,
+          position: 'relative' // Para posicionar el botón de menú
+        }}>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ 
+                position: 'absolute', 
+                left: 0, 
+                top: '50%', 
+                transform: 'translateY(-50%)',
+                color: colors.secondary 
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography variant="overline" sx={{ color: colors.textMuted, letterSpacing: 2, fontWeight: 'bold', fontSize: '0.8rem' }}>
             PERSONAL SPACE
           </Typography>
-          <Typography variant="h3" sx={{  // Restaurado de h4 a h3
+          <Typography variant="h3" sx={{ 
             color: colors.secondary, 
             fontWeight: 800, 
             fontFamily: "'Poppins', sans-serif",
-            mt: 0.5
+            mt: 0.5,
+            fontSize: { xs: '1.75rem', md: '3rem' } // Responsivo
           }}>
             Your Dashboard<Box component="span" sx={{ color: colors.accent }}>.</Box>
           </Typography>

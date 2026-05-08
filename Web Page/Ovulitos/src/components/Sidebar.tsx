@@ -62,14 +62,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
 
   return (
     <Box sx={{ 
-      width: 280, 
+      width: { xs: '100%', md: 280 }, 
       backgroundColor: colors.bg, 
       height: '100%', 
       display: 'flex', 
       flexDirection: 'column',
       borderRight: '1px solid rgba(255, 248, 201, 0.1)',
       color: colors.text,
-      borderRadius: 8, 
+      borderRadius: { xs: 0, md: 8 }, 
       boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
       overflow: 'hidden', 
       zIndex: 10
@@ -149,9 +149,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
           }}
           onClick={() => window.open('https://play.google.com/store', '_blank')}
         >
-          <ListItemIcon sx={{ color: colors.bg, minWidth: 30 }}>
-            <Box component="span" sx={{ fontSize: '1.1rem' }}>📱</Box>
-          </ListItemIcon>
           <ListItemText 
             primary="DESCARGAR APP" 
             primaryTypographyProps={{ fontSize: '0.75rem', fontWeight: 900, letterSpacing: 0.5 }} 

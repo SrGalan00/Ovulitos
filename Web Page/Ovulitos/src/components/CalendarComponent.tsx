@@ -404,34 +404,34 @@ const CalendarComponent: React.FC = () => {
           }}
           sx={{
             width: '100%',
-            maxWidth: 750, // Aumentado de 600
+            maxWidth: 750, 
             height: 'auto',
             '& .MuiPickersFadeTransitionGroup-root': {
               minHeight: 'auto',
             },
             '& .MuiDayCalendar-header': {
               justifyContent: 'space-around',
-              px: 3,
-              mb: 1.5,
+              px: { xs: 0, sm: 1.5, md: 3 },
+              mb: { xs: 0.5, md: 1.5 },
               '& .MuiTypography-root': {
-                fontSize: '1rem', // Aumentado de 0.8
+                fontSize: { xs: '0.75rem', md: '1rem' },
                 fontWeight: 900,
                 color: '#9B5354',
-                width: 54 // Aumentado de 40
+                width: { xs: 36, sm: 44, md: 54 }
               }
             },
             '& .MuiDayCalendar-weekContainer': {
               justifyContent: 'space-around',
-              px: 3,
-              my: 0.2
+              px: { xs: 0, sm: 1.5, md: 3 },
+              my: { xs: 0, md: 0.2 }
             },
             '& .MuiDayCalendar-monthContainer': {
               width: '100%'
             },
             '& .MuiPickerDay-root': {
-              fontSize: '1.1rem', // Aumentado de 0.85
-              width: 54, // Aumentado de 40
-              height: 54, // Aumentado de 40
+              fontSize: { xs: '0.8rem', md: '1.1rem' },
+              width: { xs: 36, sm: 44, md: 54 },
+              height: { xs: 36, sm: 44, md: 54 },
               borderRadius: '50%',
               fontWeight: 900,
               '&:hover': {
@@ -447,18 +447,18 @@ const CalendarComponent: React.FC = () => {
               borderWidth: '2px'
             },
             '& .MuiPickersCalendarHeader-root': {
-              paddingLeft: 4,
-              paddingRight: 4,
-              mb: 1,
-              mt: 0.5,
-              minHeight: 48,
+              paddingLeft: { xs: 1, md: 4 },
+              paddingRight: { xs: 1, md: 4 },
+              mb: { xs: 0, md: 1 },
+              mt: { xs: 0, md: 0.5 },
+              minHeight: { xs: 40, md: 48 },
               '& .MuiPickersCalendarHeader-label': {
-                fontSize: '1.4rem', // Aumentado de 1
+                fontSize: { xs: '1rem', md: '1.4rem' },
                 fontWeight: 900,
                 color: '#69393A'
               },
               '& .MuiIconButton-root': {
-                transform: 'scale(1.1)' // Aumentado de 0.9
+                transform: { xs: 'scale(0.85)', md: 'scale(1.1)' }
               }
             }
           }}

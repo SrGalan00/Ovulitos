@@ -110,14 +110,14 @@ const DailyTip = ({ currentUser }: { currentUser: any }) => {
       <Paper
         elevation={0}
         sx={{
-          p: 2, // Aumentado de 1.5
-          mb: 1.5, // Aumentado de 1
+          p: { xs: 1.5, md: 2 }, 
+          mb: { xs: 1, md: 1.5 },
           borderRadius: 4,
           backgroundColor: '#FFFDF0',
           border: '2px solid #9B5354',
           display: 'flex',
           alignItems: 'center',
-          gap: 2.5, // Aumentado de 2
+          gap: { xs: 1.5, md: 2.5 },
           position: 'relative',
           overflow: 'hidden',
           '&::before': {
@@ -125,7 +125,7 @@ const DailyTip = ({ currentUser }: { currentUser: any }) => {
             position: 'absolute',
             top: 0,
             left: 0,
-            width: '5px', // Aumentado de 4
+            width: '5px',
             height: '100%',
             backgroundColor: '#9B5354'
           }
@@ -133,20 +133,20 @@ const DailyTip = ({ currentUser }: { currentUser: any }) => {
       >
         <Box sx={{ 
           backgroundColor: 'rgba(155, 83, 84, 0.1)', 
-          p: 1.5, // Aumentado de 1
-          borderRadius: 2.5, // Aumentado de 2
+          p: { xs: 1, md: 1.5 },
+          borderRadius: 2.5,
           display: 'flex'
         }}>
-          <Lightbulb sx={{ color: '#9B5354', fontSize: '1.8rem' }} /> {/* Aumentado de 1.5rem */}
+          <Lightbulb sx={{ color: '#9B5354', fontSize: { xs: '1.4rem', md: '1.8rem' } }} />
         </Box>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="overline" sx={{ fontWeight: 900, color: '#9B5354', letterSpacing: 1.5, fontSize: '0.7rem' }}>
+          <Typography variant="overline" sx={{ fontWeight: 900, color: '#9B5354', letterSpacing: 1.5, fontSize: { xs: '0.6rem', md: '0.7rem' } }}>
             CONSEJO DEL DÍA {cycleDay ? `• DÍA ${cycleDay}` : ''}
           </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 800, color: '#69393A', mb: 0.5, lineHeight: 1.2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 800, color: '#69393A', mb: 0.5, lineHeight: 1.2, fontSize: { xs: '0.9rem', md: '1.25rem' } }}>
             {tip?.titulo || "Cargando consejo..."}
           </Typography>
-          <Typography variant="body2" sx={{ color: '#69393A', opacity: 0.8, lineHeight: 1.4, fontSize: '0.85rem' }}>
+          <Typography variant="body2" sx={{ color: '#69393A', opacity: 0.8, lineHeight: 1.4, fontSize: { xs: '0.75rem', md: '0.85rem' } }}>
             {tip?.contenido || "Escucha a tu cuerpo y mantente hidratada hoy."}
           </Typography>
         </Box>
@@ -159,16 +159,16 @@ const DailyTip = ({ currentUser }: { currentUser: any }) => {
             flexDirection: 'column', 
             alignItems: 'center',
             justifyContent: 'center',
-            minWidth: 90, // Aumentado de 80
-            p: 1.5, // Aumentado de 1
+            minWidth: { xs: 70, md: 90 },
+            p: { xs: 1, md: 1.5 },
             borderRadius: 3,
             backgroundColor: 'rgba(105, 57, 58, 0.05)',
             border: '1px dashed rgba(105, 57, 58, 0.2)'
           }}>
-            <Typography variant="h4" sx={{ fontWeight: 900, color: '#69393A', lineHeight: 1 }}>
+            <Typography variant="h4" sx={{ fontWeight: 900, color: '#69393A', lineHeight: 1, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
               {Math.max(0, avgCycle - cycleDay)}
             </Typography>
-            <Typography variant="caption" sx={{ fontWeight: 800, color: '#9B5354', textAlign: 'center', mt: 0.5, fontSize: '0.65rem', lineHeight: 1 }}>
+            <Typography variant="caption" sx={{ fontWeight: 800, color: '#9B5354', textAlign: 'center', mt: 0.5, fontSize: { xs: '0.55rem', md: '0.65rem' }, lineHeight: 1 }}>
               DÍAS PARA<br/>LA REGLA
             </Typography>
           </Box>

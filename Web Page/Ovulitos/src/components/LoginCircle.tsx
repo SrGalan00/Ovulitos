@@ -86,7 +86,8 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
           fontWeight: 'bold',
           fontFamily: "'Poppins', sans-serif",
           textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
-          zIndex: 3
+          zIndex: 3,
+          fontSize: { xs: '2.5rem', sm: '3.75rem' }
         }}
       >
         Ovulitos
@@ -95,8 +96,10 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
       <Box
         sx={{
           position: 'relative',
-          width: { xs: 450, sm: 650 },
-          height: { xs: 450, sm: 650 },
+          width: { xs: '95vw', sm: 550, md: 650 },
+          height: { xs: '95vw', sm: 550, md: 650 },
+          maxWidth: { xs: 400, sm: 'none' }, // Limit for very small screens
+          maxHeight: { xs: 400, sm: 'none' },
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -128,7 +131,7 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 6,
+            padding: { xs: 3, sm: 6 },
             zIndex: 1,
             overflow: 'hidden'
           }}
@@ -155,10 +158,10 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
             onSubmit={handleAuthAction}
             sx={{
               width: '100%',
-              maxWidth: 300,
+              maxWidth: { xs: 260, sm: 300 },
               display: 'flex',
               flexDirection: 'column',
-              gap: 2,
+              gap: { xs: 1, sm: 2 },
               zIndex: 2
             }}
           >
@@ -254,9 +257,9 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
             )}
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', my: 2, width: '70%', zIndex: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', my: { xs: 0.5, sm: 2 }, width: '70%', zIndex: 2 }}>
             <Box sx={{ flex: 1, height: '1px', backgroundColor: 'rgba(255,255,255,0.5)' }} />
-            <Typography variant="caption" sx={{ mx: 1, color: 'white' }}>o</Typography>
+            <Typography variant="caption" sx={{ mx: 1, color: 'white', fontSize: { xs: '0.6rem', sm: '0.75rem' } }}>o</Typography>
             <Box sx={{ flex: 1, height: '1px', backgroundColor: 'rgba(255,255,255,0.5)' }} />
           </Box>
 
@@ -270,13 +273,15 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
               textTransform: 'none',
               borderRadius: 2,
               zIndex: 2,
+              py: { xs: 0.5, sm: 1 },
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
               '&:hover': { borderColor: colors.primary, backgroundColor: 'rgba(255,255,255,0.1)' }
             }}
           >
             Google
           </Button>
 
-          <Typography variant="caption" sx={{ mt: 3, color: 'white', zIndex: 2 }}>
+          <Typography variant="caption" sx={{ mt: { xs: 1, sm: 3 }, color: 'white', zIndex: 2, fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
             {isRegistering ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}
             <Link
               component="button"
@@ -287,7 +292,8 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
                 color: colors.secondary, 
                 fontWeight: 'bold', 
                 textDecoration: 'underline',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: { xs: '0.65rem', sm: '0.75rem' }
               }}
             >
               {isRegistering ? 'Inicia Sesión' : 'Regístrate'}
@@ -300,11 +306,11 @@ const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
               window.location.reload();
             }}
             sx={{
-              mt: 2,
+              mt: { xs: 1, sm: 2 },
               color: colors.secondary,
               textTransform: 'none',
               fontWeight: 'bold',
-              fontSize: '0.85rem',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' },
               zIndex: 2,
               textDecoration: 'underline',
               '&:hover': { color: colors.accent, backgroundColor: 'transparent' }
