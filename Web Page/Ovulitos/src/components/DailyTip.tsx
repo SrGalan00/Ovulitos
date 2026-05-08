@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Paper, Typography, Skeleton, Fade } from '@mui/material';
-import { Lightbulb, Info } from '@mui/icons-material';
+import { Lightbulb } from '@mui/icons-material';
 import { db } from '../firebase/firebase';
 import { collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
 import dayjs from 'dayjs';

@@ -18,7 +18,7 @@ import {
   Settings, 
   Logout 
 } from '@mui/icons-material';
-import { useAuth } from '../context/authContext/index.jsx';
+import { useAuth } from '../context/authContext';
 import { db } from '../firebase/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 

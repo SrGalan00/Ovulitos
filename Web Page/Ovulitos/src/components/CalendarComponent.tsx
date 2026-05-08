@@ -16,7 +16,6 @@ import {
   FormControlLabel,
   Radio,
   TextField,
-  Chip,
   Box,
   Typography,
   Button,
@@ -30,22 +29,20 @@ import {
   Delete,
   Check,
   AutoAwesome,
-  Save,
-  Close
+  Save
 } from '@mui/icons-material';
 import { LocalizationProvider, DateCalendar, PickerDay, PickerDayProps } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { db } from '../firebase/firebase';
-import { collection, doc, setDoc, onSnapshot, query, deleteDoc, getDoc } from 'firebase/firestore';
-import { useAuth } from '../context/authContext/index.jsx';
+import { collection, doc, setDoc, onSnapshot, query, deleteDoc } from 'firebase/firestore';
+import { useAuth } from '../context/authContext';
 
 const CalendarComponent: React.FC = () => {
   const { currentUser } = useAuth();
   const [dayData, setDayData] = useState<Record<string, string[]>>({}); // { "2024-03-27": ["kiki", "period_start"] }
   const [loading, setLoading] = useState(true);
   const [predictedDates, setPredictedDates] = useState<string[]>([]);
-  const [avgCycleDays, setAvgCycleDays] = useState<number>(28);
   
   // Menu state
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -147,7 +144,7 @@ const CalendarComponent: React.FC = () => {
       }
     }
 
-    setAvgCycleDays(avgCycle);
+    // setAvgCycleDays(avgCycle);
     
     // Predecir las siguientes dos reglas
     const lastStart = dayjs(sortedStarts[sortedStarts.length - 1]);
@@ -301,7 +298,7 @@ const CalendarComponent: React.FC = () => {
     return null;
   };
 
-  const ServerDay = (props: PickerDayProps<Dayjs>) => {
+  const ServerDay = (props: PickerDayProps) => {
     const { day, outsideCurrentMonth, ...other } = props;
     const dateStr = day.format('YYYY-MM-DD');
     const types = !outsideCurrentMonth ? dayData[dateStr] : null;

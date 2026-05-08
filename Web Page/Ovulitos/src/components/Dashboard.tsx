@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { 
   Box, 
   Typography, 
-  Button, 
-  Paper,
-  Grid,
   IconButton,
   Drawer,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Grid
 } from '@mui/material';
-import { Schedule, Refresh, ArrowForward, Menu as MenuIcon } from '@mui/icons-material';
-import { useAuth } from '../context/authContext/index.jsx';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { useAuth } from '../context/authContext';
 import CalendarComponent from './CalendarComponent';
 import Sidebar from './Sidebar';
 import DailyTip from './DailyTip';
@@ -19,6 +17,10 @@ import OnboardingPeriod from './OnboardingPeriod';
 import { db } from '../firebase/firebase';
 import { collection, query, limit, getDocs } from 'firebase/firestore';
 import { useEffect } from 'react';
+
+interface DashboardProps {
+  onLogout: () => void;
+}
 
 const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const { currentUser } = useAuth();
@@ -177,11 +179,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
         <Grid container spacing={2} justifyContent="center" sx={{ flexGrow: 1, overflow: 'auto' }}>
           {/* Daily Tip - Side by side on md+ */}
-          <Grid item xs={12} md={4} lg={3}>
+          <Grid size={{ xs: 12, md: 4, lg: 3 }}>
              <DailyTip currentUser={currentUser} key={refreshKey} />
           </Grid>
           {/* Calendar Section */}
-          <Grid item xs={12} md={8} lg={8} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Grid size={{ xs: 12, md: 8, lg: 8 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <CalendarComponent />
           </Grid>
         </Grid>

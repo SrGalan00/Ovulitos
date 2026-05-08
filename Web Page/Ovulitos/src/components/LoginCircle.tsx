@@ -3,7 +3,7 @@ import {
   Box, 
   TextField, 
   Button, 
-  Typography, 
+  Typography,
   IconButton,
   InputAdornment,
   Link
@@ -20,7 +20,7 @@ interface LoginProps {
   onLogin: () => void;
 }
 
-const LoginCircle: React.FC<LoginProps> = ({ onLogin }) => {
+const LoginCircle: React.FC<LoginProps> = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
