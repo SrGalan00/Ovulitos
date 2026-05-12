@@ -156,8 +156,30 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
+// Ruta para descargar el APK (Generación de ejecutable)
+const path = require('path');
+const fs = require('fs');
+
+app.get('/api/download-apk', (req, res) => {
+    // Busca el APK en la carpeta raíz del backend o en una carpeta public/
+    // Por defecto, se asume que el usuario colocará el archivo 'app-release.apk' en la carpeta 'backend'
+    const apkPath = path.join(__dirname, 'app-release.apk');
+    
+    if (fs.existsSync(apkPath)) {
+        res.download(apkPath, 'Ovulitos-Release.apk', (err) => {
+            if (err) {
+                console.error('Error al descargar el APK:', err);
+                res.status(500).send('Error al descargar el archivo.');
+            }
+        });
+    } else {
+        res.status(404).send('El archivo APK no está disponible en este momento. Por favor, asegúrate de colocar app-release.apk en la carpeta backend.');
+    }
+});
+
 app.listen(port, '0.0.0.0', () => {
     console.log(`Servidor Asistente IA escuchando en http://0.0.0.0:${port}`);
+    console.log(`Descarga del APK disponible en http://0.0.0.0:${port}/api/download-apk`);
     console.log('Estado de la API Key:', process.env.GEMINI_API_KEY ? 'Presente (longitud: ' + process.env.GEMINI_API_KEY.length + ')' : 'FALTANTE');
     if (!process.env.GEMINI_API_KEY) {
         console.warn('¡ADVERTENCIA: GEMINI_API_KEY no está definido en el entorno!');
