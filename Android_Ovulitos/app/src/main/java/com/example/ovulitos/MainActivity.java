@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams) mainContainer.getLayoutParams();
                     
             if (fragmento instanceof LoginFragment || fragmento instanceof RegisterFragment || fragmento instanceof PerfilFragment 
-                || fragmento instanceof AjustesFragment || fragmento instanceof ChatListFragment || fragmento instanceof UsersListFragment || fragmento instanceof ChatFragment) {
+                || fragmento instanceof AjustesFragment || fragmento instanceof ChatFragment) {
                 topBar.setVisibility(android.view.View.GONE);
                 bottomBar.setVisibility(android.view.View.GONE);
                 
@@ -110,9 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 topBar.setVisibility(android.view.View.VISIBLE);
                 bottomBar.setVisibility(android.view.View.VISIBLE);
                 
-                // Restauramos los 100dp de margen inferior
-                float scale = getResources().getDisplayMetrics().density;
-                params.bottomMargin = (int) (100 * scale + 0.5f);
+                // Margen 0 para que el scroll pase por debajo del menú flotante
+                params.bottomMargin = 0;
             }
             
             mainContainer.setLayoutParams(params);

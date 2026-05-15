@@ -43,10 +43,6 @@ public class AiAssistantFragment extends Fragment {
     private List<ChatMessage> messageList;
     private AiApiService apiService;
 
-    // TODO: Reemplaza con la IP de tu PC en la red local si pruebas en dispositivo físico
-    // 10.0.2.2 es para acceder a localhost desde el emulador de Android.
-    private static final String BASE_URL = "https://ovulitos-1.onrender.com";
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,7 +80,7 @@ public class AiAssistantFragment extends Fragment {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

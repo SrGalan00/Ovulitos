@@ -15,6 +15,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        buildConfigField("String", "BASE_URL", "\"https://ovulitos-1.onrender.com/\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -60,6 +66,9 @@ dependencies {
     // Retrofit & Gson para el Asistente IA
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
