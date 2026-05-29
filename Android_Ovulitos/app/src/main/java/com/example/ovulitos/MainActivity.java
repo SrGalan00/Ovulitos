@@ -123,20 +123,23 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         
-        if (user != null && txtUserName != null) {
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("Users").child(user.getUid()).child("nombre")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            txtUserName.setText(snapshot.getValue(String.class));
-                        } else {
-                            txtUserName.setText(user.getEmail());
+        if (user != null && txtUserName != null && user.getEmail() != null) {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("usuarios").document(user.getEmail())
+                .addSnapshotListener((snapshot, error) -> {
+                    if (error != null || snapshot == null) return;
+                    if (snapshot.exists()) {
+                        String nombre = snapshot.getString("nombre");
+                        txtUserName.setText(nombre != null && !nombre.isEmpty() ? nombre : "Sin nombre");
+                        
+                        String avatarUrl = snapshot.getString("avatarUrl");
+                        android.widget.ImageView imgAvatar = findViewById(R.id.drawer_avatar);
+                        if (avatarUrl != null && !avatarUrl.isEmpty() && imgAvatar != null && !isDestroyed()) {
+                            com.bumptech.glide.Glide.with(MainActivity.this).load(avatarUrl).circleCrop().placeholder(R.drawable.ovulito_sin_cara).into(imgAvatar);
                         }
+                    } else {
+                        txtUserName.setText(user.getEmail());
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
         }
 
