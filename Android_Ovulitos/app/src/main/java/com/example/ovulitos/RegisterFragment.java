@@ -83,8 +83,18 @@ public class RegisterFragment extends Fragment {
                         if (user != null) {
                             userMap.put("uid", user.getUid());
                         }
-                        userMap.put("fecha_registro", new java.util.Date().toString());
+                        String fechaISO;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            fechaISO = java.time.Instant.now().toString();
+                        } else {
+                            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US);
+                            sdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+                            fechaISO = sdf.format(new java.util.Date());
+                        }
+                        userMap.put("fechaRegistro", fechaISO);
                         userMap.put("provider", "email");
+                        userMap.put("rol", "usuario");
+                        userMap.put("cicloMedio", 28);
 
                         // Guardar en Firestore
                         db.collection("usuarios").document(email).set(userMap)

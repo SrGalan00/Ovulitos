@@ -110,69 +110,87 @@ const DailyTip = ({ currentUser }: { currentUser: any }) => {
       <Paper
         elevation={0}
         sx={{
-          p: { xs: 1.5, md: 2 }, 
-          mb: { xs: 1, md: 1.5 },
-          borderRadius: 4,
-          backgroundColor: '#FFFDF0',
-          border: '2px solid #9B5354',
+          p: 3, 
+          borderRadius: 5, 
+          backgroundColor: 'rgba(255, 253, 240, 0.95)',
+          backdropFilter: 'blur(20px)',
+          border: '2px solid rgba(155, 83, 84, 0.2)',
+          boxShadow: '0 15px 35px rgba(105, 57, 58, 0.04)',
           display: 'flex',
-          alignItems: 'center',
-          gap: { xs: 1.5, md: 2.5 },
+          flexDirection: 'column',
+          gap: 2.5,
           position: 'relative',
           overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '5px',
-            height: '100%',
-            backgroundColor: '#9B5354'
-          }
+          width: '100%',
+          boxSizing: 'border-box'
         }}
       >
-        <Box sx={{ 
-          backgroundColor: 'rgba(155, 83, 84, 0.1)', 
-          p: { xs: 1, md: 1.5 },
-          borderRadius: 2.5,
-          display: 'flex'
-        }}>
-          <Lightbulb sx={{ color: '#9B5354', fontSize: { xs: '1.4rem', md: '1.8rem' } }} />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="overline" sx={{ fontWeight: 900, color: '#9B5354', letterSpacing: 1.5, fontSize: { xs: '0.6rem', md: '0.7rem' } }}>
-            CONSEJO DEL DÍA {cycleDay ? `• DÍA ${cycleDay}` : ''}
+        {/* Contador de días para la regla y estatus */}
+        {cycleDay && (
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between',
+            p: 2,
+            borderRadius: 4,
+            backgroundColor: 'rgba(155, 83, 84, 0.05)',
+            border: '1px solid rgba(155, 83, 84, 0.1)'
+          }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box sx={{ 
+                backgroundColor: 'rgba(155, 83, 84, 0.12)', 
+                p: 1,
+                borderRadius: 2.5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Lightbulb sx={{ color: '#9B5354', fontSize: '1.2rem' }} />
+              </Box>
+              <Typography sx={{ fontWeight: 900, color: '#69393A', fontSize: '0.75rem', letterSpacing: 0.5 }}>
+                DÍA {cycleDay} DEL CICLO
+              </Typography>
+            </Box>
+            
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1
+            }}>
+              <Typography variant="h4" sx={{ fontWeight: 950, color: '#9B5354', fontSize: '1.75rem', lineHeight: 1 }}>
+                {Math.max(0, avgCycle - cycleDay + 1)}
+              </Typography>
+              <Typography variant="caption" sx={{ fontWeight: 800, color: '#9B5354', textAlign: 'left', fontSize: '0.58rem', textTransform: 'uppercase', lineHeight: 1.1 }}>
+                días para<br/>la regla
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
+        {/* Contenido del Consejo */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          <Typography variant="overline" sx={{ fontWeight: 900, color: '#9B5354', letterSpacing: 1.5, fontSize: '0.65rem' }}>
+            CONSEJO DEL DÍA
           </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 800, color: '#69393A', mb: 0.5, lineHeight: 1.2, fontSize: { xs: '0.9rem', md: '1.25rem' } }}>
+          <Typography variant="h6" sx={{ 
+            fontWeight: 800, 
+            color: '#69393A', 
+            lineHeight: 1.3, 
+            fontSize: '1.25rem',
+            fontFamily: "'Poppins', sans-serif"
+          }}>
             {tip?.titulo || "Cargando consejo..."}
           </Typography>
-          <Typography variant="body2" sx={{ color: '#69393A', opacity: 0.8, lineHeight: 1.4, fontSize: { xs: '0.75rem', md: '0.85rem' } }}>
+          <Typography variant="body2" sx={{ 
+            color: '#69393A', 
+            opacity: 0.85, 
+            lineHeight: 1.6, 
+            fontSize: '0.85rem',
+            letterSpacing: 0.1
+          }}>
             {tip?.contenido || "Escucha a tu cuerpo y mantente hidratada hoy."}
           </Typography>
         </Box>
-
-        {/* Contador de días para la regla */}
-        {cycleDay && (
-          <Box sx={{ 
-            ml: 'auto', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center',
-            justifyContent: 'center',
-            minWidth: { xs: 70, md: 90 },
-            p: { xs: 1, md: 1.5 },
-            borderRadius: 3,
-            backgroundColor: 'rgba(105, 57, 58, 0.05)',
-            border: '1px dashed rgba(105, 57, 58, 0.2)'
-          }}>
-            <Typography variant="h4" sx={{ fontWeight: 900, color: '#69393A', lineHeight: 1, fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
-              {Math.max(0, avgCycle - cycleDay)}
-            </Typography>
-            <Typography variant="caption" sx={{ fontWeight: 800, color: '#9B5354', textAlign: 'center', mt: 0.5, fontSize: { xs: '0.55rem', md: '0.65rem' }, lineHeight: 1 }}>
-              DÍAS PARA<br/>LA REGLA
-            </Typography>
-          </Box>
-        )}
       </Paper>
     </Fade>
   );

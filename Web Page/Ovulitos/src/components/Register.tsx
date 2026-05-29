@@ -64,15 +64,15 @@ export const Register: React.FC = () => {
 
         {/* Form Layer */}
         <form className="relative z-20 flex flex-col justify-center items-center gap-[18px]" onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-[#333] mb-1">Create Account</h2>
+          <h2 className="text-2xl font-bold text-[#333] mb-1">Crear Cuenta</h2>
           {error && <div className="text-red-600 font-bold bg-white/80 p-2 rounded max-w-[300px] text-center text-sm">{error}</div>}
 
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-sm px-1.5 font-medium">Username</label>
+            <label className="text-[#333] text-sm px-1.5 font-medium">Nombre de usuario</label>
             <input
               className="w-[320px] p-[12px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="text"
-              placeholder="Your name"
+              placeholder="Tu nombre"
               value={username}
               required
               onChange={e => setUsername(e.target.value)}
@@ -80,11 +80,11 @@ export const Register: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-sm px-1.5 font-medium">Email</label>
+            <label className="text-[#333] text-sm px-1.5 font-medium">Correo</label>
             <input
               className="w-[320px] p-[12px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="email"
-              placeholder="Email"
+              placeholder="Correo electrónico"
               value={email}
               required
               onChange={e => setEmail(e.target.value)}
@@ -92,11 +92,11 @@ export const Register: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-sm px-1.5 font-medium">Password</label>
+            <label className="text-[#333] text-sm px-1.5 font-medium">Contraseña</label>
             <input
               className="w-[320px] p-[12px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="password"
-              placeholder="Password"
+              placeholder="Contraseña"
               value={password}
               required
               onChange={e => setPassword(e.target.value)}
@@ -107,11 +107,11 @@ export const Register: React.FC = () => {
             className="mt-4 w-[200px] p-3.5 rounded-[14px] border border-[#ddd] bg-white font-bold text-[#333] hover:bg-[#f1f1f1] transition-colors cursor-pointer shadow-sm hover:shadow-md active:scale-95 transform duration-100"
             type="submit"
           >
-            REGISTER
+            REGISTRARSE
           </button>
 
           <div className="mt-2 text-sm font-medium">
-            Already have an account? <Link to="/login" className="text-[#c45a7a] hover:underline">Login here</Link>
+            ¿Ya tienes una cuenta? <Link to="/login" className="text-[#c45a7a] hover:underline">Inicia sesión aquí</Link>
           </div>
         </form>
       </div>

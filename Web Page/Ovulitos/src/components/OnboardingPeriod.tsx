@@ -30,6 +30,18 @@ const OnboardingPeriod: React.FC<OnboardingPeriodProps> = ({ currentUser, onComp
         timestamp: new Date()
       });
 
+      // Calcular predicciones iniciales y guardarlas en usuarios/{email}
+      const userRef = doc(db, 'usuarios', currentUser.email);
+      const nextRegla = selectedDate.add(28, 'day').format('YYYY-MM-DD');
+      const nextRegla2 = selectedDate.add(56, 'day').format('YYYY-MM-DD');
+      
+      await setDoc(userRef, {
+        cicloMedio: 28,
+        proximaReglaPrevista: nextRegla,
+        segundaReglaPrevista: nextRegla2,
+        ultimaActualización: new Date().toISOString()
+      }, { merge: true });
+
       onComplete();
     } catch (error) {
       console.error("Error al guardar el periodo inicial:", error);

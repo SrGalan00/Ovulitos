@@ -402,9 +402,51 @@ const CalendarComponent: React.FC = () => {
           sx={{
             width: '100%',
             maxWidth: 750, 
-            height: 'auto',
+            height: 'auto !important',
+            minHeight: { xs: '360px !important', sm: '420px !important', md: '500px !important' },
+            maxHeight: 'none !important',
+            overflow: 'hidden !important',
+            scrollbarWidth: 'none !important',
+            msOverflowStyle: 'none !important',
+            '&::-webkit-scrollbar': {
+              display: 'none !important',
+              width: '0 !important',
+              height: '0 !important'
+            },
+            '& *::-webkit-scrollbar': {
+              display: 'none !important',
+              width: '0 !important',
+              height: '0 !important'
+            },
+            '& *': {
+              scrollbarWidth: 'none !important',
+              msOverflowStyle: 'none !important'
+            },
             '& .MuiPickersFadeTransitionGroup-root': {
-              minHeight: 'auto',
+              height: 'auto !important',
+              maxHeight: 'none !important',
+              minHeight: { xs: '260px !important', sm: '310px !important', md: '390px !important' },
+              overflow: 'hidden !important',
+              overflowY: 'hidden !important'
+            },
+            '& .MuiPickersFadeTransitionGroup-root > div': {
+              height: 'auto !important',
+              maxHeight: 'none !important',
+              minHeight: { xs: '260px !important', sm: '310px !important', md: '390px !important' },
+              overflow: 'hidden !important',
+              overflowY: 'hidden !important'
+            },
+            '& .MuiPickersSlideTransition-root': {
+              minHeight: { xs: '260px !important', sm: '310px !important', md: '390px !important' },
+              height: 'auto !important',
+              overflow: 'hidden !important',
+              overflowY: 'hidden !important'
+            },
+            '& .MuiDateCalendar-viewTransitionContainer': {
+              minHeight: { xs: '260px !important', sm: '310px !important', md: '390px !important' },
+              height: 'auto !important',
+              overflow: 'hidden !important',
+              overflowY: 'hidden !important'
             },
             '& .MuiDayCalendar-header': {
               justifyContent: 'space-around',
@@ -423,7 +465,9 @@ const CalendarComponent: React.FC = () => {
               my: { xs: 0, md: 0.2 }
             },
             '& .MuiDayCalendar-monthContainer': {
-              width: '100%'
+              width: '100%',
+              height: 'auto !important',
+              overflow: 'hidden !important'
             },
             '& .MuiPickerDay-root': {
               fontSize: { xs: '0.8rem', md: '1.1rem' },

@@ -7,7 +7,18 @@
     <string name="consejo">Estás en tu peak de calma y enfoque. ¡Aprovecha! Pero con 19 días, el SPM viene en camino. Mímate mucho estos días.</string>
     <string name="probabilidad_embarazo">Baja probabilidad de embarazo</string>
     <string name="consejito_del_dia">Consejito del día</string>
-    <string name="fase">Fase lútea</string>
+    
+    <string name="fase_menstrual">Fase menstrual</string>
+    <string name="fase_folicular">Fase folicular</string>
+    <string name="fase_ovulacion">Fase de ovulación</string>
+    <string name="fase_lutea">Fase lútea</string>
+    <string name="fase_desconocida">Calculando fase...</string>
+
+    <string name="consejo_menstrual">Es momento de descansar y escuchar a tu cuerpo. Date permiso para bajar el ritmo, toma infusiones calientes y prioriza tu bienestar.</string>
+    <string name="consejo_folicular">Tu energía empieza a subir. Es el momento perfecto para planificar nuevos proyectos, hacer ejercicio de más intensidad y socializar.</string>
+    <string name="consejo_ovulacion">Estás en tu pico de energía y confianza. Aprovecha para comunicarte, salir y brillar. ¡Te sientes imparable!</string>
+    <string name="consejo_lutea">Estás en tu peak de calma y enfoque. El SPM puede estar en camino. Mímate mucho estos días y prioriza el autocuidado.</string>
+    <string name="consejo_default">Recuerda escuchar a tu cuerpo y cuidarte cada día.</string>
     <string name="titulo_dia_ciclo">Día - del ciclo</string>
     <string name="seccion_intensidad_sangrado">Intensidad del sangrado</string>
     <string name="seccion_otros_sintomas">Otros síntomas</string>

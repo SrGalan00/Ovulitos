@@ -15,6 +15,109 @@ const sampleTips = [
   { dia: 28, titulo: "Día 28: Reflexión y Calma", contenido: "Tu cuerpo se prepara para renovarse. Sé amable contigo misma. Un baño relajante o meditación te ayudarán a cerrar el ciclo con paz." }
 ];
 
+const sampleNews = [
+  // Menstrual Phase News
+  {
+    titulo: "Nutrición menstrual: Qué comer durante la regla",
+    url: "https://www.cuerpomente.com/salud-natural/tratamientos/alimentacion-durante-menstruacion_1907",
+    fase: "menstrual",
+    imagen: "foto_comida"
+  },
+  {
+    titulo: "Ejercicios suaves para aliviar los dolores menstruales",
+    url: "https://helloclue.com/es/articulos/ciclo-menstrual/ejercicio-durante-el-periodo",
+    fase: "menstrual",
+    imagen: "flor"
+  },
+  {
+    titulo: "Entendiendo tu período: Fisiología de la menstruación",
+    url: "https://es.wikipedia.org/wiki/Menstruaci%C3%B3n",
+    fase: "menstrual",
+    imagen: "ovulito_sin_cara"
+  },
+  {
+    titulo: "Autocuidado y descanso en tu fase menstrual",
+    url: "https://www.sabervivir.es/salud-y-bienestar/consejos-para-dormir-bien-menstruacion",
+    fase: "menstrual",
+    imagen: "tarro_emociones"
+  },
+  // Folicular Phase News
+  {
+    titulo: "Fase folicular: Incrementa tu productividad",
+    url: "https://helloclue.com/es/articulos/ciclo-menstrual/fase-folicular",
+    fase: "folicular",
+    imagen: "alegria"
+  },
+  {
+    titulo: "Recetas saludables para la fase folicular",
+    url: "https://www.cuerpomente.com/alimentacion/recetas-saludables",
+    fase: "folicular",
+    imagen: "foto_comida"
+  },
+  {
+    titulo: "Entrenamiento de fuerza en la fase folicular",
+    url: "https://www.runnersworld.com/es/salud-lesiones/a42211516/entrenamiento-segun-ciclo-menstrual/",
+    fase: "folicular",
+    imagen: "flor"
+  },
+  {
+    titulo: "Planificando metas: Aprovecha el pico de estrógeno",
+    url: "https://www.sabervivir.es/psicologia/consejos-motivacion",
+    fase: "folicular",
+    imagen: "ovulito"
+  },
+  // Ovulación Phase News
+  {
+    titulo: "Identifica los síntomas de la ovulación",
+    url: "https://espanol.babycenter.com/a900119/c%C3%B3mo-saber-cu%C3%A1ndo-est%C3%A1s-ovulando",
+    fase: "ovulacion",
+    imagen: "ovulito"
+  },
+  {
+    titulo: "La ventana fértil y cómo calcularla",
+    url: "https://www.plannedparenthood.org/es/temas-de-salud/embarazo/como-quedar-embarazada",
+    fase: "ovulacion",
+    imagen: "foto_embarazada"
+  },
+  {
+    titulo: "Alimentación rica en antioxidantes para ovular",
+    url: "https://www.cuerpomente.com/salud-natural/antioxidantes",
+    fase: "ovulacion",
+    imagen: "foto_comida"
+  },
+  {
+    titulo: "El papel del flujo cervical en la ovulación",
+    url: "https://helloclue.com/es/articulos/ciclo-menstrual/flujo-cervical-y-ovulacion",
+    fase: "ovulacion",
+    imagen: "ovulito_sin_cara"
+  },
+  // Lútea Phase News
+  {
+    titulo: "Fase lútea: Preparando el cuerpo para el descanso",
+    url: "https://helloclue.com/es/articulos/ciclo-menstrual/la-fase-lutea",
+    fase: "lutea",
+    imagen: "bebe"
+  },
+  {
+    titulo: "Cómo combatir el síndrome premenstrual (SPM)",
+    url: "https://www.mayoclinic.org/es/diseases-conditions/premenstrual-syndrome/symptoms-causes/syc-20376780",
+    fase: "lutea",
+    imagen: "tarro_emociones"
+  },
+  {
+    titulo: "Alimentos ricos en magnesio para evitar antojos",
+    url: "https://www.cuerpomente.com/alimentacion/alimentos-ricos-en-magnesio",
+    fase: "lutea",
+    imagen: "foto_comida"
+  },
+  {
+    titulo: "Meditación y yoga para la calma premenstrual",
+    url: "https://www.sabervivir.es/yoga-bienestar",
+    fase: "lutea",
+    imagen: "alegria"
+  }
+];
+
 export const initializeConsejos = async () => {
   try {
     const consejosRef = collection(db, 'consejos');
@@ -33,6 +136,30 @@ export const initializeConsejos = async () => {
     return false;
   } catch (error) {
     console.error("Error al inicializar consejos:", error);
+    return false;
+  }
+};
+
+export const initializeNoticias = async () => {
+  try {
+    const noticiasRef = collection(db, 'noticias_semanales');
+    const q = query(noticiasRef, limit(1));
+    const querySnapshot = await getDocs(q);
+
+    // Solo poblamos si la colección está vacía para evitar duplicados
+    if (querySnapshot.empty) {
+      console.log("Inicializando colección de noticias_semanales...");
+      let index = 1;
+      for (const news of sampleNews) {
+        await setDoc(doc(noticiasRef, `noticia_${index}`), news);
+        index++;
+      }
+      console.log("Colección 'noticias_semanales' creada con éxito.");
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error al inicializar noticias:", error);
     return false;
   }
 };

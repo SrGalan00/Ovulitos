@@ -4,7 +4,7 @@ import LoginCircle from './components/LoginCircle';
 import Dashboard from './components/Dashboard';
 import { useAuth } from './context/authContext';
 import { doSignOut } from './firebase/auth';
-import { initializeConsejos } from './utils/firebaseUtils';
+import { initializeConsejos, initializeNoticias } from './utils/firebaseUtils';
 import { useEffect } from 'react';
 
 
@@ -32,6 +32,7 @@ function App() {
 
   useEffect(() => {
     initializeConsejos();
+    initializeNoticias();
   }, []);
 
   const handleLogout = async () => {

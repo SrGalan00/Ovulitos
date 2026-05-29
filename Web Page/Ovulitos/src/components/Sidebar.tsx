@@ -16,7 +16,8 @@ import {
   CalendarMonth, 
   History, 
   Settings, 
-  Logout 
+  Logout,
+  Newspaper
 } from '@mui/icons-material';
 import { useAuth } from '../context/authContext';
 import { db } from '../firebase/firebase';
@@ -54,10 +55,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
   }, [currentUser]);
 
   const menuItems = [
-    { id: 'home', text: 'HOME', icon: <Home /> },
-    { id: 'dashboard', text: 'DASHBOARD', icon: <DashboardIcon /> },
+    { id: 'home', text: 'INICIO', icon: <Home /> },
+    { id: 'dashboard', text: 'PANEL', icon: <DashboardIcon /> },
     { id: 'agenda', text: 'AGENDA', icon: <CalendarMonth /> },
-    { id: 'history', text: 'HISTORY', icon: <History /> },
+    { id: 'noticias', text: 'NOTICIAS', icon: <Newspaper /> },
+    { id: 'history', text: 'HISTORIAL', icon: <History /> },
   ];
 
   return (
@@ -173,10 +175,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
           </Avatar>
           <Box sx={{ overflow: 'hidden' }}>
             <Typography variant="caption" sx={{ fontWeight: 800, color: colors.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block', maxWidth: 150 }}>
-              {localStorage.getItem('isGuest') === 'true' ? 'GUEST USER' : (userData?.nombre || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'usuario')}
+              {localStorage.getItem('isGuest') === 'true' ? 'USUARIO INVITADO' : (userData?.nombre || currentUser?.displayName || currentUser?.email?.split('@')[0] || 'usuario')}
             </Typography>
             <Typography variant="caption" sx={{ color: 'rgba(255, 248, 201, 0.6)', cursor: 'pointer', fontSize: '0.65rem', '&:hover': { color: colors.text } }}>
-              {localStorage.getItem('isGuest') === 'true' ? 'MODO INVITADO' : 'VIEW PROFILE'}
+              {localStorage.getItem('isGuest') === 'true' ? 'MODO INVITADO' : 'VER PERFIL'}
             </Typography>
           </Box>
         </Box>
@@ -208,7 +210,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout, activeView, setActiveView }
 
         <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1, opacity: 0.6, px: 1 }}>
           <Settings sx={{ fontSize: '0.8rem' }} />
-          <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>Ovulitos Settings</Typography>
+          <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.65rem' }}>Ajustes Ovulitos</Typography>
         </Box>
       </Box>
     </Box>

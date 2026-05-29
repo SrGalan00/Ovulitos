@@ -14,6 +14,7 @@ import CalendarComponent from './CalendarComponent';
 import Sidebar from './Sidebar';
 import DailyTip from './DailyTip';
 import OnboardingPeriod from './OnboardingPeriod';
+import NewsComponent from './NewsComponent';
 import { db } from '../firebase/firebase';
 import { collection, query, limit, getDocs } from 'firebase/firestore';
 import { useEffect } from 'react';
@@ -57,6 +58,19 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     background: '#FDF8F0',
     cardBg: '#FFFFFF',
     textMuted: 'rgba(105, 57, 58, 0.6)'
+  };
+
+  const getTitle = () => {
+    switch (activeView) {
+      case 'agenda':
+        return <>Tu Agenda<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+      case 'noticias':
+        return <>Noticias Semanales<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+      case 'history':
+        return <>Tu Historial<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+      default:
+        return <>Tu Panel<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+    }
   };
 
   return (
@@ -164,7 +178,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             </IconButton>
           )}
           <Typography variant="overline" sx={{ color: colors.textMuted, letterSpacing: 2, fontWeight: 'bold', fontSize: '0.8rem' }}>
-            PERSONAL SPACE
+            ESPACIO PERSONAL
           </Typography>
           <Typography variant="h3" sx={{ 
             color: colors.secondary, 
@@ -173,20 +187,33 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             mt: 0.5,
             fontSize: { xs: '1.75rem', md: '3rem' } // Responsivo
           }}>
-            Your Dashboard<Box component="span" sx={{ color: colors.accent }}>.</Box>
+            {getTitle()}
           </Typography>
         </Box>
 
-        <Grid container spacing={2} justifyContent="center" sx={{ flexGrow: 1, overflow: 'auto' }}>
-          {/* Daily Tip - Side by side on md+ */}
-          <Grid size={{ xs: 12, md: 4, lg: 3 }}>
-             <DailyTip currentUser={currentUser} key={refreshKey} />
-          </Grid>
-          {/* Calendar Section */}
-          <Grid size={{ xs: 12, md: 8, lg: 8 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {activeView === 'agenda' ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1, overflow: 'auto', width: '100%' }}>
             <CalendarComponent />
+          </Box>
+        ) : activeView === 'noticias' ? (
+          <NewsComponent />
+        ) : activeView === 'history' ? (
+          <Box sx={{ p: 4, textAlign: 'center', backgroundColor: 'rgba(255, 253, 240, 0.6)', borderRadius: 4, border: '1px dashed rgba(105, 57, 58, 0.2)', margin: 'auto' }}>
+            <Typography variant="h6" sx={{ color: colors.secondary, fontWeight: 800 }}>Historial del ciclo</Typography>
+            <Typography variant="body2" sx={{ color: colors.textMuted, mt: 1 }}>Aquí verás tus ciclos anteriores próximamente.</Typography>
+          </Box>
+        ) : (
+          <Grid container spacing={2} justifyContent="center" sx={{ flexGrow: 1, overflow: 'auto' }}>
+            {/* Daily Tip - Side by side on md+ */}
+            <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+               <DailyTip currentUser={currentUser} key={refreshKey} />
+            </Grid>
+            {/* Calendar Section */}
+            <Grid size={{ xs: 12, md: 8, lg: 8 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <CalendarComponent />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Box>
     </Box>
   );

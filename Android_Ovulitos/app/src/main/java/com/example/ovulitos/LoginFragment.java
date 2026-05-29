@@ -147,12 +147,19 @@ public class LoginFragment extends Fragment {
 
     private void saveUserDataToFirestore(String email) {
         Map<String, Object> userData = new HashMap<>();
-        userData.put("user", email);
-        userData.put("last_access", new java.util.Date().toString()); // Fecha actual
+        userData.put("email", email);
+        String fechaISO;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            fechaISO = java.time.Instant.now().toString();
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US);
+            sdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            fechaISO = sdf.format(new java.util.Date());
+        }
+        userData.put("lastAccess", fechaISO); // Fecha actual
         userData.put("provider", "email");
 
-
-        db.collection("usuarios").document(email).set(userData)
+        db.collection("usuarios").document(email).set(userData, com.google.firebase.firestore.SetOptions.merge())
                 .addOnSuccessListener(aVoid ->
                         Log.d("FIRESTORE", "Datos de usuario guardados correctamente")
                 )
@@ -165,7 +172,7 @@ public class LoginFragment extends Fragment {
         try {
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.main_fragment_container, new HomeFragment())
+                    .replace(R.id.main_fragment_container, new InicioFragment())
                     .commit();
 
         } catch (Exception e) {
