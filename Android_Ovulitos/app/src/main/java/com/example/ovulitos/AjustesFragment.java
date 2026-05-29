@@ -18,6 +18,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import android.net.Uri;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.bumptech.glide.Glide;
+import android.widget.Toast;
 
 public class AjustesFragment extends Fragment {
 
@@ -34,6 +41,10 @@ public class AjustesFragment extends Fragment {
     private boolean enSubSeccion = false;
     private String seccionFoco = "menu";
 
+    private ImageView imgFotoPerfil;
+    private ActivityResultLauncher<String> pickImageLauncher;
+    private Uri imageUri;
+
     public static AjustesFragment newInstance(String seccion) {
         AjustesFragment fragment = new AjustesFragment();
         Bundle args = new Bundle();
@@ -48,6 +59,16 @@ public class AjustesFragment extends Fragment {
         if (getArguments() != null) {
             seccionFoco = getArguments().getString("seccion", "menu");
         }
+
+        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) {
+                imageUri = uri;
+                if (imgFotoPerfil != null) {
+                    Glide.with(this).load(imageUri).circleCrop().into(imgFotoPerfil);
+                }
+                uploadProfilePicture();
+            }
+        });
     }
 
     @Nullable
@@ -126,6 +147,11 @@ public class AjustesFragment extends Fragment {
         if (user != null) {
             String userEmail = user.getEmail();
             txtEmail.setText(userEmail != null ? userEmail : "Sin correo");
+            
+            imgFotoPerfil = vistaCuenta.findViewById(R.id.imgFotoPerfil);
+            if (imgFotoPerfil != null) {
+                imgFotoPerfil.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+            }
 
             com.google.firebase.firestore.FirebaseFirestore firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance();
             if (userEmail != null) {
@@ -138,6 +164,11 @@ public class AjustesFragment extends Fragment {
 
                                 String estadoSocial = documentSnapshot.getString("estado_social");
                                 txtEstadoSocial.setText(estadoSocial != null ? estadoSocial : "(Toca para añadir)");
+                                
+                                String avatarUrl = documentSnapshot.getString("avatarUrl");
+                                if (avatarUrl != null && imgFotoPerfil != null && isAdded()) {
+                                    Glide.with(this).load(avatarUrl).circleCrop().placeholder(R.drawable.ic_avatar_placeholder).into(imgFotoPerfil);
+                                }
                             } else {
                                 txtNombre.setText("Usuario sin perfil");
                                 txtEstadoSocial.setText("(Toca para añadir)");
@@ -149,6 +180,56 @@ public class AjustesFragment extends Fragment {
             txtNombre.setOnClickListener(v -> mostrarDialogoEdicion("Editar Nombre", "nombre", txtNombre.getText().toString(), auth.getCurrentUser().getEmail(), firestore));
             txtEstadoSocial.setOnClickListener(v -> mostrarDialogoEstadoSocial(txtEstadoSocial.getText().toString(), auth.getCurrentUser().getEmail(), firestore));
             txtEmail.setOnClickListener(v -> mostrarDialogoEdicionEmail("Editar Correo", txtEmail.getText().toString(), auth.getCurrentUser().getEmail(), firestore));
+            
+            TextView btnEliminarCuenta = vistaCuenta.findViewById(R.id.btnEliminarCuenta);
+            if (btnEliminarCuenta != null) {
+                btnEliminarCuenta.setOnClickListener(v -> eliminarCuenta(userEmail));
+            }
+        }
+    }
+    
+    private void eliminarCuenta(String userEmail) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        builder.setTitle("Eliminar Cuenta");
+        builder.setMessage("¿Estás segura de que quieres eliminar tu cuenta permanentemente? Esta acción no se puede deshacer.");
+        builder.setPositiveButton("Eliminar", (dialog, which) -> {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("usuarios").document(userEmail).delete()
+                .addOnSuccessListener(aVoid -> {
+                    if (auth.getCurrentUser() != null) {
+                        auth.getCurrentUser().delete().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "Cuenta eliminada", Toast.LENGTH_SHORT).show();
+                                getParentFragmentManager().beginTransaction()
+                                        .replace(R.id.main_fragment_container, new LoginFragment())
+                                        .commit();
+                            } else {
+                                Toast.makeText(getContext(), "Error eliminando autenticación, es posible que debas iniciar sesión nuevamente.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+    
+    private void uploadProfilePicture() {
+        if (imageUri != null && auth.getCurrentUser() != null) {
+            Toast.makeText(getContext(), "Subiendo imagen...", Toast.LENGTH_SHORT).show();
+            String userEmail = auth.getCurrentUser().getEmail();
+            if (userEmail == null) return;
+
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_pictures/" + userEmail + ".jpg");
+            storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+                storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("usuarios")
+                            .document(userEmail)
+                            .update("avatarUrl", uri.toString())
+                            .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Foto de perfil actualizada", Toast.LENGTH_SHORT).show());
+                });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(getContext(), "Error subiendo la imagen", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 
@@ -255,6 +336,94 @@ public class AjustesFragment extends Fragment {
         contenedor.removeAllViews();
         View view = getLayoutInflater().inflate(layoutId, contenedor, false);
         contenedor.addView(view);
+        
+        if (layoutId == R.layout.fragment_ajustes_seguridad) {
+            configurarSeguridad(view);
+        } else if (layoutId == R.layout.fragment_ajustes_privacidad) {
+            configurarPrivacidad(view);
+        } else if (layoutId == R.layout.fragment_ajustes_notificaciones) {
+            configurarNotificaciones(view);
+        }
+    }
+    
+    private void configurarPrivacidad(View view) {
+        android.widget.Switch switchVisibilidadChat = view.findViewById(R.id.switchVisibilidadChat);
+        android.widget.Switch switchCompartirDatos = view.findViewById(R.id.switchCompartirDatos);
+        TextView btnTerminosPrivacidad = view.findViewById(R.id.btnTerminosPrivacidad);
+        TextView btnExportarDatos = view.findViewById(R.id.btnExportarDatos);
+        
+        if (btnTerminosPrivacidad != null) {
+            btnTerminosPrivacidad.setOnClickListener(v -> {
+                android.content.Intent browserIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse("https://www.google.com")); // TODO: Enlace real
+                startActivity(browserIntent);
+            });
+        }
+        
+        if (btnExportarDatos != null) {
+            btnExportarDatos.setOnClickListener(v -> {
+                android.content.Intent sendIntent = new android.content.Intent();
+                sendIntent.setAction(android.content.Intent.ACTION_SEND);
+                sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Datos exportados: Usuario activo.");
+                sendIntent.setType("text/plain");
+                startActivity(android.content.Intent.createChooser(sendIntent, "Compartir datos vía"));
+            });
+        }
+        
+        // Simular guardado de preferencias en Firestore
+        if (switchVisibilidadChat != null && auth.getCurrentUser() != null) {
+            switchVisibilidadChat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("usuarios")
+                    .document(auth.getCurrentUser().getEmail()).update("visible_chat", isChecked);
+            });
+        }
+    }
+    
+    private void configurarNotificaciones(View view) {
+        android.widget.Switch switchNotifMenstruacion = view.findViewById(R.id.switchNotifMenstruacion);
+        android.widget.Switch switchNotifConsejos = view.findViewById(R.id.switchNotifConsejos);
+        android.widget.Switch switchNotifChat = view.findViewById(R.id.switchNotifChat);
+        
+        // La lógica de FCM irá aquí
+        if (switchNotifMenstruacion != null) {
+            switchNotifMenstruacion.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    Toast.makeText(getContext(), "Suscrito a alertas de periodo", Toast.LENGTH_SHORT).show();
+                    // FirebaseMessaging.getInstance().subscribeToTopic("periodo");
+                }
+            });
+        }
+    }
+    
+    private void configurarSeguridad(View view) {
+        TextView btnCambiarContrasena = view.findViewById(R.id.btnCambiarContrasena);
+        android.widget.Switch switchBiometrico = view.findViewById(R.id.switchBiometrico);
+        TextView btnGestionarPermisos = view.findViewById(R.id.btnGestionarPermisos);
+
+        if (btnCambiarContrasena != null) {
+            btnCambiarContrasena.setOnClickListener(v -> {
+                FirebaseUser user = auth.getCurrentUser();
+                if (user != null && user.getEmail() != null) {
+                    auth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Correo para restablecer contraseña enviado.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Error al enviar correo.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
+
+        if (btnGestionarPermisos != null) {
+            btnGestionarPermisos.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+                startActivity(intent);
+            });
+        }
+        
+        // La lógica de biometría requiere dependencias adicionales y configuración específica
+        // por ahora dejamos el switch funcional visualmente
     }
     @Override
     public void onResume() {

@@ -19,6 +19,32 @@
             android:textColor="@color/black"
             android:layout_marginBottom="20dp"/>
 
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/imgFotoPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_avatar_placeholder"
+                android:background="@drawable/circle_background"
+                android:clipToOutline="true"/>
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom|end"
+                android:background="@drawable/circle_background"
+                android:src="@android:drawable/ic_menu_edit"
+                android:padding="6dp"
+                android:tint="#FFF"
+                android:backgroundTint="#FF4081"/>
+        </FrameLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +104,26 @@
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
             android:padding="8dp"
-            android:background="?attr/selectableItemBackground"/>
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginBottom="24dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D7CCC8"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/btnEliminarCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eliminar cuenta permanentemente"
+            android:textStyle="bold"
+            android:fontFamily="@font/bricolage_grotesque"
+            android:textColor="#D32F2F"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 </ScrollView>

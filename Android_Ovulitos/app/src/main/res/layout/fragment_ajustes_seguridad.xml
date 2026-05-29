@@ -17,56 +17,52 @@
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="@color/black"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCambiarContrasena"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cambiar contraseña"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginBottom="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Verificacion de seguridad"
+            android:text="Acceso Biométrico"
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
-            android:textColor="@color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"/>
+        
+        <Switch
+            android:id="@+id/switchBiometrico"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Alertas de seguridad"
+            android:text="Usar huella/reconocimiento facial"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
+            android:padding="8dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dispositivos"
+            android:text="Permisos de la Aplicación"
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="@color/black"/>
+            
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/btnGestionarPermisos"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ver mis dispositivos"
+            android:text="Gestionar permisos (Cámara, Almacenamiento)"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Verificacion en dos pasos"
-            android:textStyle="bold"
-            android:fontFamily="@font/bricolage_grotesque"
-            android:textColor="@color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activado/Desacticado"
-            android:fontFamily="@font/bricolage_grotesque"
-            android:textColor="#6D4C41"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginBottom="16dp"/>
 
     </LinearLayout>

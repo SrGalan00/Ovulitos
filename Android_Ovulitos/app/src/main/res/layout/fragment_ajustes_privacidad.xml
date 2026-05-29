@@ -12,15 +12,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre de usuario"
+            android:text="Visibilidad en el Chat"
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textSize="16sp"
             android:textColor="@color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
+        <Switch
+            android:id="@+id/switchVisibilidadChat"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Todos/Nadie"
+            android:text="Mostrar mi perfil en el chat social"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
             android:layout_marginBottom="16dp"/>
@@ -28,15 +29,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Foto de perfil"
+            android:text="Compartir mis datos"
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textSize="16sp"
             android:textColor="@color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
+        <Switch
+            android:id="@+id/switchCompartirDatos"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Todos/Nadie"
+            android:text="Ayudar a mejorar la app de forma anónima"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
             android:layout_marginBottom="16dp"/>
@@ -44,33 +46,39 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Información"
+            android:text="Términos y Políticas"
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textSize="16sp"
             android:textColor="@color/black"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/btnTerminosPrivacidad"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Todos/Nadie"
+            android:text="Leer términos de privacidad"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginBottom="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mi estado"
+            android:text="Exportar mis datos"
             android:textStyle="bold"
             android:fontFamily="@font/bricolage_grotesque"
             android:textSize="16sp"
             android:textColor="@color/black"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/btnExportarDatos"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Todos/Nadie"
+            android:text="Descargar una copia de mis datos"
             android:fontFamily="@font/bricolage_grotesque"
             android:textColor="#6D4C41"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginBottom="24dp"/>
 
         <View
