@@ -1,19 +1,25 @@
 package com.example.ovulitos;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class ReproductorMeditacionFragment extends Fragment {
 
@@ -23,16 +29,12 @@ public class ReproductorMeditacionFragment extends Fragment {
     private LottieAnimationView lottieFlor;
 
     private boolean isPlaying = false;
-    
-    // Variables de simulación ya que el audio real aún no está insertado
-    private int simulatedCurrentPosition = 0; // ms
-    private int simulatedDuration = 4 * 60 * 1000 + 10 * 1000; // 4:10
+    private boolean isMediaPlayerPrepared = false;
     
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable updateProgressAction;
 
-    // TODO: Descomentar esto cuando tengas tu archivo de audio
-    // private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
 
     public ReproductorMeditacionFragment() {
         // Required empty public constructor
@@ -53,59 +55,66 @@ public class ReproductorMeditacionFragment extends Fragment {
         tvTime = view.findViewById(R.id.tvTime);
         lottieFlor = view.findViewById(R.id.ivFlor);
 
-        // TODO: Inicializa el MediaPlayer real aquí, por ejemplo:
-        // mediaPlayer = MediaPlayer.create(requireContext(), R.raw.tu_audio_aqui);
-        // int duration = mediaPlayer.getDuration();
-        // seekBar.setMax(duration);
-        // updateTimeText(0, duration);
-        
-        // --- SIMULACIÓN VISUAL (Borrar cuando uses MediaPlayer real) ---
-        seekBar.setMax(simulatedDuration);
-        updateTimeText(0, simulatedDuration);
-        // -------------------------------------------------------------
+        updateTimeText(0, 0);
+
+        FirebaseStorage.getInstance().getReference("Meditacion.mp4").getDownloadUrl()
+            .addOnSuccessListener(uri -> {
+                try {
+                    mediaPlayer = new MediaPlayer();
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mediaPlayer.setDataSource(uri.toString());
+                    mediaPlayer.prepareAsync();
+                    mediaPlayer.setOnPreparedListener(mp -> {
+                        isMediaPlayerPrepared = true;
+                        mediaPlayer.setVolume(1.0f, 1.0f);
+                        seekBar.setMax(mp.getDuration());
+                        updateTimeText(0, mp.getDuration());
+                    });
+                    mediaPlayer.setOnCompletionListener(mp -> {
+                        isPlaying = false;
+                        btnPlay.setImageResource(R.drawable.ic_play_arrow);
+                        seekBar.setProgress(0);
+                        updateTimeText(0, mp.getDuration());
+                        handler.removeCallbacks(updateProgressAction);
+                    });
+                } catch (Exception e) {
+                    Log.e("Meditacion", "Error configurando MediaPlayer", e);
+                }
+            })
+            .addOnFailureListener(e -> {
+                Log.e("Meditacion", "Error descargando URL", e);
+                if (getContext() != null) Toast.makeText(getContext(), "Error cargando audio desde la nube", Toast.LENGTH_SHORT).show();
+            });
 
         updateProgressAction = new Runnable() {
             @Override
             public void run() {
-                if (isPlaying) {
-                    // TODO: Usar el valor real con: int current = mediaPlayer.getCurrentPosition();
-                    // --- SIMULACIÓN ---
-                    simulatedCurrentPosition += 1000; 
-                    if (simulatedCurrentPosition > simulatedDuration) {
-                        simulatedCurrentPosition = 0;
-                        isPlaying = false;
-                        btnPlay.setImageResource(R.drawable.ic_play_arrow);
-                    }
-                    int current = simulatedCurrentPosition;
-                    // ------------------
-                    
+                if (isPlaying && mediaPlayer != null && isMediaPlayerPrepared) {
+                    int current = mediaPlayer.getCurrentPosition();
                     seekBar.setProgress(current);
-                    
-                    // TODO: Cambiar simulatedDuration por mediaPlayer.getDuration()
-                    updateTimeText(current, simulatedDuration);
-                    
-                    if (isPlaying) {
-                        handler.postDelayed(this, 1000);
-                    }
+                    updateTimeText(current, mediaPlayer.getDuration());
+                    handler.postDelayed(this, 1000);
                 }
             }
         };
 
         btnPlay.setOnClickListener(v -> {
+            if (!isMediaPlayerPrepared || mediaPlayer == null) {
+                Toast.makeText(getContext(), "Cargando audio, por favor espera...", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (isPlaying) {
                 // Pausar
                 isPlaying = false;
                 btnPlay.setImageResource(R.drawable.ic_play_arrow);
+                mediaPlayer.pause();
                 handler.removeCallbacks(updateProgressAction);
-                
-                // TODO: mediaPlayer.pause();
             } else {
                 // Reproducir
                 isPlaying = true;
                 btnPlay.setImageResource(R.drawable.ic_pause);
-                
-                // TODO: mediaPlayer.start();
-                
+                mediaPlayer.start();
                 handler.postDelayed(updateProgressAction, 1000);
             }
         });
@@ -113,14 +122,9 @@ public class ReproductorMeditacionFragment extends Fragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    // TODO: mediaPlayer.seekTo(progress);
-                    
-                    // --- SIMULACIÓN ---
-                    simulatedCurrentPosition = progress;
-                    // ------------------
-                    
-                    updateTimeText(progress, simulatedDuration);
+                if (fromUser && mediaPlayer != null && isMediaPlayerPrepared) {
+                    mediaPlayer.seekTo(progress);
+                    updateTimeText(progress, mediaPlayer.getDuration());
                 }
             }
 
@@ -151,10 +155,12 @@ public class ReproductorMeditacionFragment extends Fragment {
         super.onDestroyView();
         handler.removeCallbacks(updateProgressAction);
         
-        // TODO: Libera recursos del MediaPlayer
-        // if (mediaPlayer != null) {
-        //     mediaPlayer.release();
-        //     mediaPlayer = null;
-        // }
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

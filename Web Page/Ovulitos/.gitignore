@@ -190,3 +190,4 @@ firebase-config.js
 
 # TypeScript
 *.tsbuildinfo
+.vercel

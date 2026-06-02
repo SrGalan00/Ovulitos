@@ -48,22 +48,22 @@ export const Login: React.FC = () => {
         <form className="relative z-20 flex flex-col justify-center items-center gap-[22px]" onSubmit={handleSubmit}>
           {error && <div className="text-red-600 font-bold bg-white/80 p-2 rounded">{error}</div>}
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-base px-1.5 font-medium">Email</label>
+            <label className="text-[#333] text-base px-1.5 font-medium">Correo</label>
             <input
               className="w-[320px] p-[14px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="email"
-              placeholder="Email"
+              placeholder="Correo electrónico"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[#333] text-base px-1.5 font-medium">Password</label>
+            <label className="text-[#333] text-base px-1.5 font-medium">Contraseña</label>
             <input
               className="w-[320px] p-[14px] rounded-xl border border-[#ddd] text-base outline-none focus:border-[#c45a7a] transition-colors bg-white/90 backdrop-blur-sm"
               type="password"
-              placeholder="Password"
+              placeholder="Contraseña"
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
@@ -76,17 +76,17 @@ export const Login: React.FC = () => {
               checked={rememberme}
               onChange={e => setRememberme(e.target.checked)}
             />
-            Remember me
+            Recordarme
           </label>
 
           <button
             className="mt-5 w-[200px] p-3.5 rounded-[14px] border border-[#ddd] bg-white font-bold text-[#333] hover:bg-[#f1f1f1] transition-colors cursor-pointer shadow-sm hover:shadow-md active:scale-95 transform duration-100"
             type="submit"
           >
-            LOGIN
+            INICIAR SESIÓN
           </button>
           <div className="mt-4 text-sm font-medium">
-            Not registered yet? <Link to="/register" className="text-[#c45a7a] hover:underline">Register here</Link>
+            ¿Aún no estás registrado? <Link to="/register" className="text-[#c45a7a] hover:underline">Regístrate aquí</Link>
           </div>
         </form>
       </div>

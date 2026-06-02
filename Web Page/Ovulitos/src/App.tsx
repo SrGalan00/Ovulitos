@@ -1,62 +1,64 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { AnimatePresence, motion } from "framer-motion";
-// Usamos la ruta exacta de tu estructura de carpetas
-import { AuthProvider, useAuth } from "./context/authContext/index.jsx";
-import LoginCircle from "./components/LoginCircle";
-import Dashboard from "./components/Dashboard";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import LoginCircle from './components/LoginCircle';
+import Dashboard from './components/Dashboard';
+import { useAuth } from './context/authContext';
+import { doSignOut } from './firebase/auth';
+import { initializeConsejos, initializeNoticias } from './utils/firebaseUtils';
+import { useEffect } from 'react';
 
+
+// Crear tema con la paleta de colores
 const theme = createTheme({
   palette: {
-    primary: { main: "#9B5354" },
-    secondary: { main: "#69393A" },
-    background: { default: "#FFF8C9" },
+    primary: {
+      main: '#9B5354',
+    },
+    secondary: {
+      main: '#69393A',
+    },
+    background: {
+      default: '#FFF8C9',
+    },
   },
   typography: {
-    fontFamily: '"Poppins", sans-serif',
+    fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
   },
 });
 
-function AppContent() {
-  const { currentUser, loading } = useAuth();
+function App() {
+  const { currentUser } = useAuth();
+  const isGuest = localStorage.getItem('isGuest') === 'true';
 
-  // No mostramos nada mientras Firebase determina si hay un usuario
-  if (loading) return null;
+  useEffect(() => {
+    initializeConsejos();
+    initializeNoticias();
+  }, []);
 
-  return (
-    <AnimatePresence mode="wait">
-      {currentUser ? (
-        <motion.div
-          key="dashboard"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Dashboard />
-        </motion.div>
-      ) : (
-        <motion.div
-          key="login"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <LoginCircle />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
+  const handleLogout = async () => {
+    try {
+      if (isGuest) {
+        localStorage.removeItem('isGuest');
+        window.location.reload();
+      } else {
+        await doSignOut();
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
-export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      {(!currentUser && !isGuest) ? (
+        <LoginCircle onLogin={() => {}} />
+      ) : (
+        <Dashboard onLogout={handleLogout} />
+      )}
     </ThemeProvider>
   );
+
 }
+
+export default App;

@@ -1,34 +1,220 @@
-import React from 'react';
-import { Box, Typography, Button, AppBar, Toolbar, Container } from '@mui/material';
-import { ExitToApp } from '@mui/icons-material';
-import { doSignOut } from '../firebase/auth.js';
+import React, { useState } from 'react';
+import { 
+  Box, 
+  Typography, 
+  IconButton,
+  Drawer,
+  useTheme,
+  useMediaQuery,
+  Grid
+} from '@mui/material';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { useAuth } from '../context/authContext';
+import CalendarComponent from './CalendarComponent';
+import Sidebar from './Sidebar';
+import DailyTip from './DailyTip';
+import OnboardingPeriod from './OnboardingPeriod';
+import NewsComponent from './NewsComponent';
+import { db } from '../firebase/firebase';
+import { collection, query, limit, getDocs } from 'firebase/firestore';
+import { useEffect } from 'react';
 
-const Dashboard = () => {
+interface DashboardProps {
+  onLogout: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
+  const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [activeView, setActiveView] = useState('dashboard');
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  useEffect(() => {
+    const checkData = async () => {
+      if (!currentUser?.email) return;
+      if (localStorage.getItem('isGuest') === 'true') return;
+
+      const datosRef = collection(db, 'usuarios', currentUser.email, 'Datos');
+      const q = query(datosRef, limit(1));
+      const snapshot = await getDocs(q);
+      
+      setNeedsOnboarding(snapshot.empty);
+    };
+
+    checkData();
+  }, [currentUser, refreshKey]);
+  
+  const colors = {
+    primary: '#FFF8C9',
+    secondary: '#69393A',
+    accent: '#9B5354',
+    background: '#FDF8F0',
+    cardBg: '#FFFFFF',
+    textMuted: 'rgba(105, 57, 58, 0.6)'
+  };
+
+  const getTitle = () => {
+    switch (activeView) {
+      case 'agenda':
+        return <>Tu Agenda<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+      case 'noticias':
+        return <>Noticias Semanales<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+      case 'history':
+        return <>Tu Historial<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+      default:
+        return <>Tu Panel<Box component="span" sx={{ color: colors.accent }}>.</Box></>;
+    }
+  };
+
   return (
-    <Box sx={{ minHeight: '100vh', width: '100vw', backgroundColor: '#FFF8C9', display: 'flex', flexDirection: 'column' }}>
-      <AppBar position="static" sx={{ backgroundColor: '#69393A' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Ovulitos Dashboard</Typography>
-          <Button color="inherit" onClick={() => doSignOut()} startIcon={<ExitToApp />}>
-  Cerrar Sesión
-</Button>
-        </Toolbar>
-      </AppBar>
+    <Box sx={{ 
+      display: 'flex', 
+      height: '100vh', 
+      backgroundColor: colors.background,
+      backgroundImage: `radial-gradient(at 0% 0%, ${colors.primary} 0%, transparent 50%), 
+                        radial-gradient(at 100% 0%, ${colors.primary} 0%, transparent 50%)`,
+      position: 'relative',
+      overflow: 'hidden',
+      p: 2,
+      gap: 2
+    }}>
+      {/* Background Wavy Lines Effect */}
+      <Box sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        opacity: 0.1,
+        pointerEvents: 'none',
+        backgroundImage: 'repeating-linear-gradient(45deg, #69393A 0, #69393A 1px, transparent 0, transparent 50%)',
+        backgroundSize: '100px 100px',
+        maskImage: 'radial-gradient(circle, black 0%, transparent 80%)'
+      }} />
 
-      <Container maxWidth={false} sx={{ mt: 4, flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-        <Box sx={{ backgroundColor: 'white', borderRadius: 4, p: 4, width: '100%', maxWidth: '1200px', boxShadow: '0px 10px 30px rgba(0,0,0,0.05)' }}>
-          <Typography variant="h4" sx={{ color: '#69393A', fontWeight: 'bold', mb: 2 }}>
-            ¡Bienvenido al Proyecto Ovulitos!
+      {/* Sidebar for Desktop */}
+      {!isMobile && (
+        <Sidebar onLogout={onLogout} activeView={activeView} setActiveView={setActiveView} />
+      )}
+
+      {/* Sidebar for Mobile (Drawer) */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { 
+            boxSizing: 'border-box', 
+            width: 280, 
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            border: 'none'
+          },
+        }}
+      >
+        <Sidebar 
+          onLogout={onLogout} 
+          activeView={activeView} 
+          setActiveView={(view) => {
+            setActiveView(view);
+            setMobileOpen(false);
+          }} 
+        />
+      </Drawer>
+
+      {needsOnboarding && (
+        <OnboardingPeriod 
+          currentUser={currentUser} 
+          onComplete={() => {
+            setNeedsOnboarding(false);
+            setRefreshKey(prev => prev + 1);
+          }} 
+        />
+      )}
+
+      <Box component="main" sx={{ 
+        flexGrow: 1, 
+        p: { xs: 1.5, md: 3 }, // Aumentado de 1/2 a 1.5/3
+        zIndex: 1, 
+        overflowY: 'auto',
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: 8, // Restaurado
+        border: '1px solid rgba(105, 57, 58, 0.1)',
+        boxShadow: '0 10px 40px rgba(105, 57, 58, 0.05)',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <Box sx={{ 
+          textAlign: 'center', 
+          mb: 2, 
+          mt: 1.5,
+          position: 'relative' // Para posicionar el botón de menú
+        }}>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ 
+                position: 'absolute', 
+                left: 0, 
+                top: '50%', 
+                transform: 'translateY(-50%)',
+                color: colors.secondary 
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="overline" sx={{ color: colors.textMuted, letterSpacing: 2, fontWeight: 'bold', fontSize: '0.8rem' }}>
+            ESPACIO PERSONAL
           </Typography>
-          <Typography variant="body1" sx={{ color: '#69393A' }}>
-            Este es el dashboard principal de la aplicación. Aquí puedes empezar a construir tu interfaz.
+          <Typography variant="h3" sx={{ 
+            color: colors.secondary, 
+            fontWeight: 800, 
+            fontFamily: "'Poppins', sans-serif",
+            mt: 0.5,
+            fontSize: { xs: '1.75rem', md: '3rem' } // Responsivo
+          }}>
+            {getTitle()}
           </Typography>
-          
-          <Box sx={{ mt: 4, p: 5, border: '2px dashed #F4C7C4', borderRadius: 2, textAlign: 'center' }}>
-            <Typography sx={{ color: '#9B5354' }}>Área de trabajo lista para nuevos componentes</Typography>
-          </Box>
         </Box>
-      </Container>
+
+        {activeView === 'agenda' ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1, overflow: 'auto', width: '100%' }}>
+            <CalendarComponent />
+          </Box>
+        ) : activeView === 'noticias' ? (
+          <NewsComponent />
+        ) : activeView === 'history' ? (
+          <Box sx={{ p: 4, textAlign: 'center', backgroundColor: 'rgba(255, 253, 240, 0.6)', borderRadius: 4, border: '1px dashed rgba(105, 57, 58, 0.2)', margin: 'auto' }}>
+            <Typography variant="h6" sx={{ color: colors.secondary, fontWeight: 800 }}>Historial del ciclo</Typography>
+            <Typography variant="body2" sx={{ color: colors.textMuted, mt: 1 }}>Aquí verás tus ciclos anteriores próximamente.</Typography>
+          </Box>
+        ) : (
+          <Grid container spacing={2} justifyContent="center" sx={{ flexGrow: 1, overflow: 'auto' }}>
+            {/* Daily Tip - Side by side on md+ */}
+            <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+               <DailyTip currentUser={currentUser} key={refreshKey} />
+            </Grid>
+            {/* Calendar Section */}
+            <Grid size={{ xs: 12, md: 8, lg: 8 }} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <CalendarComponent />
+            </Grid>
+          </Grid>
+        )}
+      </Box>
     </Box>
   );
 };

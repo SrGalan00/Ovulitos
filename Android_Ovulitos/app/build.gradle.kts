@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
-        buildConfigField("String", "BASE_URL", "\"https://ovulitos-1.onrender.com/\"")
+        buildConfigField("String", "BASE_URL", "\"https://ovulitos-4tjo.onrender.com/\"")
     }
 
     buildFeatures {

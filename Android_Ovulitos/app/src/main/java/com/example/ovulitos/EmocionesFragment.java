@@ -1,7 +1,10 @@
 package com.example.ovulitos;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Choreographer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.example.ovulitos.global.GlobalVariables;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -57,17 +66,56 @@ public class EmocionesFragment extends Fragment implements Choreographer.FrameCa
 
         contenedorBote = view.findViewById(R.id.flTarroContenido);
 
-        view.findViewById(R.id.btnEmojiFeliz).setOnClickListener(v -> agregarEmocionBola(R.drawable.alegria));
-        view.findViewById(R.id.btnEmojiTriste).setOnClickListener(v -> agregarEmocionBola(R.drawable.tristeza));
-        view.findViewById(R.id.btnEmojiEnojo).setOnClickListener(v -> agregarEmocionBola(R.drawable.ira));
-        view.findViewById(R.id.btnEmojiSorpresa).setOnClickListener(v -> agregarEmocionBola(R.drawable.miedo));
-        view.findViewById(R.id.btnEmojiCalma).setOnClickListener(v -> agregarEmocionBola(R.drawable.serenidad));
+        view.findViewById(R.id.btnEmojiFeliz).setOnClickListener(v -> agregarEmocionBola(R.drawable.alegria, "Contento", true));
+        view.findViewById(R.id.btnEmojiTriste).setOnClickListener(v -> agregarEmocionBola(R.drawable.tristeza, "Triste", true));
+        view.findViewById(R.id.btnEmojiEnojo).setOnClickListener(v -> agregarEmocionBola(R.drawable.ira, "Enfadado", true));
+        view.findViewById(R.id.btnEmojiSorpresa).setOnClickListener(v -> agregarEmocionBola(R.drawable.miedo, "Agobiado", true));
+        view.findViewById(R.id.btnEmojiCalma).setOnClickListener(v -> agregarEmocionBola(R.drawable.serenidad, "Tranquilo", true));
+
+        if (GlobalVariables.email != null) {
+            FirebaseFirestore.getInstance().collection("usuarios").document(GlobalVariables.email)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists() && doc.contains("emocionesTarro")) {
+                        List<String> guardadas = (List<String>) doc.get("emocionesTarro");
+                        if (guardadas != null) {
+                            for (String emocion : guardadas) {
+                                String nombreReal = emocion.contains("_") ? emocion.split("_")[0] : emocion;
+                                int resId = obtenerDrawablePorNombre(nombreReal);
+                                if (resId != 0) {
+                                    agregarEmocionBola(resId, nombreReal, false);
+                                }
+                            }
+                        }
+                    }
+                });
+        }
     }
 
-    private void agregarEmocionBola(int drawableResId) {
+    private int obtenerDrawablePorNombre(String nombre) {
+        switch (nombre) {
+            case "Contento": return R.drawable.alegria;
+            case "Triste": return R.drawable.tristeza;
+            case "Enfadado": return R.drawable.ira;
+            case "Agobiado": return R.drawable.miedo;
+            case "Tranquilo": return R.drawable.serenidad;
+            default: return 0;
+        }
+    }
+
+    private void agregarEmocionBola(int drawableResId, String emotionName, boolean guardarYReproducir) {
         if (listaEmociones.size() >= LIMITE_EMOCIONES) {
             mostrarDialogoLimite();
             return;
+        }
+
+        if (guardarYReproducir) {
+            playEmotionAudio(emotionName);
+            if (GlobalVariables.email != null) {
+                String uniqueName = emotionName + "_" + System.currentTimeMillis();
+                FirebaseFirestore.getInstance().collection("usuarios").document(GlobalVariables.email)
+                    .set(Collections.singletonMap("emocionesTarro", FieldValue.arrayUnion(uniqueName)), SetOptions.merge());
+            }
         }
 
         if (contenedorBote == null || contenedorBote.getWidth() == 0) return;
@@ -299,6 +347,26 @@ public class EmocionesFragment extends Fragment implements Choreographer.FrameCa
 
         dialog.findViewById(R.id.btnEntendido).setOnClickListener(v -> dialog.dismiss());
         dialog.show();
+    }
+
+    private void playEmotionAudio(String emotionName) {
+        FirebaseStorage.getInstance().getReference(emotionName + ".mp4").getDownloadUrl()
+            .addOnSuccessListener(uri -> {
+                try {
+                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mediaPlayer.setDataSource(uri.toString());
+                    mediaPlayer.prepareAsync();
+                    mediaPlayer.setOnPreparedListener(mp -> {
+                        mp.setVolume(1.0f, 1.0f);
+                        mp.start();
+                    });
+                    mediaPlayer.setOnCompletionListener(MediaPlayer::release);
+                } catch (Exception e) {
+                    Log.e("Emociones", "Error al reproducir " + emotionName, e);
+                }
+            })
+            .addOnFailureListener(e -> Log.e("Emociones", "Audio no encontrado en Firebase: " + emotionName + ".mp4", e));
     }
 
     @Override

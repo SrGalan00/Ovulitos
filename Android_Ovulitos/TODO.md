@@ -4,21 +4,21 @@ Este documento enumera las tareas que faltan por completar o detalles que requie
 
 ## 1. Lógica y Funcionalidades Incompletas
 
-- [ ] **Seguimiento del Ciclo (`InicioFragment.java`)**
+- [x] **Seguimiento del Ciclo (`InicioFragment.java`)**
   - **Estado actual**: Los días restantes para el periodo están fijos (`tvDias.setText("19 días para tu periodo");`).
   - **Acción**: Implementar la lógica real que calcule los días restantes basándose en la fecha actual y los datos del calendario/ciclo guardados de la usuaria.
 
-- [ ] **Sección de Fertilidad / Síntomas (`FertilidadFragment.java`)**
+- [x] **Sección de Fertilidad / Síntomas (`FertilidadFragment.java`)**
   - **Estado actual**: Los *click listeners* de las tarjetas de información (`cardHinchazon`, `cardParanoia`) están vacíos.
   - **Acción**: Añadir la lógica para que al pulsar se abra el detalle de la información (mediante un *dialog*, expandiendo la vista o navegando a un nuevo fragmento).
 
-- [ ] **Sección de Noticias (`NoticiasFragment.java`)**
+- [x] **Sección de Noticias (`NoticiasFragment.java`)**
   - **Estado actual**: Fragmento completamente vacío, solo contiene el boilerplate autogenerado por Android Studio.
   - **Acción**: Diseñar la UI del fragmento (XML) y la lógica para obtener y mostrar noticias relevantes.
 
 ## 2. Multimedia e Interfaz (UI)
 
-- [ ] **Reproductor de Meditación (`ReproductorMeditacionFragment.java`)**
+- [x] **Reproductor de Meditación (`ReproductorMeditacionFragment.java`)**
   - **Estado actual**: El progreso de la meditación está siendo "simulado" mediante un hilo secundario y `Thread.sleep`.
   - **Acción**: 
     - Inicializar el objeto `MediaPlayer` real.
@@ -42,17 +42,17 @@ Este documento enumera las tareas que faltan por completar o detalles que requie
 
 ## 4. Perfil de Usuario y Ajustes Generales
 
-- [ ] **Gestión de Foto de Perfil (`PerfilFragment.java` / `AjustesFragment.java`)**
+- [x] **Gestión de Foto de Perfil (`PerfilFragment.java` / `AjustesFragment.java`)**
   - **Acción**: Implementar la funcionalidad para que la usuaria pueda seleccionar una foto de su galería, recortarla y actualizarla usando Firebase Storage.
 
-- [ ] **Configuración de Seguridad y Permisos**
+- [x] **Configuración de Seguridad y Permisos**
   - **Acción**: Añadir opciones para cambiar la contraseña, habilitar acceso biométrico (huella dactilar/reconocimiento facial) y gestionar qué permisos tiene la aplicación (cámara, almacenamiento).
 
-- [ ] **Gestión de Privacidad**
+- [x] **Gestión de Privacidad**
   - **Acción**: Crear un apartado donde la usuaria pueda revisar los términos de privacidad, configurar la visibilidad de su perfil en el área social (Chat) y decidir cómo se comparten sus datos.
 
-- [ ] **Sistema de Notificaciones Push**
+- [x] **Sistema de Notificaciones Push**
   - **Acción**: Implementar los *toggles* en los ajustes y la lógica (ej. con Firebase Cloud Messaging) para activar/desactivar recordatorios: llegada del periodo, ovulación, recordatorios de meditación y nuevos mensajes en el chat.
 
-- [ ] **Gestión de Datos de la Cuenta (Extra)**
+- [x] **Gestión de Datos de la Cuenta (Extra)**
   - **Acción**: Implementar opciones necesarias hoy en día para aplicaciones de salud: "Exportar mis datos" y "Eliminar mi cuenta permanentemente" (borrando registros en Firebase).
