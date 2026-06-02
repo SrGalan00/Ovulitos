@@ -78,6 +78,7 @@
                         android:src="@drawable/hinchazon" />
 
                     <TextView
+                        android:id="@+id/tv_articulo_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -92,7 +93,6 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardParanoia"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -102,6 +102,7 @@
                 app:cardElevation="0dp">
 
                 <LinearLayout
+                    android:id="@+id/cardParanoia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -114,6 +115,7 @@
                         android:src="@drawable/paranoia" />
 
                     <TextView
+                        android:id="@+id/tv_articulo_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"

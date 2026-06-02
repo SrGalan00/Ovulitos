@@ -34,14 +34,30 @@
             app:cardCornerRadius="28dp"
             app:cardElevation="0dp">
 
-            <CalendarView
+            <com.applandeo.materialcalendarview.CalendarView
                 android:id="@+id/calendarViewRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                android:theme="@style/TemaCalendarioOvulitos"
-                android:dateTextAppearance="@style/CalendarioCuerpoTexto"
-                android:weekDayTextAppearance="@style/CalendarioTituloTexto" />
+                app:headerColor="@color/rosa_oscuro"
+                app:headerLabelColor="@color/fondo"
+                app:pagesColor="@color/rosa_intermedio"
+                app:abbreviationsBarColor="@color/rosa_intermedio"
+                app:abbreviationsLabelsColor="@color/textos"
+                app:daysLabelsColor="@color/textos"
+                app:selectionColor="@color/rosa_oscuro"
+                app:todayLabelColor="@color/white" />
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnKiki"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/lila_pastel"
+            android:text="KIKI"
+            android:textColor="@color/black"
+            app:cornerRadius="16dp"
+            android:textAppearance="@style/ChipTextAppearance" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,9 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/flujo_manchado"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
+                app:chipBackgroundColor="@color/rosa_claro"
                 android:textAppearance="@style/ChipTextAppearance"
                 android:checkable="true" />
 
@@ -77,9 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/flujo_ligero"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
+                app:chipBackgroundColor="@color/rosa_claro"
                 android:textAppearance="@style/ChipTextAppearance"
                 android:checkable="true" />
 
@@ -89,9 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/flujo_abundante"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
+                app:chipBackgroundColor="@color/rosa_claro"
                 android:textAppearance="@style/ChipTextAppearance"
                 android:checkable="true" />
         </com.google.android.material.chip.ChipGroup>
@@ -101,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/bricolage_grotesque_bold"
-            android:text="@string/seccion_dolores"
+            android:text="@string/seccion_otros_sintomas"
             android:textColor="@color/textos"
             android:textStyle="bold" />
 
@@ -118,10 +128,8 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/sintoma_colicos"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance" />
+                android:textAppearance="@style/ChipTextAppearance"
+                app:chipBackgroundColor="@color/rosa_claro" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/headhache"
@@ -130,10 +138,8 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/sintoma_dolor_cabeza"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance" />
+                android:textAppearance="@style/ChipTextAppearance"
+                app:chipBackgroundColor="@color/rosa_claro" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/sensitive"
@@ -142,162 +148,8 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:text="@string/sintoma_sensibilidad"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance" />
-                
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dolor_espalda"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
                 android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dolor_ovarios"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-        </com.google.android.material.chip.ChipGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/bricolage_grotesque_bold"
-            android:text="@string/seccion_estado_animo"
-            android:textColor="@color/textos"
-            android:textStyle="bold" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupSentimientos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/animo_feliz"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/animo_triste"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/animo_ansiosa"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-                
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/animo_irritable"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/animo_cansada"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-        </com.google.android.material.chip.ChipGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/bricolage_grotesque_bold"
-            android:text="@string/seccion_sexualidad"
-            android:textColor="@color/textos"
-            android:textStyle="bold" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupSexualidad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sexo_protegido"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sexo_sin_proteccion"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sexo_masturbacion"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance"
-                android:checkable="true" />
-                
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sexo_deseo_alto"
-                app:chipBackgroundColor="@color/selector_chip_bg"
-                android:textColor="@color/selector_chip_text"
-                app:chipStrokeWidth="0dp"
-                android:textAppearance="@style/ChipTextAppearance" />
+                app:chipBackgroundColor="@color/rosa_claro" />
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.button.MaterialButton

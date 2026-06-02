@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams) mainContainer.getLayoutParams();
                     
             if (fragmento instanceof LoginFragment || fragmento instanceof RegisterFragment || fragmento instanceof PerfilFragment 
-                || fragmento instanceof AjustesFragment || fragmento instanceof ChatFragment) {
+                || fragmento instanceof AjustesFragment || fragmento instanceof ChatFragment || fragmento instanceof ConfiguracionCalendarioFragment) {
                 topBar.setVisibility(android.view.View.GONE);
                 bottomBar.setVisibility(android.view.View.GONE);
                 
