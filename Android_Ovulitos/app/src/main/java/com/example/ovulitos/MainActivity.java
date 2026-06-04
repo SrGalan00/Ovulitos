@@ -69,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Poblar datos y eventos del Drawer Lateral
         setupDrawerInternals(drawerLayout);
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(android.view.View drawerView) {
+                actualizarDatosDrawer();
+            }
+        });
+        actualizarDatosDrawer();
     }
 
     public void reemplazarFragmento(Fragment fragmento) {
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupDrawerInternals(DrawerLayout drawer) {
+    public void actualizarDatosDrawer() {
         TextView txtUserName = findViewById(R.id.drawer_user_name);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -126,9 +133,8 @@ public class MainActivity extends AppCompatActivity {
         if (user != null && txtUserName != null && user.getEmail() != null) {
             com.google.firebase.firestore.FirebaseFirestore.getInstance()
                 .collection("usuarios").document(user.getEmail())
-                .addSnapshotListener((snapshot, error) -> {
-                    if (error != null || snapshot == null) return;
-                    if (snapshot.exists()) {
+                .get().addOnSuccessListener(snapshot -> {
+                    if (snapshot != null && snapshot.exists()) {
                         String nombre = snapshot.getString("nombre");
                         txtUserName.setText(nombre != null && !nombre.isEmpty() ? nombre : "Sin nombre");
                         
@@ -141,7 +147,12 @@ public class MainActivity extends AppCompatActivity {
                         txtUserName.setText(user.getEmail());
                     }
                 });
+        } else if (txtUserName != null) {
+            txtUserName.setText("No identificado");
         }
+    }
+
+    private void setupDrawerInternals(DrawerLayout drawer) {
 
         android.view.View btnCuenta = findViewById(R.id.drawer_btn_cuenta);
         android.view.View btnSeguridad = findViewById(R.id.drawer_btn_seguridad);
